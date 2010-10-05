@@ -1,0 +1,609 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+                      "http://w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <style>
+      body, h1, td, th {
+        font-family: georgia, verdana, geneva, arial, helvetica, sans-serif;
+      }
+      body { 
+        margin: 2em;
+      }
+      h1 {
+        font-size: 18pt;
+        text-align: center;
+      }
+      div.footer {
+        font-style: italic;
+        font-size: 8pt;
+      }
+      table.legend { 
+        font-size:  10pt; 
+        float: right; 
+        border: 1px solid black;
+        margin: 0 0 1em 1em;
+      } 
+      table.legend tr td div {
+        width: 1em;
+        border: 1px solid black;
+      }
+      table.legend tr td + td {
+        width: auto;
+      }
+      table.plot { 
+        clear: both;
+        margin: 2em 0 2em 0;
+        white-space: nowrap;
+      }
+      table.plot tr td {
+        font: 10pt monospace;
+      }
+      table.plot td + td + td {
+        text-align: right;
+      }
+      table.plot thead th {
+        font-size: 12pt;
+        font-weight: bolder;
+        text-align: left;
+      }
+      table.plot th + th {
+        text-align: center;
+      }
+      span.desc {
+        font-size: 8pt;
+      }
+      div.bg { 
+        border: 1px solid black; 
+      }
+      div.bar { 
+        border-right: 1px solid black;
+      }
+    </style>
+    <title>RAPP Benchmark</title>
+  </head>
+  <body>
+  <h1>RAPP Benchmark</h1>
+<em>RAPP 0.5 32-bit  built on Jun 29 2009 10:26:39<br>Image size is 256x256 pixels</em><table>
+<table class="plot">
+<thead><th>Function</th><th>Execution Speed</th><th>Pix/Sec</th></thead><tr><td>rapp_bitblt_copy_bin <span class="desc">(aligned)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #66C2A5; width: 100.00%">
+<br></div></div></td><td> 32.13G</td></tr>
+<tr><td>rapp_bitblt_copy_bin <span class="desc">(byte-aligned)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #66C2A5; width: 22.98%">
+<br></div></div></td><td>  7.38G</td></tr>
+<tr><td>rapp_bitblt_copy_bin <span class="desc">(misaligned)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #66C2A5; width: 24.28%">
+<br></div></div></td><td>  7.80G</td></tr>
+<tr><td>rapp_bitblt_and_bin <span class="desc">(aligned)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FC8D62; width: 64.07%">
+<br></div></div></td><td> 20.58G</td></tr>
+<tr><td>rapp_bitblt_and_bin <span class="desc">(byte-aligned)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FC8D62; width: 20.95%">
+<br></div></div></td><td>  6.73G</td></tr>
+<tr><td>rapp_bitblt_and_bin <span class="desc">(misaligned)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FC8D62; width: 20.78%">
+<br></div></div></td><td>  6.68G</td></tr>
+<tr><td>rapp_bitblt_nand_bin <span class="desc">(aligned)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #8DA0CB; width: 64.52%">
+<br></div></div></td><td> 20.73G</td></tr>
+<tr><td>rapp_bitblt_nand_bin <span class="desc">(byte-aligned)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #8DA0CB; width: 9.34%">
+<br></div></div></td><td>  3.00G</td></tr>
+<tr><td>rapp_bitblt_nand_bin <span class="desc">(misaligned)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #8DA0CB; width: 10.76%">
+<br></div></div></td><td>  3.46G</td></tr>
+<tr><td>rapp_pixop_set_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #E78AC3; width: 15.21%">
+<br></div></div></td><td>  4.89G</td></tr>
+<tr><td>rapp_pixop_not_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A6D854; width: 10.24%">
+<br></div></div></td><td>  3.29G</td></tr>
+<tr><td>rapp_pixop_flip_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 10.06%">
+<br></div></div></td><td>  3.23G</td></tr>
+<tr><td>rapp_pixop_lut_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #D8A75E; width: 2.43%">
+<br></div></div></td><td>779.22M</td></tr>
+<tr><td>rapp_pixop_abs_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 2.13%">
+<br></div></div></td><td>684.85M</td></tr>
+<tr><td>rapp_pixop_addc_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #66C2A5; width: 2.62%">
+<br></div></div></td><td>842.14M</td></tr>
+<tr><td>rapp_pixop_lerpc_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FC8D62; width: 2.24%">
+<br></div></div></td><td>720.24M</td></tr>
+<tr><td>rapp_pixop_lerpnc_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #8DA0CB; width: 1.36%">
+<br></div></div></td><td>437.78M</td></tr>
+<tr><td>rapp_pixop_copy_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #E78AC3; width: 4.93%">
+<br></div></div></td><td>  1.59G</td></tr>
+<tr><td>rapp_pixop_add_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A6D854; width: 2.47%">
+<br></div></div></td><td>793.64M</td></tr>
+<tr><td>rapp_pixop_avg_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 3.64%">
+<br></div></div></td><td>  1.17G</td></tr>
+<tr><td>rapp_pixop_sub_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #D8A75E; width: 2.08%">
+<br></div></div></td><td>667.81M</td></tr>
+<tr><td>rapp_pixop_subh_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 3.62%">
+<br></div></div></td><td>  1.16G</td></tr>
+<tr><td>rapp_pixop_suba_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #66C2A5; width: 1.71%">
+<br></div></div></td><td>549.19M</td></tr>
+<tr><td>rapp_pixop_lerp_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FC8D62; width: 1.67%">
+<br></div></div></td><td>536.74M</td></tr>
+<tr><td>rapp_pixop_lerpn_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #8DA0CB; width: 1.37%">
+<br></div></div></td><td>441.71M</td></tr>
+<tr><td>rapp_pixop_lerpi_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #E78AC3; width: 1.61%">
+<br></div></div></td><td>516.42M</td></tr>
+<tr><td>rapp_pixop_norm_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A6D854; width: 0.79%">
+<br></div></div></td><td>254.94M</td></tr>
+<tr><td>rapp_type_u8_to_bin <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 2.60%">
+<br></div></div></td><td>836.89M</td></tr>
+<tr><td>rapp_type_bin_to_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #D8A75E; width: 9.12%">
+<br></div></div></td><td>  2.93G</td></tr>
+<tr><td>rapp_thresh_gt_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 2.63%">
+<br></div></div></td><td>843.45M</td></tr>
+<tr><td>rapp_thresh_lt_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #66C2A5; width: 3.44%">
+<br></div></div></td><td>  1.10G</td></tr>
+<tr><td>rapp_thresh_gtlt_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FC8D62; width: 2.74%">
+<br></div></div></td><td>880.15M</td></tr>
+<tr><td>rapp_thresh_ltgt_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #8DA0CB; width: 3.34%">
+<br></div></div></td><td>  1.07G</td></tr>
+<tr><td>rapp_reduce_1x2_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #E78AC3; width: 3.81%">
+<br></div></div></td><td>  1.22G</td></tr>
+<tr><td>rapp_reduce_2x1_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A6D854; width: 8.63%">
+<br></div></div></td><td>  2.77G</td></tr>
+<tr><td>rapp_reduce_2x2_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 4.20%">
+<br></div></div></td><td>  1.35G</td></tr>
+<tr><td>rapp_reduce_1x2_rk1_bin <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #D8A75E; width: 11.04%">
+<br></div></div></td><td>  3.55G</td></tr>
+<tr><td>rapp_reduce_1x2_rk2_bin <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 12.27%">
+<br></div></div></td><td>  3.94G</td></tr>
+<tr><td>rapp_reduce_2x1_rk1_bin <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #66C2A5; width: 89.47%">
+<br></div></div></td><td> 28.74G</td></tr>
+<tr><td>rapp_reduce_2x1_rk2_bin <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FC8D62; width: 95.23%">
+<br></div></div></td><td> 30.60G</td></tr>
+<tr><td>rapp_reduce_2x2_rk1_bin <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #8DA0CB; width: 30.85%">
+<br></div></div></td><td>  9.91G</td></tr>
+<tr><td>rapp_reduce_2x2_rk2_bin <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #E78AC3; width: 22.14%">
+<br></div></div></td><td>  7.11G</td></tr>
+<tr><td>rapp_reduce_2x2_rk3_bin <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A6D854; width: 16.87%">
+<br></div></div></td><td>  5.42G</td></tr>
+<tr><td>rapp_reduce_2x2_rk4_bin <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 17.10%">
+<br></div></div></td><td>  5.49G</td></tr>
+<tr><td>rapp_expand_1x2_bin <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #D8A75E; width: 12.38%">
+<br></div></div></td><td>  3.98G</td></tr>
+<tr><td>rapp_expand_2x2_bin <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 7.76%">
+<br></div></div></td><td>  2.49G</td></tr>
+<tr><td>rapp_expand_2x2_bin <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 6.83%">
+<br></div></div></td><td>  2.19G</td></tr>
+<tr><td>rapp_rotate_cw_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #66C2A5; width: 0.50%">
+<br></div></div></td><td>161.87M</td></tr>
+<tr><td>rapp_rotate_ccw_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FC8D62; width: 0.55%">
+<br></div></div></td><td>177.60M</td></tr>
+<tr><td>rapp_rotate_cw_bin <span class="desc">(empty)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #8DA0CB; width: 11.11%">
+<br></div></div></td><td>  3.57G</td></tr>
+<tr><td>rapp_rotate_cw_bin <span class="desc">(full)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #8DA0CB; width: 0.74%">
+<br></div></div></td><td>237.90M</td></tr>
+<tr><td>rapp_rotate_ccw_bin <span class="desc">(empty)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #E78AC3; width: 10.40%">
+<br></div></div></td><td>  3.34G</td></tr>
+<tr><td>rapp_rotate_ccw_bin <span class="desc">(full)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #E78AC3; width: 0.74%">
+<br></div></div></td><td>239.21M</td></tr>
+<tr><td>rapp_stat_sum_bin <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A6D854; width: 14.00%">
+<br></div></div></td><td>  4.50G</td></tr>
+<tr><td>rapp_stat_sum_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 4.54%">
+<br></div></div></td><td>  1.46G</td></tr>
+<tr><td>rapp_stat_sum2_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #D8A75E; width: 0.87%">
+<br></div></div></td><td>279.18M</td></tr>
+<tr><td>rapp_stat_xsum_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 0.27%">
+<br></div></div></td><td> 87.16M</td></tr>
+<tr><td>rapp_stat_min_bin <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #66C2A5; width: 75.10%">
+<br></div></div></td><td> 24.13G</td></tr>
+<tr><td>rapp_stat_max_bin <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FC8D62; width: 76.56%">
+<br></div></div></td><td> 24.60G</td></tr>
+<tr><td>rapp_stat_min_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #8DA0CB; width: 3.88%">
+<br></div></div></td><td>  1.25G</td></tr>
+<tr><td>rapp_stat_max_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #E78AC3; width: 3.93%">
+<br></div></div></td><td>  1.26G</td></tr>
+<tr><td>rapp_moment_order1_bin <span class="desc">(empty)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A6D854; width: 41.97%">
+<br></div></div></td><td> 13.49G</td></tr>
+<tr><td>rapp_moment_order1_bin <span class="desc">(full)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A6D854; width: 23.61%">
+<br></div></div></td><td>  7.58G</td></tr>
+<tr><td>rapp_moment_order1_bin <span class="desc">(checker)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A6D854; width: 3.41%">
+<br></div></div></td><td>  1.10G</td></tr>
+<tr><td>rapp_moment_order2_bin <span class="desc">(empty)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 14.86%">
+<br></div></div></td><td>  4.77G</td></tr>
+<tr><td>rapp_moment_order2_bin <span class="desc">(full)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 5.97%">
+<br></div></div></td><td>  1.92G</td></tr>
+<tr><td>rapp_moment_order2_bin <span class="desc">(checker)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 1.59%">
+<br></div></div></td><td>509.87M</td></tr>
+<tr><td>rapp_filter_diff_1x2_horz_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #D8A75E; width: 1.98%">
+<br></div></div></td><td>635.70M</td></tr>
+<tr><td>rapp_filter_diff_1x2_horz_abs_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 1.08%">
+<br></div></div></td><td>347.34M</td></tr>
+<tr><td>rapp_filter_diff_2x1_vert_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #66C2A5; width: 2.21%">
+<br></div></div></td><td>709.75M</td></tr>
+<tr><td>rapp_filter_diff_2x1_vert_abs_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FC8D62; width: 1.16%">
+<br></div></div></td><td>372.24M</td></tr>
+<tr><td>rapp_filter_diff_2x2_magn_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #8DA0CB; width: 0.51%">
+<br></div></div></td><td>163.84M</td></tr>
+<tr><td>rapp_filter_sobel_3x3_horz_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #E78AC3; width: 0.67%">
+<br></div></div></td><td>214.30M</td></tr>
+<tr><td>rapp_filter_sobel_3x3_horz_abs_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A6D854; width: 0.39%">
+<br></div></div></td><td>125.83M</td></tr>
+<tr><td>rapp_filter_sobel_3x3_vert_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 0.59%">
+<br></div></div></td><td>188.74M</td></tr>
+<tr><td>rapp_filter_sobel_3x3_vert_abs_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #D8A75E; width: 0.47%">
+<br></div></div></td><td>150.73M</td></tr>
+<tr><td>rapp_filter_sobel_3x3_magn_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 0.27%">
+<br></div></div></td><td> 85.20M</td></tr>
+<tr><td>rapp_filter_gauss_3x3_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #66C2A5; width: 0.72%">
+<br></div></div></td><td>232.00M</td></tr>
+<tr><td>rapp_filter_laplace_3x3_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FC8D62; width: 0.61%">
+<br></div></div></td><td>197.26M</td></tr>
+<tr><td>rapp_filter_laplace_3x3_abs_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #8DA0CB; width: 0.43%">
+<br></div></div></td><td>138.94M</td></tr>
+<tr><td>rapp_filter_highpass_3x3_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #E78AC3; width: 0.36%">
+<br></div></div></td><td>114.69M</td></tr>
+<tr><td>rapp_filter_highpass_3x3_abs_u8 <span class="desc"></span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A6D854; width: 0.27%">
+<br></div></div></td><td> 85.20M</td></tr>
+<tr><td>rapp_morph_erode_rect_bin <span class="desc">(2x2)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 11.54%">
+<br></div></div></td><td>  3.71G</td></tr>
+<tr><td>rapp_morph_erode_rect_bin <span class="desc">(3x3)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 13.82%">
+<br></div></div></td><td>  4.44G</td></tr>
+<tr><td>rapp_morph_erode_rect_bin <span class="desc">(5x5)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 5.10%">
+<br></div></div></td><td>  1.64G</td></tr>
+<tr><td>rapp_morph_erode_rect_bin <span class="desc">(7x7)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 3.27%">
+<br></div></div></td><td>  1.05G</td></tr>
+<tr><td>rapp_morph_erode_rect_bin <span class="desc">(15x15)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 2.54%">
+<br></div></div></td><td>817.23M</td></tr>
+<tr><td>rapp_morph_erode_rect_bin <span class="desc">(31x31)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 1.62%">
+<br></div></div></td><td>521.67M</td></tr>
+<tr><td>rapp_morph_erode_rect_bin <span class="desc">(63x63)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 0.90%">
+<br></div></div></td><td>287.70M</td></tr>
+<tr><td>rapp_morph_erode_diam_bin <span class="desc">(3x3)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #D8A75E; width: 14.92%">
+<br></div></div></td><td>  4.79G</td></tr>
+<tr><td>rapp_morph_erode_diam_bin <span class="desc">(5x5)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #D8A75E; width: 7.17%">
+<br></div></div></td><td>  2.30G</td></tr>
+<tr><td>rapp_morph_erode_diam_bin <span class="desc">(7x7)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #D8A75E; width: 4.64%">
+<br></div></div></td><td>  1.49G</td></tr>
+<tr><td>rapp_morph_erode_diam_bin <span class="desc">(15x15)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #D8A75E; width: 3.20%">
+<br></div></div></td><td>  1.03G</td></tr>
+<tr><td>rapp_morph_erode_diam_bin <span class="desc">(31x31)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #D8A75E; width: 2.53%">
+<br></div></div></td><td>813.96M</td></tr>
+<tr><td>rapp_morph_erode_diam_bin <span class="desc">(63x63)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #D8A75E; width: 2.05%">
+<br></div></div></td><td>659.95M</td></tr>
+<tr><td>rapp_morph_erode_oct_bin <span class="desc">(5x5)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 6.26%">
+<br></div></div></td><td>  2.01G</td></tr>
+<tr><td>rapp_morph_erode_oct_bin <span class="desc">(7x7)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 4.05%">
+<br></div></div></td><td>  1.30G</td></tr>
+<tr><td>rapp_morph_erode_oct_bin <span class="desc">(15x15)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 1.17%">
+<br></div></div></td><td>377.49M</td></tr>
+<tr><td>rapp_morph_erode_oct_bin <span class="desc">(31x31)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 0.83%">
+<br></div></div></td><td>266.08M</td></tr>
+<tr><td>rapp_morph_erode_oct_bin <span class="desc">(63x63)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 1.08%">
+<br></div></div></td><td>347.34M</td></tr>
+<tr><td>rapp_morph_erode_disc_bin <span class="desc">(7x7)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #66C2A5; width: 1.06%">
+<br></div></div></td><td>340.13M</td></tr>
+<tr><td>rapp_morph_erode_disc_bin <span class="desc">(15x15)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #66C2A5; width: 2.59%">
+<br></div></div></td><td>832.31M</td></tr>
+<tr><td>rapp_morph_erode_disc_bin <span class="desc">(31x31)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #66C2A5; width: 0.93%">
+<br></div></div></td><td>298.84M</td></tr>
+<tr><td>rapp_morph_erode_disc_bin <span class="desc">(63x63)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #66C2A5; width: 0.47%">
+<br></div></div></td><td>149.42M</td></tr>
+<tr><td>rapp_fill_4conn_bin <span class="desc">(full)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FC8D62; width: 3.62%">
+<br></div></div></td><td>  1.16G</td></tr>
+<tr><td>rapp_fill_8conn_bin <span class="desc">(full)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #8DA0CB; width: 3.13%">
+<br></div></div></td><td>  1.01G</td></tr>
+<tr><td>rapp_contour_4conn_bin <span class="desc">(full)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #E78AC3; width: 8.58%">
+<br></div></div></td><td>  2.76G</td></tr>
+<tr><td>rapp_contour_8conn_bin <span class="desc">(full)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A6D854; width: 6.15%">
+<br></div></div></td><td>  1.98G</td></tr>
+<tr><td>rapp_cond_set_u8 <span class="desc">(empty)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 39.30%">
+<br></div></div></td><td> 12.63G</td></tr>
+<tr><td>rapp_cond_set_u8 <span class="desc">(full)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 6.36%">
+<br></div></div></td><td>  2.04G</td></tr>
+<tr><td>rapp_cond_set_u8 <span class="desc">(checker)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FFD92F; width: 2.60%">
+<br></div></div></td><td>834.93M</td></tr>
+<tr><td>rapp_cond_copy_u8 <span class="desc">(empty)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #D8A75E; width: 29.82%">
+<br></div></div></td><td>  9.58G</td></tr>
+<tr><td>rapp_cond_copy_u8 <span class="desc">(full)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #D8A75E; width: 5.52%">
+<br></div></div></td><td>  1.77G</td></tr>
+<tr><td>rapp_cond_copy_u8 <span class="desc">(checker)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #D8A75E; width: 2.18%">
+<br></div></div></td><td>701.24M</td></tr>
+<tr><td>rapp_gather_u8 <span class="desc">(empty, 1 row)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 41.83%">
+<br></div></div></td><td> 13.44G</td></tr>
+<tr><td>rapp_gather_u8 <span class="desc">(full, 1 row)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 5.83%">
+<br></div></div></td><td>  1.87G</td></tr>
+<tr><td>rapp_gather_u8 <span class="desc">(checker, 1 row)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 1.64%">
+<br></div></div></td><td>527.56M</td></tr>
+<tr><td>rapp_gather_u8 <span class="desc">(empty, 2 rows)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 26.80%">
+<br></div></div></td><td>  8.61G</td></tr>
+<tr><td>rapp_gather_u8 <span class="desc">(full, 2 rows)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 3.39%">
+<br></div></div></td><td>  1.09G</td></tr>
+<tr><td>rapp_gather_u8 <span class="desc">(checker, 2 rows)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 1.01%">
+<br></div></div></td><td>325.71M</td></tr>
+<tr><td>rapp_gather_u8 <span class="desc">(empty, 3 rows)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 42.52%">
+<br></div></div></td><td> 13.66G</td></tr>
+<tr><td>rapp_gather_u8 <span class="desc">(full, 3 rows)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 2.33%">
+<br></div></div></td><td>749.73M</td></tr>
+<tr><td>rapp_gather_u8 <span class="desc">(checker, 3 rows)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 0.62%">
+<br></div></div></td><td>199.23M</td></tr>
+<tr><td>rapp_gather_u8 <span class="desc">(empty, 5 rows)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 41.82%">
+<br></div></div></td><td> 13.43G</td></tr>
+<tr><td>rapp_gather_u8 <span class="desc">(full, 5 rows)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 1.52%">
+<br></div></div></td><td>486.93M</td></tr>
+<tr><td>rapp_gather_u8 <span class="desc">(checker, 5 rows)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #A0A0A0; width: 0.21%">
+<br></div></div></td><td> 68.16M</td></tr>
+<tr><td>rapp_gather_bin <span class="desc">(empty)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #66C2A5; width: 19.11%">
+<br></div></div></td><td>  6.14G</td></tr>
+<tr><td>rapp_gather_bin <span class="desc">(full)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #66C2A5; width: 7.16%">
+<br></div></div></td><td>  2.30G</td></tr>
+<tr><td>rapp_gather_bin <span class="desc">(checker)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #66C2A5; width: 1.54%">
+<br></div></div></td><td>496.11M</td></tr>
+<tr><td>rapp_scatter_u8 <span class="desc">(empty)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FC8D62; width: 41.61%">
+<br></div></div></td><td> 13.37G</td></tr>
+<tr><td>rapp_scatter_u8 <span class="desc">(full)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FC8D62; width: 5.96%">
+<br></div></div></td><td>  1.91G</td></tr>
+<tr><td>rapp_scatter_u8 <span class="desc">(checker)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #FC8D62; width: 2.60%">
+<br></div></div></td><td>835.58M</td></tr>
+<tr><td>rapp_scatter_bin <span class="desc">(empty)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #8DA0CB; width: 33.14%">
+<br></div></div></td><td> 10.65G</td></tr>
+<tr><td>rapp_scatter_bin <span class="desc">(full)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #8DA0CB; width: 9.33%">
+<br></div></div></td><td>  3.00G</td></tr>
+<tr><td>rapp_scatter_bin <span class="desc">(checker)</span></td><td style="width: 100%">
+<div class="bg" style="width: 100%%">
+<div class="bar"style="background-color: #8DA0CB; width: 1.40%">
+<br></div></div></td><td>448.92M</td></tr>
+</table><div class="footer">Auto-generated by RAPP Benchmark on Mon Jun 29 10:29:52 2009</div></body></html>

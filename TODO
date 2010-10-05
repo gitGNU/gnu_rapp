@@ -1,0 +1,73 @@
+Copyright (C) 2010, Axis Communications AB, LUND, SWEDEN
+See the end for copying conditions.
+
+Higher priority, unordered (criteria: critical for build/legal/correctness):
+
+- add testcases checking that overlap/restrict-checks don't error for
+  e.g. back-to-back buffers (rewrite testcases to use one allocation,
+  cut in semirandomly ordered partitions)? 
+- investigate rctest_swar32 SEGV for x86_64 with gcc-4.1.2-33
+- investigate SEGV under valgrind with gcc-4.4.3-4 on x64_64 in
+  rc_rotate_cw_bin running lt-rapptest (not so with i686; -m32 same setup).
+- Analyze the suspicious #ifdef RC_VEC_HINT_AVGT at RC_FILTER_SOBEL_MAGN_H
+  in compute/vector/rc_filter.c, update or correct comment and/or code.
+
+Lower priority, unordered:
+
+- more SIMD ports
+- more tunefiles
+- simd infrastructure supporting, and implementations for, integral images
+- method (documented) to find out which vectorized functions are missing
+  (due to e.g. missing VAL macros).
+- Make Python 3-compatible or rewrite as C (don't forget to use BUILD_CC).
+- figure out why, and fix or document, why tuning results (tunedata.py
+  results) vary so wildly between runs on the same machine, same load.
+- check whether compiler versions have significance on tuning results
+- doxygenize and include in rapp-dev comments in compute/vector/*.c
+  (and maybe elsewhere)
+- remove all /* presumed-but-ultimately-changed-wrong purpose */ from
+  #include lines
+- test-cases for other (non-overlap) erroneous parameters (alignment etc)
+- doc for creating new vector back-end
+- doc for creating new rc_* functions (with existing vector primitives)
+- doc for adding new vector primitives
+- Get rid of __SSE2__ etc. tests in rc_platform.h (for
+  RC_ALIGNMENT); somehow move into rc_vec_*.h or autodetect.
+- -Wcast-qual?  More such warnings?
+- Combinations of -O2 -O3 -ftree-vectorize (and infrastructure to build)
+- SWAR-combinations 16, 32, 64 (and infrastructure to build)
+  (if profitable, else document gcc version tested and found unprofitable)
+- Investigate ltdlopen
+- linker scripts for gcc versions without -fvisibility=hidden
+  (self-preservation against abuse of rc_* functions)
+- valgrind annotations with --with-valgrind; prefix test-suite runs
+  with "valgrind -q"
+- Make TODO readable and understandable by others than H-P
+- Include (but do not remove as an independent file) HACKING into rapp-dev.
+  (Some reformatting may be needed.)
+- comb out warts in test-suite: several "ok &= ..." should've been "ok = ..."
+  for consistency (causes minor confusion; ok is tested in loop condition).
+
+  This file is part of RAPP.
+
+  RAPP is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as published
+  by the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  You can use the comments under either the terms of the GNU Lesser General
+  Public License version 3 as published by the Free Software Foundation,
+  either version 3 of the License or (at your option) any later version, or
+  the GNU Free Documentation License version 1.3 or any later version
+  published by the Free Software Foundation; with no Invariant Sections, no
+  Front-Cover Texts, and no Back-Cover Texts.
+  A copy of the license is included in the documentation section entitled
+  "GNU Free Documentation License".
+
+  RAPP is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License and a copy of the GNU Free Documentation License along
+  with RAPP. If not, see <http://www.gnu.org/licenses/>.

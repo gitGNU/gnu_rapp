@@ -1,0 +1,175 @@
+RAPP_TESTH(initialize, "rapp_initialize - initialize library")
+
+/* Test cases for rapp_pixel functions */
+RAPP_TESTH(pixel_set_u8, "rapp_pixel - pixel access operations")
+RAPP_TEST(pixel_set_bin)
+
+/* Test cases for rapp_bitblt functions */
+RAPP_TESTH(bitblt_copy_bin, "rapp_bitblt - bitblit operations")
+RAPP_TEST(bitblt_not_bin)
+RAPP_TEST(bitblt_and_bin)
+RAPP_TEST(bitblt_or_bin)
+RAPP_TEST(bitblt_xor_bin)
+RAPP_TEST(bitblt_nand_bin)
+RAPP_TEST(bitblt_nor_bin)
+RAPP_TEST(bitblt_xnor_bin)
+RAPP_TEST(bitblt_andn_bin)
+RAPP_TEST(bitblt_orn_bin)
+RAPP_TEST(bitblt_nandn_bin)
+RAPP_TEST(bitblt_norn_bin)
+
+/* Test cases for rapp_pixop functions */
+RAPP_TESTH(pixop_set_u8, "rapp_pixop - pixelwise operations")
+RAPP_TEST(pixop_not_u8)
+RAPP_TEST(pixop_flip_u8)
+RAPP_TEST(pixop_lut_u8)
+RAPP_TEST(pixop_abs_u8)
+RAPP_TEST(pixop_addc_u8)
+RAPP_TEST(pixop_lerpc_u8)
+RAPP_TEST(pixop_lerpnc_u8)
+RAPP_TEST(pixop_copy_u8)
+RAPP_TEST(pixop_add_u8)
+RAPP_TEST(pixop_avg_u8)
+RAPP_TEST(pixop_sub_u8)
+RAPP_TEST(pixop_subh_u8)
+RAPP_TEST(pixop_suba_u8)
+RAPP_TEST(pixop_lerp_u8)
+RAPP_TEST(pixop_lerpn_u8)
+RAPP_TEST(pixop_lerpi_u8)
+RAPP_TEST(pixop_norm_u8)
+
+/* Test cases for rapp_type functions */
+RAPP_TESTH(type_u8_to_bin, "rapp_type - type conversions")
+RAPP_TEST(type_bin_to_u8)
+
+/* Test cases for rapp_thresh functions */
+RAPP_TESTH(thresh_gt_u8, "rapp_thresh - thresholding to binary")
+RAPP_TEST(thresh_lt_u8)
+RAPP_TEST(thresh_gtlt_u8)
+RAPP_TEST(thresh_ltgt_u8)
+
+/* Test cases for rapp_stat functions */
+RAPP_TESTH(stat_sum_bin, "rapp_stat - statistical operations")
+RAPP_TEST(stat_sum_u8)
+RAPP_TEST(stat_sum2_u8)
+RAPP_TEST(stat_xsum_u8)
+RAPP_TEST(stat_min_bin)
+RAPP_TEST(stat_max_bin)
+RAPP_TEST(stat_min_u8)
+RAPP_TEST(stat_max_u8)
+
+/* Test cases for rapp_moment_bin functions */
+RAPP_TESTH(moment_order1_bin, "rapp_moment_bin - binary image moments")
+RAPP_TEST(moment_order2_bin)
+
+/* Test cases for rapp_reduce functions */
+RAPP_TESTH(reduce_1x2_u8, "rapp_reduce - 8-bit 2x reduction")
+RAPP_TEST(reduce_2x1_u8)
+RAPP_TEST(reduce_2x2_u8)
+
+/* Test cases for rapp_reduce_bin functions */
+RAPP_TESTH(reduce_1x2_rk1_bin, "rapp_reduce_bin - binary 2x reduction")
+RAPP_TEST(reduce_1x2_rk2_bin)
+RAPP_TEST(reduce_2x1_rk1_bin)
+RAPP_TEST(reduce_2x1_rk2_bin)
+RAPP_TEST(reduce_2x2_rk1_bin)
+RAPP_TEST(reduce_2x2_rk2_bin)
+RAPP_TEST(reduce_2x2_rk3_bin)
+RAPP_TEST(reduce_2x2_rk4_bin)
+
+/* Test cases for rapp_expand_bin functions */
+RAPP_TESTH(expand_1x2_bin, "rapp_expand_bin - binary 2x expansion")
+RAPP_TEST(expand_2x1_bin)
+RAPP_TEST(expand_2x2_bin)
+
+/* Test cases for rapp_rotate_bin functions */
+RAPP_TESTH(rotate_cw_u8, "rapp_rotate - 8-bit image rotation")
+RAPP_TEST(rotate_ccw_u8)
+
+/* Test cases for rapp_rotate_bin functions */
+RAPP_TESTH(rotate_cw_bin, "rapp_rotate_bin - binary image rotation")
+RAPP_TEST(rotate_ccw_bin)
+
+/* Test cases for rapp_filter functions */
+RAPP_TESTH(filter_diff_1x2_horz_u8, "rapp_filter - fixed-filter convolutions")
+RAPP_TEST(filter_diff_1x2_horz_abs_u8)
+RAPP_TEST(filter_diff_2x1_vert_u8)
+RAPP_TEST(filter_diff_2x1_vert_abs_u8)
+RAPP_TEST(filter_diff_2x2_magn_u8)
+RAPP_TEST(filter_sobel_3x3_horz_u8)
+RAPP_TEST(filter_sobel_3x3_horz_abs_u8)
+RAPP_TEST(filter_sobel_3x3_vert_u8)
+RAPP_TEST(filter_sobel_3x3_vert_abs_u8)
+RAPP_TEST(filter_sobel_3x3_magn_u8)
+RAPP_TEST(filter_gauss_3x3_u8)
+RAPP_TEST(filter_laplace_3x3_u8)
+RAPP_TEST(filter_laplace_3x3_abs_u8)
+RAPP_TEST(filter_highpass_3x3_u8)
+RAPP_TEST(filter_highpass_3x3_abs_u8)
+
+/* Test cases for the rapp_morph_bin functions */
+RAPP_TESTH(morph_erode_rect_bin, "rapp_morph_bin - binary morphology")
+RAPP_TEST(morph_dilate_rect_bin)
+RAPP_TEST(morph_erode_diam_bin)
+RAPP_TEST(morph_dilate_diam_bin)
+RAPP_TEST(morph_erode_oct_bin)
+RAPP_TEST(morph_dilate_oct_bin)
+RAPP_TEST(morph_erode_disc_bin)
+RAPP_TEST(morph_dilate_disc_bin)
+
+/* Test cases for rapp_fill functions */
+RAPP_TESTH(fill_4conn_bin, "rapp_fill - connected-components seed fill")
+RAPP_TEST(fill_8conn_bin)
+
+/* Test cases for rapp_pad functions */
+RAPP_TESTH(pad_align_u8, "rapp_pad - 8-bit image padding")
+RAPP_TEST(pad_const_u8)
+RAPP_TEST(pad_clamp_u8)
+
+/* Test cases for rapp_pad_bin functions */
+RAPP_TESTH(pad_align_bin, "rapp_pad_bin - binary image padding")
+RAPP_TEST(pad_const_bin)
+RAPP_TEST(pad_clamp_bin)
+
+/* Test cases for rapp_margin functions */
+RAPP_TESTH(margin_horz_bin, "rapp_margin - binary image margins")
+RAPP_TEST(margin_vert_bin)
+
+/* Test cases for rapp_crop functions */
+RAPP_TESTH(crop_seek_bin, "rapp_crop - binary image cropping")
+RAPP_TEST(crop_box_bin)
+
+/* Test cases for rapp_contour functions */
+RAPP_TESTH(contour_4conn_bin, "rapp_contour - contour chain code generation")
+RAPP_TEST(contour_8conn_bin)
+
+/* Test cases for rapp_rasterize functions */
+RAPP_TESTH(rasterize_4conn, "rapp_rasterize - chain code line rasterization")
+RAPP_TEST(rasterize_8conn)
+
+/* Test cases for rapp_cond functions */
+RAPP_TESTH(cond_set_u8, "rapp_cond - conditional operations")
+RAPP_TEST(cond_copy_u8)
+
+/* Test cases for rapp_gather functions */
+RAPP_TESTH(gather_u8, "rapp_gather - 8-bit image gather")
+
+/* Test cases for rapp_gather_bin functions */
+RAPP_TESTH(gather_bin, "rapp_gather_bin - binary image gather")
+
+/* Test cases for rapp_scatter functions */
+RAPP_TESTH(scatter_u8, "rapp_scatter - 8-bit image scatter")
+
+/* Test cases for rapp_scatter_bin functions */
+RAPP_TESTH(scatter_bin, "rapp_scatter_bin - binary image scatter")
+
+/* Test cases for rapp_integral_bin functions */
+RAPP_TESTH(integral_bin_u8, "rapp_integral_bin - binary integral images")
+RAPP_TEST(integral_bin_u16)
+RAPP_TEST(integral_bin_u32)
+
+/* Test cases for rapp_integral_u8 functions */
+RAPP_TESTH(integral_u8_u16, "rapp_integral_u8 - 8-bit integral images")
+RAPP_TEST(integral_u8_u32)
+
+RAPP_TESTH(terminate, "rapp_terminate - finish")
