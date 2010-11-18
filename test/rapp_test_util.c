@@ -189,26 +189,3 @@ rapp_test_dump_bin(const uint8_t *buf, int dim, int off,
         DBG("\n");
     }
 }
-
-/**
- *  The rapp_test_initialize and rapp_test_terminate functions are
- *  mandated by the API to be run before and after all functions.
- *  As we don't really have anything to do for those functions at
- *  present, we just let asserts check that. Of course, the
- *  test-suite has to oblige, so we wrap the calls in tests.
- */
-
-bool
-rapp_test_initialize(void)
-{
-    rapp_initialize();
-    return true;
-}
-
-bool
-rapp_test_terminate(void)
-{
-    rapp_terminate();
-    return true;
-}
-

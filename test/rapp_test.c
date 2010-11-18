@@ -33,6 +33,7 @@
 #include <stdlib.h>     /* Exit codes         */
 #include <stdio.h>      /* printf()           */
 #include "rc_stdbool.h" /* Portable stdbool.h */
+#include "rapp.h"
 
 /*
  * -------------------------------------------------------------
@@ -87,6 +88,9 @@ int main(void)
     int k;
     int fails = 0;
 
+    /* Initialize library */
+    rapp_initialize();
+
     len = sizeof rapp_test_table / sizeof rapp_test_table[0] - 1;
 
     /* Run all tests */
@@ -115,6 +119,9 @@ int main(void)
     }
 
     printf("All %d tests passed.\n", len);
+
+    /* Terminate library */
+    rapp_terminate();
 
     return EXIT_SUCCESS;
 }

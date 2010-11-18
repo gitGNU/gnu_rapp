@@ -121,18 +121,6 @@ rapp_test_dump_bin(const uint8_t *buf, int dim, int off,
 void
 rapp_test_dump_u8(const uint8_t *buf, int dim, int width, int height);
 
-/**
- *  Initialize.
- */
-bool
-rapp_test_initialize(void);
-
-/**
- *  Terminate.
- */
-bool
-rapp_test_terminate(void);
-
 #ifdef __cplusplus
 };
 #endif

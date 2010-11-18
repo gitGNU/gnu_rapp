@@ -1,5 +1,3 @@
-RAPP_TESTH(initialize, "rapp_initialize - initialize library")
-
 /* Test cases for rapp_pixel functions */
 RAPP_TESTH(pixel_set_u8, "rapp_pixel - pixel access operations")
 RAPP_TEST(pixel_set_bin)
@@ -171,5 +169,3 @@ RAPP_TEST(integral_bin_u32)
 /* Test cases for rapp_integral_u8 functions */
 RAPP_TESTH(integral_u8_u16, "rapp_integral_u8 - 8-bit integral images")
 RAPP_TEST(integral_u8_u32)
-
-RAPP_TESTH(terminate, "rapp_terminate - finish")

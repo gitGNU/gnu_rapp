@@ -33,6 +33,27 @@
 #include <stdlib.h>     /* Exit codes         */
 #include <check.h>      /* Unit test fwk      */
 #include "rc_stdbool.h" /* Portable stdbool.h */
+#include "rapp.h"
+
+/*
+ * -------------------------------------------------------------
+ *  Test case fixtures
+ * -------------------------------------------------------------
+ */
+
+void setup(void)
+{
+    /* Initialize library */
+    rapp_initialize();
+}
+
+
+void teardown(void)
+{
+    /* Terminate library */
+    rapp_terminate();
+}
+
 
 /*
  * -------------------------------------------------------------
@@ -75,6 +96,7 @@ int main(void)
 
 #define RAPP_TEST(func)                         \
     tcase = tcase_create("rapp_" #func);        \
+    tcase_add_checked_fixture(tcase, setup, teardown); \
     tcase_add_test(tcase, tcase_ ## func);      \
     suite_add_tcase(suite, tcase);
 
