@@ -70,7 +70,7 @@
  *
  *  @section Padding
  *  The user is responsible for @ref padding "padding" the source buffer.
- *  The padding needed is bounded by min(size / 2, 16), where size
+ *  The padding needed is bounded by min((size + 1) / 2, 16), where size
  *  is the maximum size of the structuring element in the horizontal
  *  and vertical directions. If the source buffer is padded with
  *  values other than all-zeros or all-ones the behaviour is undefined.
