@@ -350,6 +350,7 @@
  *  @subsection def_alias Aliasing
  *  Unless explicitly stated, pixel buffers must @e never overlap in
  *  memory. If they do, the result of the computation is undefined.
+ *  The called function may return #RAPP_ERR_OVERLAP.
  *
  *  @subsection def_proc Processing Region
  *  The RAPP functions are allowed to process pixels to the left and
