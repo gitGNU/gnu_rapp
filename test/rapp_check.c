@@ -101,13 +101,11 @@ int main(void)
     suite_add_tcase(suite, tcase);
 
 #define RAPP_TESTH(func, s)                     \
-    if (suite != NULL)                          \
-        srunner_add_suite (srunner, suite);     \
     suite = suite_create(s);                    \
+    srunner_add_suite(srunner, suite);          \
     RAPP_TEST(func);
 
 #include "rapp_tests.def"
-    srunner_add_suite(srunner, suite);
 
     /* Run the tests */
     srunner_run_all(srunner, CK_ENV);
