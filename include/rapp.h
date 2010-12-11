@@ -47,6 +47,10 @@
  *  </div>
  *
  *
+ *  This document describes RAPP version \thisversion. See the project
+ *  home-page at <a href="\homesite">\homesite</a> for newer
+ *  versions and updated information.
+ *
  *  @section intro Introduction
  *  RAPP is a library of low-level image processing operations,
  *  targeting mainly video analytics and computer vision applications.

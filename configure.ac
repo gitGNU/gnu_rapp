@@ -56,6 +56,17 @@ AC_CANONICAL_TARGET
 # See conditional AM_SILENT_RULES call below
 AM_INIT_AUTOMAKE([1.11 -Wall -Werror foreign check-news filename-length-max=99])
 
+HOMESITE=`sed -ne 's,^<\(http@<:@^>@:>@*\)>.*,\1,p' < ${srcdir}/README`
+homewc=`wc -w << EOF
+${HOMESITE}
+EOF
+`
+if test $homewc -ne 1; then
+    AC_MSG_ERROR([[Invalid site markup (for HOMESITE) in ${srcdir}/README: ]]
+		 [[found ${homewc} words, expected 1]])
+fi
+AC_SUBST([HOMESITE])
+
 # -----------------------------------------------------------
 
 # VERSION NUMBERS

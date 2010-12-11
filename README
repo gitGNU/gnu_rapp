@@ -39,6 +39,10 @@ General Public License (GPL), which is the only reason the file
 COPYING is included with RAPP (in addition to the file
 COPYING.LESSER); no part of RAPP is covered by the GPL alone.
 
+For further reading, the RAPP project is hosted at
+<http://savannah.nongnu.org/projects/rapp/>.
+(Beware, the line above is machine-read by configure; see configure.ac.)
+
   This file is part of RAPP.
 
   RAPP is free software: you can redistribute it and/or modify

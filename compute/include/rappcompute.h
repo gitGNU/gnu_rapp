@@ -46,6 +46,10 @@
  *  </div>
  *
  *
+ *  This document describes RAPP version \thisversion. See the project
+ *  home-page at <a href="\homesite">\homesite</a> for newer
+ *  versions and updated information.
+ *
  *  @section overview Design Overview
  *  The RAPP library is divided into two distinct parts &ndash; the
  *  API layer and the Compute layer. The API layer handles argument
