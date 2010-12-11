@@ -650,6 +650,10 @@
  *  @page license  License
  *  @section License
  *
+ *  This document by itself is subject to the GNU Free Documentation
+ *  License as mentioned in the note before the @ref overview "Design Overview",
+ *  while the rest of RAPP is licensed as below.
+ *
  *  RAPP is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published
  *  by the Free Software Foundation, either version 3 of the License, or
