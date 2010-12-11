@@ -1,0 +1,3 @@
+# Just basic patterns assuming we don't build in the source directory.
+*~
+autom4te.cache/

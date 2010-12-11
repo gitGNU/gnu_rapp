@@ -34,7 +34,7 @@ SUBDIRS = doxygen/images compute/doxygen/images compute driver . test benchmark
 
 EXTRA_DIST = COPYING COPYING.FDL COPYING.LESSER \
              README AUTHORS NEWS TODO HACKING   \
-             autogen.sh
+             autogen.sh .gitignore
 
 # Install all headers in a rapp subdirectory
 rapp_includedir = $(includedir)/rapp
