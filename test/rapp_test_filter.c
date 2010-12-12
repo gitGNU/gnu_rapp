@@ -225,17 +225,28 @@ rapp_test_prec_driver(int (*func)(), void (*ref)(),
 {
     float    val = 0.0f;                           /* Reference value      */
     int      dim = 3*rapp_alignment;               /* Source buffer dim    */
-    size_t alloc_size = (height + 1) * dim;
+
+    /**
+     *  The tested filters (or to be precise, the reference functions) don't
+     *  read more than half the MAX(width, height) above the image and no
+     *  more than half the MAX(width, height) horizontally.
+     */
+    int   maxref = MAX(width, height) / 2;
+    size_t alloc_size = (height + maxref) * dim + rapp_align(maxref);
     uint8_t *sbuf = rapp_malloc(alloc_size, 0);
     uint8_t *dst = rapp_malloc(alloc_size, 0);     /* Destination buffer   */
     uint8_t *src =                                 /* Source buffer, padded */
-         &sbuf[dim * (1 + MAX(height, width) / 2) + rapp_alignment];
-    uint8_t *pad =                                 /* Source padding start */
-        &src[-(width / 2 + dim * (height / 2))];
+        &sbuf[dim * maxref + rapp_align(maxref)];
+    uint8_t *pad = &src[-(maxref + dim * maxref)]; /* Source padding start */
     long     size = 1 << (bits*width*height);      /* Num of combinations  */
     long     code;
     int ret;
 
+    /* Check that src is within the allocated sbuf size. */
+    assert(src < sbuf + alloc_size);
+    /* Check that the max written index of pad[] is within sbuf. */
+    assert(sbuf <= pad &&
+           pad + (height - 1) * dim + width - 1 < sbuf + alloc_size);
     assert((unsigned)bits*width*height < 8*sizeof size);
     assert((unsigned)width < rapp_alignment * 2);
     memset(sbuf, 0, alloc_size);
