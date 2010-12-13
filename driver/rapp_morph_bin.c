@@ -428,8 +428,9 @@ RAPP_API(int, rapp_morph_erode_rect_bin,
           int width, int height, int wrect, int hrect,
           void *restrict work))
 {
-    int minxpadding = rc_align((MIN((wrect + 1) / 2, 16) + 7) / 8);
-    int minypadding = MIN((hrect + 1) / 2, 16);
+    int maxside     = MAX(wrect, hrect);
+    int minxpadding = rc_align((MIN(maxside / 2, 16) + 7) / 8);
+    int minypadding = MIN(maxside / 2, 16);
 
     if (!RAPP_INITIALIZED()) {
         return RAPP_ERR_UNINITIALIZED;
@@ -526,8 +527,9 @@ RAPP_API(int, rapp_morph_dilate_rect_bin,
           int width, int height, int wrect, int hrect,
           void *restrict work))
 {
-    int minxpadding = rc_align((MIN((wrect + 1) / 2, 16) + 7) / 8);
-    int minypadding = MIN((hrect + 1) / 2, 16);
+    int maxside     = MAX(wrect, hrect);
+    int minxpadding = rc_align((MIN(maxside / 2, 16) + 7) / 8);
+    int minypadding = MIN(maxside / 2, 16);
 
     if (!RAPP_INITIALIZED()) {
         return RAPP_ERR_UNINITIALIZED;
@@ -746,8 +748,8 @@ rapp_morph_isotropic(uint8_t *dst, int dst_dim,
     uint8_t *tmp1;
     uint8_t *tmp2;
     int      dim;
-    int      minxpadding = rc_align((MIN(radius, 16) + 7) / 8);
-    int      minypadding = MIN(radius, 16);
+    int      minxpadding = rc_align((MIN(radius - 1, 16) + 7) / 8);
+    int      minypadding = MIN(radius - 1, 16);
 
     if (!RAPP_INITIALIZED()) {
         return RAPP_ERR_UNINITIALIZED;

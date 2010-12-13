@@ -70,10 +70,14 @@
  *
  *  @section Padding
  *  The user is responsible for @ref padding "padding" the source buffer.
- *  The padding needed is bounded by min((size + 1) / 2, 16), where size
- *  is the maximum size of the structuring element in the horizontal
- *  and vertical directions. If the source buffer is padded with
- *  values other than all-zeros or all-ones the behaviour is undefined.
+ *  The padding needed is the same both in horizontal and vertical
+ *  directions. For rectangular structuring elements, it is bounded by
+ *  min(maxside / 2, 16), where maxside is the maximum size of the
+ *  structuring element in the horizontal and vertical directions, and
+ *  maxside / 2 is rounded <em>down</em> to the nearest integer. For
+ *  other objects, the padding is bounded by min(radius - 1, 16). If the
+ *  source buffer is padded with values other than all-zeros or all-ones
+ *  the behaviour is undefined.
  *
  *  <p>@ref padding "Next section: Border Padding"</p>
  *

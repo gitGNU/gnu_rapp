@@ -386,16 +386,18 @@ rapp_test_rectangle_driver(int (*morph)(), int width,
     int      dst_dim;         /* Destination buffer dimension  */
     int      pad_len;         /* Padded source buffer in bytes */
     int      size    = MIN(width, height);
+    int      minpixpad = MIN(MAX(width, height) / 2, 16);
+    int      minxpad = rapp_align((minpixpad + 7) / 8);
     int      pos;
     bool     ok = false;
 
     /* Allocate the buffers */
     dst_dim = rapp_align((width + 7) / 8);
-    src_dim = dst_dim + 2*rapp_alignment;
+    src_dim = dst_dim + 2*minxpad;
     pat_buf = rapp_malloc(height*dst_dim, 0);
-    pad_len = (height + 2*16)*src_dim;
+    pad_len = (height + 2*minpixpad)*src_dim;
     pad_buf = rapp_malloc(pad_len, 0);
-    src_buf = &pad_buf[16*src_dim + rapp_alignment];
+    src_buf = &pad_buf[minpixpad*src_dim + minxpad];
     dst_buf = rapp_malloc(height*dst_dim, 0);
     ref_buf = rapp_malloc(height*dst_dim, 0);
     work    = rapp_malloc(rapp_morph_worksize_bin(width, height), 0);
@@ -410,13 +412,11 @@ rapp_test_rectangle_driver(int (*morph)(), int width,
                  width, height, work) != RAPP_ERR_OVERLAP
         /* src = far end of dst */
         || (*morph)(dst_buf, dst_dim,
-                    dst_buf + dst_dim*(height - 1) +
-                    rapp_align((width + 7) / 8) - rapp_alignment, src_dim,
+                    dst_buf + dst_dim*height + minxpad - rapp_alignment, src_dim,
                     width, height, width, height, work) != RAPP_ERR_OVERLAP
         /* src = before dst, but not long enough */
         || (*morph)(dst_buf, dst_dim,
-                    dst_buf - (dst_dim*(height - 1) +
-                               rapp_align((width + 7) / 8) - rapp_alignment),
+                    dst_buf - (dst_dim*height + minxpad - rapp_alignment),
                     src_dim,
                     width, height, width, height, work) != RAPP_ERR_OVERLAP
         /* dst = work */
@@ -519,6 +519,8 @@ rapp_test_isotropic_driver(int (*morph)(), int radius, int area, bool dilate)
     int      pad_len;         /* Padded source buffer in bytes */
     int      pos;
     int      size    = 2*radius - 1;
+    int      minpixpad = MIN(radius - 1, 16);
+    int      minxpad = rapp_align((minpixpad + 7) / 8);
     bool     ok      = false;
 
     /* Get the SE pattern image */
@@ -531,10 +533,10 @@ rapp_test_isotropic_driver(int (*morph)(), int radius, int area, bool dilate)
     }
 
     /* Allocate the buffers */
-    src_dim = dst_dim + 2*rapp_alignment;
-    pad_len = (size + 2*16)*src_dim;
+    src_dim = dst_dim + 2*minxpad;
+    pad_len = (size + 2*minpixpad)*src_dim;
     pad_buf = rapp_malloc(pad_len, 0);
-    src_buf = &pad_buf[16*src_dim + rapp_alignment];
+    src_buf = &pad_buf[minpixpad*src_dim + minxpad];
     dst_buf = rapp_malloc(size*dst_dim, 0);
     ref_buf = rapp_malloc(size*dst_dim, 0);
     work    = rapp_malloc(rapp_morph_worksize_bin(size, size), 0);
@@ -545,13 +547,11 @@ rapp_test_isotropic_driver(int (*morph)(), int radius, int area, bool dilate)
                  work) != RAPP_ERR_OVERLAP
         /* src = far end of dst */
         || (*morph)(dst_buf, dst_dim,
-                    dst_buf + dst_dim*(size - 1) +
-                    rapp_align((size + 7) / 8) - rapp_alignment, src_dim,
+                    dst_buf + dst_dim*size + minxpad - rapp_alignment, src_dim,
                     size, size, radius, work) != RAPP_ERR_OVERLAP
         /* src = before dst, but not long enough */
         || (*morph)(dst_buf, dst_dim,
-                    dst_buf - (dst_dim*(size - 1) +
-                               rapp_align((size + 7) / 8) - rapp_alignment),
+                    dst_buf - (dst_dim*size + minxpad - rapp_alignment),
                     src_dim,
                     size, size, radius, work) != RAPP_ERR_OVERLAP
         /* dst = work */
