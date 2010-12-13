@@ -811,6 +811,8 @@ RAPP_TUNING_FALSE
 RAPP_TUNING_TRUE
 RC_TUNE_SED
 RC_BMARK_SED
+INSTALLALL_INCLUDES_HTML_FALSE
+INSTALLALL_INCLUDES_HTML_TRUE
 HAVE_DOXYGEN_FALSE
 HAVE_DOXYGEN_TRUE
 AM_BACKSLASH
@@ -4563,13 +4565,13 @@ if test "${lt_cv_nm_interface+set}" = set; then
 else
   lt_cv_nm_interface="BSD nm"
   echo "int some_variable = 0;" > conftest.$ac_ext
-  (eval echo "\"\$as_me:4566: $ac_compile\"" >&5)
+  (eval echo "\"\$as_me:4568: $ac_compile\"" >&5)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:4569: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+  (eval echo "\"\$as_me:4571: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:4572: output\"" >&5)
+  (eval echo "\"\$as_me:4574: output\"" >&5)
   cat conftest.out >&5
   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
     lt_cv_nm_interface="MS dumpbin"
@@ -5775,7 +5777,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 5778 "configure"' > conftest.$ac_ext
+  echo '#line 5780 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -7630,11 +7632,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7633: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7635: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7637: \$? = $ac_status" >&5
+   echo "$as_me:7639: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -7969,11 +7971,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7972: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7974: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7976: \$? = $ac_status" >&5
+   echo "$as_me:7978: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8074,11 +8076,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8077: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8079: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8081: \$? = $ac_status" >&5
+   echo "$as_me:8083: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -8129,11 +8131,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8132: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8134: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8136: \$? = $ac_status" >&5
+   echo "$as_me:8138: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -10932,7 +10934,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 10935 "configure"
+#line 10937 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11028,7 +11030,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11031 "configure"
+#line 11033 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -13488,6 +13490,7 @@ fi
 PLATFORM=${host_cpu}-${ax_cv_c_compiler_vendor}
 
 OPT_DOXYGEN=yes
+OPT_INSTALLALL_INCLUDES_HTML=no
 # Check for doxygen option
 
 # Check whether --with-doxygen was given.
@@ -13500,6 +13503,7 @@ if test "${with_doxygen+set}" = set; then
 $as_echo "$as_me: error: Doxygen explicitly requested but not found" >&2;}
    { (exit 1); exit 1; }; }
        fi
+       OPT_INSTALLALL_INCLUDES_HTML=yes
        ;;
    no) ;;
    *)
@@ -13518,6 +13522,21 @@ fi
 else
   HAVE_DOXYGEN_TRUE='#'
   HAVE_DOXYGEN_FALSE=
+fi
+
+if test ${OPT_DOXYGEN} = yes \
+    && test -n "${DOXYGEN}" \
+    && test ${rapp_tune_generation} = no; then
+  :
+else
+  OPT_INSTALLALL_INCLUDES_HTML=no
+fi
+ if test ${OPT_INSTALLALL_INCLUDES_HTML} = yes; then
+  INSTALLALL_INCLUDES_HTML_TRUE=
+  INSTALLALL_INCLUDES_HTML_FALSE='#'
+else
+  INSTALLALL_INCLUDES_HTML_TRUE='#'
+  INSTALLALL_INCLUDES_HTML_FALSE=
 fi
 
 
@@ -14546,6 +14565,13 @@ if test -z "${HAVE_DOXYGEN_TRUE}" && test -z "${HAVE_DOXYGEN_FALSE}"; then
   { { $as_echo "$as_me:$LINENO: error: conditional \"HAVE_DOXYGEN\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
 $as_echo "$as_me: error: conditional \"HAVE_DOXYGEN\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
+if test -z "${INSTALLALL_INCLUDES_HTML_TRUE}" && test -z "${INSTALLALL_INCLUDES_HTML_FALSE}"; then
+  { { $as_echo "$as_me:$LINENO: error: conditional \"INSTALLALL_INCLUDES_HTML\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+$as_echo "$as_me: error: conditional \"INSTALLALL_INCLUDES_HTML\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi

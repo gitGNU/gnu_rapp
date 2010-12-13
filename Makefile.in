@@ -991,6 +991,7 @@ maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
 @HAVE_DOXYGEN_FALSE@uninstall-local:
+@INSTALLALL_INCLUDES_HTML_FALSE@install-data-local:
 @HAVE_DOXYGEN_FALSE@install-html-local:
 clean: clean-recursive
 
@@ -1015,7 +1016,7 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-nodist_rapp_includeHEADERS \
+install-data-am: install-data-local install-nodist_rapp_includeHEADERS \
 	install-pkgconfigDATA install-rapp_includeHEADERS
 
 install-dvi: install-dvi-recursive
@@ -1078,10 +1079,11 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-local \
 	distclean-compile distclean-generic distclean-hdr \
 	distclean-libtool distclean-tags distcleancheck distdir \
 	distuninstallcheck dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-html-local install-info \
-	install-info-am install-libLTLIBRARIES install-man \
+	install install-am install-data install-data-am \
+	install-data-local install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am \
+	install-html-local install-info install-info-am \
+	install-libLTLIBRARIES install-man \
 	install-nodist_rapp_includeHEADERS install-pdf install-pdf-am \
 	install-pkgconfigDATA install-ps install-ps-am \
 	install-rapp_includeHEADERS install-strip installcheck \
@@ -1263,7 +1265,10 @@ update-archfiles: update-benchmarks update-tune-cache
 clean-local: clean-local-doxy
 	rm -rf exports $(RAPP_EXPORT_FILE)
 
-# Generate documentation on 'all' target
+# By default, this isn't implied, but we document it in README
+@INSTALLALL_INCLUDES_HTML_TRUE@install-data-local: install-html
+
+# Generate documentation on 'all' and 'html' targets
 @HAVE_DOXYGEN_TRUE@all-local html-local: $(RB_DOXYGEN_TAG)
 
 # Install documentation hook

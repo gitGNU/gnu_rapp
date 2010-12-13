@@ -108,9 +108,14 @@ dist-hook:
 	cp -p $(srcdir)/doxygen/listing.sh $(srcdir)/doxygen/style.css \
 	    $(distdir)/doxygen
 
+if INSTALLALL_INCLUDES_HTML
+# By default, this isn't implied, but we document it in README
+install-data-local: install-html
+endif
+
 if HAVE_DOXYGEN
 
-# Generate documentation on 'all' target
+# Generate documentation on 'all' and 'html' targets
 all-local html-local: $(RB_DOXYGEN_TAG)
 
 # Install documentation hook

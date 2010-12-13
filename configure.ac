@@ -238,6 +238,7 @@ AC_CHECK_DEFINED([__VADMX__], [OPT_BACKEND=vadmx])
 PLATFORM=${host_cpu}-${ax_cv_c_compiler_vendor}
 
 OPT_DOXYGEN=yes
+OPT_INSTALLALL_INCLUDES_HTML=no
 # Check for doxygen option
 AC_ARG_WITH([doxygen],
   [AS_HELP_STRING([[--with-doxygen]], [Generate Doxygen documentation])],
@@ -247,6 +248,7 @@ AC_ARG_WITH([doxygen],
        if test -z "${DOXYGEN}"; then
            AC_MSG_ERROR([[Doxygen explicitly requested but not found]])
        fi
+       OPT_INSTALLALL_INCLUDES_HTML=yes
        ;;
    no) ;;
    *)
@@ -257,6 +259,9 @@ AM_CONDITIONAL([HAVE_DOXYGEN],
   [test ${OPT_DOXYGEN} = yes \
     && test -n "${DOXYGEN}" \
     && test ${rapp_tune_generation} = no])
+AM_COND_IF([HAVE_DOXYGEN], [], [OPT_INSTALLALL_INCLUDES_HTML=no])
+AM_CONDITIONAL([INSTALLALL_INCLUDES_HTML],
+               [test ${OPT_INSTALLALL_INCLUDES_HTML} = yes])
 
 # Check for debug option
 OPT_DEBUG=default

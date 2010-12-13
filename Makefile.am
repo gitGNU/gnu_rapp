@@ -316,9 +316,14 @@ update-archfiles: update-benchmarks update-tune-cache
 clean-local: clean-local-doxy
 	rm -rf exports $(RAPP_EXPORT_FILE)
 
+if INSTALLALL_INCLUDES_HTML
+# By default, this isn't implied, but we document it in README
+install-data-local: install-html
+endif
+
 if HAVE_DOXYGEN
 
-# Generate documentation on 'all' target
+# Generate documentation on 'all' and 'html' targets
 all-local html-local: $(RB_DOXYGEN_TAG)
 
 # Install documentation hook

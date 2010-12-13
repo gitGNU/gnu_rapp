@@ -652,6 +652,7 @@ maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
 @HAVE_DOXYGEN_FALSE@uninstall-local:
+@INSTALLALL_INCLUDES_HTML_FALSE@install-data-local:
 @HAVE_DOXYGEN_FALSE@install-html-local:
 @HAVE_DOXYGEN_FALSE@clean-local:
 clean: clean-recursive
@@ -676,7 +677,7 @@ info: info-recursive
 
 info-am:
 
-install-data-am:
+install-data-am: install-data-local
 
 install-dvi: install-dvi-recursive
 
@@ -732,8 +733,8 @@ uninstall-am: uninstall-local
 	dist-hook distclean distclean-compile distclean-generic \
 	distclean-libtool distclean-tags distdir dvi dvi-am html \
 	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am \
+	install-data-am install-data-local install-dvi install-dvi-am \
+	install-exec install-exec-am install-html install-html-am \
 	install-html-local install-info install-info-am install-man \
 	install-pdf install-pdf-am install-ps install-ps-am \
 	install-strip installcheck installcheck-am installdirs \
@@ -753,7 +754,10 @@ dist-hook:
 	cp -p $(srcdir)/doxygen/listing.sh $(srcdir)/doxygen/style.css \
 	    $(distdir)/doxygen
 
-# Generate documentation on 'all' target
+# By default, this isn't implied, but we document it in README
+@INSTALLALL_INCLUDES_HTML_TRUE@install-data-local: install-html
+
+# Generate documentation on 'all' and 'html' targets
 @HAVE_DOXYGEN_TRUE@all-local html-local: $(RB_DOXYGEN_TAG)
 
 # Install documentation hook
