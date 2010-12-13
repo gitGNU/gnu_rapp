@@ -63,7 +63,7 @@ EOF
 `
 if test $homewc -ne 1; then
     AC_MSG_ERROR([[Invalid site markup (for HOMESITE) in ${srcdir}/README: ]]
-		 [[found ${homewc} words, expected 1]])
+                 [[found ${homewc} words, expected 1]])
 fi
 AC_SUBST([HOMESITE])
 
