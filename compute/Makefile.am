@@ -97,6 +97,8 @@ RB_DOXYGEN_TAG = doxygen.tag
 # The output directory for generated Doxygen output
 RB_DOXYGEN_DIR = doxygen.out
 
+# Enable the "base" part to be overridable.
+devhtmldir = $(htmldir)-dev
 
 # ----------------------------------------------------
 #  Rule section
@@ -139,11 +141,11 @@ $(RB_DOXYGEN_TAG): $(RB_DOXYFILE)
 
 # Install all generated html pages
 install-doxygen-html-dev: $(RB_DOXYGEN_TAG)
-	$(MKDIR_P) $(DESTDIR)$(htmldir)-dev
-	$(INSTALL_DATA) $(RB_DOXYGEN_DIR)/html/* $(DESTDIR)$(htmldir)-dev
+	$(MKDIR_P) $(DESTDIR)$(devhtmldir)
+	$(INSTALL_DATA) $(RB_DOXYGEN_DIR)/html/* $(DESTDIR)$(devhtmldir)
 
 # Uninstall all generated html pages
 uninstall-doxygen-html-dev:
-	rm -rf $(DESTDIR)$(htmldir)-dev
+	rm -rf $(DESTDIR)$(devhtmldir)
 
 endif

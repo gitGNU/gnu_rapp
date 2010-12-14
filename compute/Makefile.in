@@ -366,6 +366,9 @@ RB_DOXYGEN_TAG = doxygen.tag
 
 # The output directory for generated Doxygen output
 RB_DOXYGEN_DIR = doxygen.out
+
+# Enable the "base" part to be overridable.
+devhtmldir = $(htmldir)-dev
 all: all-recursive
 
 .SUFFIXES:
@@ -781,12 +784,12 @@ dist-hook:
 
 # Install all generated html pages
 @HAVE_DOXYGEN_TRUE@install-doxygen-html-dev: $(RB_DOXYGEN_TAG)
-@HAVE_DOXYGEN_TRUE@	$(MKDIR_P) $(DESTDIR)$(htmldir)-dev
-@HAVE_DOXYGEN_TRUE@	$(INSTALL_DATA) $(RB_DOXYGEN_DIR)/html/* $(DESTDIR)$(htmldir)-dev
+@HAVE_DOXYGEN_TRUE@	$(MKDIR_P) $(DESTDIR)$(devhtmldir)
+@HAVE_DOXYGEN_TRUE@	$(INSTALL_DATA) $(RB_DOXYGEN_DIR)/html/* $(DESTDIR)$(devhtmldir)
 
 # Uninstall all generated html pages
 @HAVE_DOXYGEN_TRUE@uninstall-doxygen-html-dev:
-@HAVE_DOXYGEN_TRUE@	rm -rf $(DESTDIR)$(htmldir)-dev
+@HAVE_DOXYGEN_TRUE@	rm -rf $(DESTDIR)$(devhtmldir)
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
