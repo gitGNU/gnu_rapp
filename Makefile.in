@@ -66,11 +66,12 @@ build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
 subdir = .
-DIST_COMMON = README $(am__configure_deps) $(rapp_include_HEADERS) \
-	$(srcdir)/COPYING $(srcdir)/COPYING.FDL \
-	$(srcdir)/COPYING.LESSER $(srcdir)/Doxyfile.in \
-	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(srcdir)/config.h.in $(srcdir)/rapp.pc.in \
+DIST_COMMON = README $(am__configure_deps) $(dist_noinst_DATA) \
+	$(rapp_include_HEADERS) $(srcdir)/COPYING \
+	$(srcdir)/COPYING.FDL $(srcdir)/COPYING.LESSER \
+	$(srcdir)/Doxyfile.in $(srcdir)/Makefile.am \
+	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
+	$(srcdir)/rapp.pc.in $(srcdir)/rapp.spec.in \
 	$(top_srcdir)/configure \
 	$(top_srcdir)/include/rapp_version.h.in AUTHORS COPYING \
 	COPYING.LESSER INSTALL NEWS TODO config/config.guess \
@@ -89,7 +90,7 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES = Doxyfile rapp.pc include/rapp_version.h
+CONFIG_CLEAN_FILES = Doxyfile rapp.pc rapp.spec include/rapp_version.h
 CONFIG_CLEAN_VPATH_FILES = COPYING COPYING.LESSER COPYING.FDL
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
@@ -157,7 +158,7 @@ RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	install-pdf-recursive install-ps-recursive install-recursive \
 	installcheck-recursive installdirs-recursive pdf-recursive \
 	ps-recursive uninstall-recursive
-DATA = $(pkgconfig_DATA)
+DATA = $(dist_noinst_DATA) $(pkgconfig_DATA)
 HEADERS = $(nodist_rapp_include_HEADERS) $(rapp_include_HEADERS)
 RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
@@ -362,6 +363,9 @@ rapp_includedir = $(includedir)/rapp
 pkgconfigdir = ${libdir}/pkgconfig
 pkgconfig_DATA = rapp.pc
 
+# Distribute the specfile with version numbers subst'ed.
+dist_noinst_DATA = rapp.spec
+
 # The RAPP API headers to install
 rapp_include_HEADERS = include/rapp.h             \
                        include/rapp_export.h      \
@@ -523,6 +527,8 @@ distclean-hdr:
 Doxyfile: $(top_builddir)/config.status $(srcdir)/Doxyfile.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 rapp.pc: $(top_builddir)/config.status $(srcdir)/rapp.pc.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
+rapp.spec: $(top_builddir)/config.status $(srcdir)/rapp.spec.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 include/rapp_version.h: $(top_builddir)/config.status $(top_srcdir)/include/rapp_version.h.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@

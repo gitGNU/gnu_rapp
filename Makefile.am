@@ -43,6 +43,9 @@ rapp_includedir = $(includedir)/rapp
 pkgconfigdir   = ${libdir}/pkgconfig
 pkgconfig_DATA = rapp.pc
 
+# Distribute the specfile with version numbers subst'ed.
+dist_noinst_DATA = rapp.spec
+
 # The RAPP API headers to install
 rapp_include_HEADERS = include/rapp.h             \
                        include/rapp_export.h      \

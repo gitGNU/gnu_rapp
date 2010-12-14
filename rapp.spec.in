@@ -1,0 +1,70 @@
+Summary: RAPP: a library of Raster Processing Primitives
+%define pkg0 @PACKAGE@-@VERSION@
+Vendor: The RAPP project
+License: GNU LGPLv3+, documentation with GNU FDLv1.3+
+Name: @PACKAGE@
+Version: @VERSION@
+Release: 1%{?dist}
+Source: http://download.savannah.gnu.org/releases/rapp/%{pkg0}.tar.gz
+Group: System Environment/Libraries
+URL: @HOMESITE@
+
+# Strictly speaking, python isn't required when building for
+# tuned platforms, but we'd have to enumerate those so just put
+# it as a general requirement.
+BuildRequires: doxygen python
+
+%description
+RAPP is a library of low-level image processing operations,
+targeting mainly video analytics and computer vision applications.
+The library is meant to provide an optimized and reliable computational
+backend for such algorithms. The interface is designed to allow
+hardware-accelerated implementations, while still being simple
+enough for easy deployment from higher-level code.
+
+%package        devel
+Summary:        Development files for %{name}
+Group:          Development/Libraries
+Requires:       %{name} = %{version}-%{release}
+# I can't find a predefined macro for this.  Let's not make it
+# match what %doc uses, as %doc rm's the directory before use.
+%define devpackdocdir %{_docdir}/%{name}-%{version}
+
+%description    devel
+The %{name}-devel package contains documentation, libraries and
+header files for developing applications that use %{name}.
+
+%prep
+rm -rf $RPM_BUILD_ROOT
+%setup -q
+%build
+%configure
+make all html
+%install
+# We let the "rapp-dev" documents tag along even though without
+# source they're not really usable as intended.
+make install install-html DESTDIR=$RPM_BUILD_ROOT \
+ docdir=%{devpackdocdir}/user devhtmldir=%{devpackdocdir}/internals
+# No, libtool is generally not used. This from the spec lib template.
+# Neither is pkgconfig used.
+find $RPM_BUILD_ROOT '(' -name '*.la' -o -name rapp.pc ')' -exec rm -f {} ';'
+# Can't use %doc - it removes the directory and we have the whole docs there.
+install README NEWS $RPM_BUILD_ROOT/%{devpackdocdir}
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(-,root,root)
+%{_libdir}/*.so.*
+
+%files devel
+%defattr(-,root,root,-)
+%{_includedir}/rapp
+%{_libdir}/*.so
+%docdir %{devpackdocdir}
+%{devpackdocdir}
+
+%post -p /sbin/ldconfig
+
+%postun -p /sbin/ldconfig

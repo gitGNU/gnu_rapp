@@ -14387,7 +14387,7 @@ fi
 fi
 
 # We always create all files, though we don't visit all when building
-ac_config_files="$ac_config_files Makefile Doxyfile rapp.pc include/rapp_version.h driver/Makefile doxygen/images/Makefile compute/Makefile compute/Doxyfile compute/include/Makefile compute/common/Makefile compute/backend/Makefile compute/backend/test/Makefile compute/doxygen/images/Makefile compute/generic/Makefile compute/vector/Makefile compute/tune/Makefile compute/tune/benchmark/Makefile compute/tools/Makefile benchmark/Makefile test/Makefile test/reference/Makefile"
+ac_config_files="$ac_config_files Makefile Doxyfile rapp.pc rapp.spec include/rapp_version.h driver/Makefile doxygen/images/Makefile compute/Makefile compute/Doxyfile compute/include/Makefile compute/common/Makefile compute/backend/Makefile compute/backend/test/Makefile compute/doxygen/images/Makefile compute/generic/Makefile compute/vector/Makefile compute/tune/Makefile compute/tune/benchmark/Makefile compute/tools/Makefile benchmark/Makefile test/Makefile test/reference/Makefile"
 
 
 # Link the tuned configuration file
@@ -15365,6 +15365,7 @@ do
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "Doxyfile") CONFIG_FILES="$CONFIG_FILES Doxyfile" ;;
     "rapp.pc") CONFIG_FILES="$CONFIG_FILES rapp.pc" ;;
+    "rapp.spec") CONFIG_FILES="$CONFIG_FILES rapp.spec" ;;
     "include/rapp_version.h") CONFIG_FILES="$CONFIG_FILES include/rapp_version.h" ;;
     "driver/Makefile") CONFIG_FILES="$CONFIG_FILES driver/Makefile" ;;
     "doxygen/images/Makefile") CONFIG_FILES="$CONFIG_FILES doxygen/images/Makefile" ;;

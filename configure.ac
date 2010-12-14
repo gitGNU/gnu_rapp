@@ -612,6 +612,7 @@ AM_COND_IF([RAPP_TUNING],
 AC_CONFIG_FILES([Makefile
                  Doxyfile
                  rapp.pc
+                 rapp.spec
                  include/rapp_version.h
                  driver/Makefile
                  doxygen/images/Makefile
