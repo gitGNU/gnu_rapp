@@ -23,6 +23,7 @@ generate documentation.
 Two HTML manuals will be generated, a user's manual and a
 developer's manual, and installed by default in
 /usr/share/doc/rapp and /usr/share/doc/rapp-dev, respectively.
+(The actual location is likely different for pre-built packages.)
 
 For code rules, see the file HACKING.  For license, distribution
 terms and warranty, for all files not otherwise specified,
