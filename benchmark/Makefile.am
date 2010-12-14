@@ -102,6 +102,17 @@ dist-hook:
 clean-local:
 	rm -rf $(RB_INSTALLDIR)
 
+# Everything installed here is supposed to be staged in the
+# build tree using ordinary install rules with special values
+# for libdir and bindir, but this doesn't work when DESTDIR is set.
+# We can't stop installation or unset DESTDIR, but we can
+# uninstall what was installed when DESTDIR is non-empty and
+# hope that parent directories created just for this "install"
+# are ignored.
+install-exec-hook:
+	d=$(DESTDIR); test -z "$$d" || \
+	  { $(MAKE) uninstall && rm -rf $$d$(bindir) $$d$(libdir); }
+
 # Create the html plot file
 $(RB_PLOTFILE).stamp: $(RB_DATAFILE)
 	rm -f $(RB_PLOTFILE)
