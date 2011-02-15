@@ -34,8 +34,8 @@
 #include "rapp_util.h"      /* Validation          */
 #include "rapp_error.h"     /* Error codes         */
 #include "rapp_error_int.h" /* Error handling      */
-#include "rapp_crop.h"      /* Binary cropping API */
 #include "rapp_api.h"
+#include "rapp_integral.h"
 
 
 /*
