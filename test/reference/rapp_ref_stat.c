@@ -94,7 +94,7 @@ rapp_ref_stat_sum2_u8(const uint8_t *buf, int dim,
 void
 rapp_ref_stat_xsum_u8(const uint8_t *buf1, int dim1,
                       const uint8_t *buf2, int dim2,
-                      int width, int height, uint64_t sum[5])
+                      int width, int height, uintmax_t sum[5])
 {
     int x, y;
 
