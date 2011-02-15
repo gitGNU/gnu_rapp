@@ -59,6 +59,7 @@ extern int rc_initialized;
 
 #else
 #define RAPP_API(rtype, name, args) \
+    RAPP_EXPORT rtype name args;    \
     rtype name args
 
 #endif
