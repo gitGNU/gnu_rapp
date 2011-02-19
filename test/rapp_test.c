@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -102,6 +102,9 @@ int main(void)
         if (title) {
             printf("\n%s\n", title);
         }
+
+        /* Make pseudo-random element of tests independent of earlier tests */
+        srand(1);
 
         /* Print function name */
         printf("  %s\n", rapp_test_table[k].name);
