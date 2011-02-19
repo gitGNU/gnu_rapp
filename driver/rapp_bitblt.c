@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -381,32 +381,21 @@ RAPP_API(int, rapp_bitblt_norn_bin,
  *  Handles bitblits of any alignment and with any raster operation.
  */
 static int
-rapp_bitblt_driver(uint8_t *restrict dst, int dst_dim, int dst_off,
-                   const uint8_t *restrict src, int src_dim, int src_off,
+rapp_bitblt_driver(uint8_t *restrict dst_orig, int dst_dim, int dst_off_orig,
+                   const uint8_t *restrict src_orig,
+                   int src_dim, int src_off_orig,
                    int width, int height, rapp_bitblt_rop_t rop)
 {
+    uint8_t *dst = dst_orig;
+    const uint8_t *src = src_orig;
+    int src_off = src_off_orig;
+    int dst_off = dst_off_orig;
     int align;
     int blocks;
 
     /* Check arguments */
     if (!RAPP_INITIALIZED()) {
         return RAPP_ERR_UNINITIALIZED;
-    }
-
-    if (!RAPP_VALIDATE_RESTRICT_PLUS(dst, dst_dim, src, src_dim, height,
-                                     rc_align((width + dst_off + 7) / 8),
-                                     rc_align((width + src_off + 7) / 8)))
-    {
-        return RAPP_ERR_OVERLAP;
-    }
-
-    if (!RAPP_VALIDATE_NOALIGN_BIN(dst, dst_dim, dst_off, width, height) ||
-        !RAPP_VALIDATE_NOALIGN_BIN(src, src_dim, src_off, width, height))
-    {
-        /* Return the error code */
-        return rapp_error_noalign_bin_bin(dst, dst_dim, dst_off,
-                                          src, src_dim, src_off,
-                                          width, height);
     }
 
     /* Compute the vector-aligned bit offsets */
@@ -419,6 +408,30 @@ rapp_bitblt_driver(uint8_t *restrict dst, int dst_dim, int dst_off,
 
     /* Compute the destination width in vector block units */
     blocks = RAPP_BITBLT_BLOCKS(width, dst_off);
+
+    /* We count as overlap any part of the involved blocks */
+    if (!RAPP_VALIDATE_RESTRICT_PLUS(dst, dst_dim, src, src_dim, height,
+                                     blocks*RC_ALIGNMENT,
+                                     (RAPP_BITBLT_BLOCKS(width, src_off) *
+                                      RC_ALIGNMENT)))
+    {
+        return RAPP_ERR_OVERLAP;
+    }
+
+    /**
+     *  For consistency wrt. priority of error codes, we do the
+     *  overlap checking first, then the other checking, below.
+     */
+    if (!RAPP_VALIDATE_NOALIGN_BIN(dst_orig,
+                                   dst_dim, dst_off_orig, width, height) ||
+        !RAPP_VALIDATE_NOALIGN_BIN(src_orig,
+                                   src_dim, src_off_orig, width, height))
+    {
+        /* Return the error code */
+        return rapp_error_noalign_bin_bin(dst, dst_dim, dst_off,
+                                          src, src_dim, src_off,
+                                          width, height);
+    }
 
     /* Check if we can perform a more efficient 1D blit */
     if (dst_dim == src_dim &&

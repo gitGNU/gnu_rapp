@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -170,14 +170,16 @@ rapp_test_bitblt_driver(int (*test)(), void (*ref)())
 {
     int      dim     = rapp_align((RAPP_TEST_WIDTH + 7) / 8) +
                        rapp_alignment;
-    uint8_t *dst_buf = rapp_malloc(dim*RAPP_TEST_HEIGHT, 0);
-    uint8_t *src_buf = rapp_malloc(dim*RAPP_TEST_HEIGHT, 0);
+    uint8_t *srcdst_buf = rapp_malloc(dim*RAPP_TEST_HEIGHT*3 +
+                                      2*rapp_alignment, 0);
+    uint8_t *src_buf = srcdst_buf + dim*RAPP_TEST_HEIGHT + rapp_alignment;
     uint8_t *ref_buf = rapp_malloc(dim*RAPP_TEST_HEIGHT, 0);
+    uint8_t *srcref_buf = rapp_malloc(dim*RAPP_TEST_HEIGHT, 0);
     int      k;
     bool     ok = false;
 
     /* Initialize the source buffer */
-    rapp_test_init(src_buf, 0, dim*RAPP_TEST_HEIGHT, 1, true);
+    rapp_test_init(srcref_buf, 0, dim*RAPP_TEST_HEIGHT, 1, true);
 
     for (k = 0; k < RAPP_TEST_ITER; k++) {
         int width   = k > 0 ? rapp_test_rand(1, RAPP_TEST_WIDTH) :
@@ -191,6 +193,14 @@ rapp_test_bitblt_driver(int (*test)(), void (*ref)())
                       rapp_test_rand(0, 7) : dst_off;
         int dst_dim = rapp_align(dst_idx + (width + dst_off + 7) / 8);
         int src_dim = rapp_align(src_idx + (width + src_off + 7) / 8);
+        int src_len = src_dim * height;
+        int dst_len = dst_dim * height;
+        /**
+         *  Place the destination buffer on either side of the source
+         *  buffer, as close as possible.
+         */
+        uint8_t *dst_buf = rapp_test_rand(0, 1) ?
+                           src_buf + src_len : src_buf - dst_len;
 
         /* Verify that we get an overlap error for overlapping buffers */
         if (/* src == dst */
@@ -198,23 +208,30 @@ rapp_test_bitblt_driver(int (*test)(), void (*ref)())
                     src_dim, src_off, width, height) != RAPP_ERR_OVERLAP
             /* src = far end of dst_buf */
             || (*test)(&dst_buf[dst_idx], dst_dim, dst_off,
-                       &dst_buf[dst_idx] + dst_dim*(height - 1) +
-                       rapp_align((width + 7) / 8) - rapp_alignment,
+                       &dst_buf[dst_idx] + dst_len - 1 - dst_idx,
                        src_dim, src_off, width, height) != RAPP_ERR_OVERLAP
             /* src = before dst, but not long enough */
-            || (*test)(&dst_buf[dst_idx], dst_dim, dst_off,
-                       &dst_buf[dst_idx] - (src_dim*(height - 1) +
-                                            rapp_align((width + 7) / 8) -
-                                            rapp_alignment),
+            || (*test)(&src_buf[src_idx] + src_len - 1 - src_idx,
+                       dst_dim, dst_off,
+                       &src_buf[src_idx],
                        src_dim, src_off, width, height) != RAPP_ERR_OVERLAP)
         {
             DBG("Overlap undetected\n");
             goto Done;
         }
 
-        /* Initialize the destination buffers */
-        rapp_test_init(dst_buf, 0, dst_dim*RAPP_TEST_HEIGHT, 1, true);
-        memcpy(ref_buf, dst_buf, dst_dim*RAPP_TEST_HEIGHT);
+        /* Initialize the source and destination buffers */
+        rapp_test_init(dst_buf, 0, dst_len, 1, true);
+        memcpy(ref_buf, dst_buf, dst_len);
+        memcpy(src_buf, srcref_buf, src_len);
+
+        /**
+         *  Call the reference function first. We trust it not to overwrite
+         *  src_buf, so we're guaranteed to see the same src_buf for both.
+         */
+        (*ref)(&ref_buf[dst_idx], dst_dim, dst_off,
+               &src_buf[src_idx], src_dim, src_off,
+               width, height);
 
         /* Call RAPP function */
         if ((*test)(&dst_buf[dst_idx], dst_dim, dst_off,
@@ -225,18 +242,16 @@ rapp_test_bitblt_driver(int (*test)(), void (*ref)())
             goto Done;
         }
 
-        /* Call reference function */
-        (*ref)(&ref_buf[dst_idx], dst_dim, dst_off,
-               &src_buf[src_idx], src_dim, src_off,
-               width, height);
-
         /* Check result */
         if (!rapp_test_compare_bin(&dst_buf[dst_idx], dst_dim,
                                    &ref_buf[dst_idx], dst_dim,
-                                   dst_off, width, height))
+                                   dst_off, width, height) ||
+            memcmp (src_buf, srcref_buf, src_len) != 0)
         {
-            DBG("Invalid result (%d,%d) dim %d -> %d, off %d -> %d\n",
-                width, height, src_dim, dst_dim, src_off, dst_off);
+            DBG("Invalid result (%d,%d) dim %d -> %d, off %d -> %d;"
+                " %p to %p (%d)\n",
+                width, height, src_dim, dst_dim, src_off, dst_off,
+                &src_buf[src_idx], &dst_buf[dst_idx], rapp_alignment);
             DBG("src=\n");
             rapp_test_dump_bin(&src_buf[src_idx],
                                src_dim, src_off,
@@ -256,9 +271,9 @@ rapp_test_bitblt_driver(int (*test)(), void (*ref)())
     ok = true;
 
 Done:
-    rapp_free(dst_buf);
-    rapp_free(src_buf);
+    rapp_free(srcref_buf);
     rapp_free(ref_buf);
+    rapp_free(srcdst_buf);
 
     return ok;
 }
