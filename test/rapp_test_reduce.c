@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -151,7 +151,7 @@ rapp_test_prec_driver(int (*func)(), void (*ref)(), float tol)
 
         /* Call the scaling function */
         if ((*func)(dst, dim, src, dim, 2, 2) < 0) {
-            DBG("Got FAIL return value\n");
+            DBG("Got FAIL return value, %p dim %d -> %p\n", src, dim, dst);
             return false;
         }
 
@@ -183,8 +183,11 @@ rapp_test_rand_driver(int (*func)(), void (*ref)(),
     int      src_dim = rapp_align(RAPP_TEST_WIDTH) + rapp_alignment;
     int      dst_dim = rapp_align(RAPP_TEST_WIDTH/xscale);
 
-    uint8_t *src_buf = rapp_malloc(src_dim*RAPP_TEST_HEIGHT, 0);
-    uint8_t *dst_buf = rapp_malloc(dst_dim*(RAPP_TEST_HEIGHT / yscale), 0);
+    /* The dst buffer can be on either side of the src buffer */
+    uint8_t *srcdst_buf = rapp_malloc((src_dim*RAPP_TEST_HEIGHT +
+                                       2*dst_dim*(RAPP_TEST_HEIGHT / yscale)),
+                                      0);
+    uint8_t *src_buf = srcdst_buf + dst_dim*(RAPP_TEST_HEIGHT / yscale);
     float   *ref_buf = malloc(RAPP_TEST_WIDTH*RAPP_TEST_HEIGHT*sizeof(float));
     int      k;
     bool     ok = false;
@@ -196,6 +199,10 @@ rapp_test_rand_driver(int (*func)(), void (*ref)(),
     for (k = 0; k < RAPP_TEST_ITER; k++) {
         int w = rapp_test_rand(2, RAPP_TEST_WIDTH);
         int h = rapp_test_rand(2, RAPP_TEST_HEIGHT);
+        int src_len = (h - 1)*src_dim + rapp_align(w);
+        int dst_len = (h / yscale - 1)*dst_dim + rapp_align(w / xscale);
+        uint8_t *dst_buf = rapp_test_rand(0, 1) ?
+                           src_buf + src_len : src_buf - dst_len;
         int x, y;
 
         /* Verify that we get an overlap error for overlapping buffers */
@@ -204,27 +211,27 @@ rapp_test_rand_driver(int (*func)(), void (*ref)(),
                     w, h) != RAPP_ERR_OVERLAP
             /* src = far end of dst_buf */
             || (*func)(dst_buf, dst_dim,
-                       dst_buf + dst_dim*(h / yscale - 1) +
-                       rapp_align(w / xscale) - rapp_alignment,
+                       dst_buf + dst_len - rapp_alignment,
                        src_dim, w, h) != RAPP_ERR_OVERLAP
             /* src = before dst, but not long enough */
             || (*func)(dst_buf, dst_dim,
-                       dst_buf - (src_dim*(h - 1) +
-                                  rapp_align(w) - rapp_alignment),
+                       dst_buf - (src_len - rapp_alignment),
                        src_dim, w, h) != RAPP_ERR_OVERLAP)
         {
-            DBG("Overlap undetected\n");
-            goto Done;
-        }
-
-        /* Call the reduction function */
-        if ((*func)(dst_buf, dst_dim, src_buf, src_dim, w, h) < 0) {
-            DBG("Got FAIL return value\n");
+            DBG("Overlap undetected, (%d/%d, %d/%d) %p dim %d -> dim %d (%d)\n",
+                w, xscale, h, yscale, src_buf, src_dim, dst_dim, rapp_alignment);
             goto Done;
         }
 
         /* Call the reference function */
         (*ref)(ref_buf, w*sizeof(float), src_buf, src_dim, w, h);
+
+        /* Call the reduction function */
+        if ((*func)(dst_buf, dst_dim, src_buf, src_dim, w, h) < 0) {
+            DBG("Got FAIL return value, (%d,%d) %p dim %d -> %p dim %d (%d)\n",
+                w, h, src_buf, src_dim, dst_buf, dst_dim, rapp_alignment);
+            goto Done;
+        }
 
         /* Compare the results */
         for (y = 0; y < h/yscale; y++) {
@@ -251,8 +258,7 @@ rapp_test_rand_driver(int (*func)(), void (*ref)(),
     ok = true;
 
 Done:
-    rapp_free(src_buf);
-    rapp_free(dst_buf);
+    rapp_free(srcdst_buf);
     free(ref_buf);
 
     return ok;

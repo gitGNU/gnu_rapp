@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -91,7 +91,7 @@ RAPP_API(int, rapp_reduce_2x1_u8,
 
     /* Validate arguments */
     if (!RAPP_VALIDATE_RESTRICT_PLUS(dst, 0, src, src_dim, height,
-                                     dst_dim*height/2 + rc_align(width),
+                                     dst_dim*(height/2 - 1) + rc_align(width),
                                      rc_align(width)))
     {
         return RAPP_ERR_OVERLAP;
@@ -125,7 +125,8 @@ RAPP_API(int, rapp_reduce_2x2_u8,
 
     /* Validate arguments */
     if (!RAPP_VALIDATE_RESTRICT_PLUS(dst, 0, src, src_dim, height,
-                                     dst_dim*height/2 + rc_align(width/2),
+                                     (dst_dim*(height/2 - 1) +
+                                      rc_align(width/2)),
                                      rc_align(width)))
     {
         return RAPP_ERR_OVERLAP;
