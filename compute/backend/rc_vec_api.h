@@ -84,6 +84,10 @@
  *  RC_VEC_ALIGNC(), RC_VEC_SHINIT() and RC_VEC_SHL() are implemented.
  *  The redundant operations use the @ref vec_api_hints "hint" mechanism.
  *
+ *  @section vec_api_type Types
+ *  Value arguments to operations are of the type rc_vec_t, and pointers
+ *  point at uint8_t data, except where otherwise specified.
+ *
  *  @section vec_api_impl Implementations
  *  The available implementations are
  *
@@ -285,7 +289,7 @@ typedef arch_vector_t rc_vec_t;
  *  @param vec1  Internal state vector 1.
  *  @param vec2  Internal state vector 2.
  *  @param vec3  Internal state vector 3.
- *  @param uptr  Read data pointer.
+ *  @param uptr  Read data pointer_t.
  *  @param ptr   Misaligned data pointer.
  */
 #define RC_VEC_LDINIT(vec1, vec2, vec3, uptr, ptr)
@@ -500,7 +504,7 @@ typedef arch_vector_t rc_vec_t;
  *  Sets the scalar value 'scal' in each 8-bit field.
  *
  *  @param  vec  The output vector.
- *  @param  scal The 8-bit scalar variable to set.
+ *  @param  scal The 8-bit scalar variable to set, any scalar data type.
  */
 #define RC_VEC_SPLAT(vec, scal)
 
@@ -639,7 +643,7 @@ typedef arch_vector_t rc_vec_t;
  *  Generate the blend vector needed by RC_VEC_LERP().
  *
  *  @param blendv  The output blend vector.
- *  @param blend8  The Q.8 fixed-point scalar blend factor.
+ *  @param blend8  The Q.8 fixed-point scalar blend factor as an unsigned int.
  */
 #define RC_VEC_BLEND(blendv, blend8)
 
@@ -652,7 +656,7 @@ typedef arch_vector_t rc_vec_t;
  *  @param srcv1   The first input vector.
  *  @param srcv2   The second input vector.
  *  @param blendv  The blend vector obtained from RC_VEC_BLEND().
- *  @param blend8  The Q.8 fixed-point scalar blend factor.
+ *  @param blend8  The Q.8 fixed-point scalar blend factor as an unsigned int.
  */
 #define RC_VEC_LERP(dstv, srcv1, srcv2, blend8, blendv)
 
@@ -660,7 +664,7 @@ typedef arch_vector_t rc_vec_t;
  *  Generate the blend vector needed by RC_VEC_LERPZ().
  *
  *  @param blendv  The output blend vector.
- *  @param blend8  The Q.8 fixed-point scalar blend factor.
+ *  @param blend8  The Q.8 fixed-point scalar blend factor as an unsigned int.
  */
 #define RC_VEC_BLENDZ(blendv, blend8)
 
@@ -674,7 +678,7 @@ typedef arch_vector_t rc_vec_t;
  *  @param srcv1   The first input vector.
  *  @param srcv2   The second input vector.
  *  @param blendv  The blend vector obtained from RC_VEC_BLENDZ().
- *  @param blend8  The Q.8 fixed-point scalar blend factor.
+ *  @param blend8  The Q.8 fixed-point scalar blend factor as an unsigned int.
  */
 #define RC_VEC_LERPZ(dstv, srcv1, srcv2, blend8, blendv)
 
@@ -682,7 +686,7 @@ typedef arch_vector_t rc_vec_t;
  *  Generate the blend vector needed by RC_VEC_LERPN().
  *
  *  @param blendv  The output blend vector.
- *  @param blend8  The Q.8 fixed-point scalar blend factor.
+ *  @param blend8  The Q.8 fixed-point scalar blend factor as an unsigned int.
  */
 #define RC_VEC_BLENDN(blendv, blend8)
 
@@ -696,7 +700,7 @@ typedef arch_vector_t rc_vec_t;
  *  @param srcv1   The first input vector.
  *  @param srcv2   The second input vector.
  *  @param blendv  The blend vector obtained from RC_VEC_BLENDN().
- *  @param blend8  The Q.8 fixed-point scalar blend factor.
+ *  @param blend8  The Q.8 fixed-point scalar blend factor as an unsigned int.
  */
 #define RC_VEC_LERPN(dstv, srcv1, srcv2, blend8, blendv)
 
@@ -720,7 +724,7 @@ typedef arch_vector_t rc_vec_t;
  *  physically left-most bits in a binary mask word.
  *  The unused mask bits are set to zero.
  *
- *  @param  maskw  The output mask word.
+ *  @param  maskw  The output mask word as an unsigned int.
  *  @param  vec    The input vector.
  */
 #define RC_VEC_GETMASKW(maskw, vec)
@@ -771,7 +775,7 @@ typedef arch_vector_t rc_vec_t;
 /**
  *  Count bits in all vector fields, reduction step.
  *
- *  @param  cnt   The output bitcount value.
+ *  @param  cnt   The uint32_t output bitcount value.
  *  @param  accv  The input accumulator to reduce.
  */
 #define RC_VEC_CNTR(cnt, accv)
@@ -797,7 +801,7 @@ typedef arch_vector_t rc_vec_t;
 /**
  *  Sum all 8-bit vector fields, reduction step.
  *
- *  @param  sum   The output sum value.
+ *  @param  sum   The uint32_t output sum value.
  *  @param  accv  The input accumulator to reduce.
  */
 #define RC_VEC_SUMR(sum, accv)
@@ -824,7 +828,7 @@ typedef arch_vector_t rc_vec_t;
 /**
  *  Multiply and accumulate all 8-bit fields, reduction step.
  *
- *  @param  mac   The output multiply-accumulate value.
+ *  @param  mac   The uint32_t output multiply-accumulate value.
  *  @param  accv  The input accumulator to reduce.
  */
 #define RC_VEC_MACR(mac, accv)
