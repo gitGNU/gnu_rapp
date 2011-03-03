@@ -310,10 +310,37 @@ AC_ARG_ENABLE([backend],
        ;;
    esac])
 
-# Allow for pretentious names
+# Allow for pretentious names and other special handling
 case ${OPT_BACKEND} in
    altivec)
           backend_info_name=AltiVec
+
+          # Need to check the supported syntax for vector initializers:
+          # FSF GCC never supported ALTIVECPIM parentheses syntax and early
+          # Apple GCC didn't support curly-braces.
+          AC_MSG_CHECKING([for working vector initializer syntax])
+          initializer=unknown
+          saved_CFLAGS="$CFLAGS"
+          CFLAGS="$CFLAGS $AM_CFLAGS"
+          AC_COMPILE_IFELSE(
+            [AC_LANG_PROGRAM(
+               [[#include <altivec.h>]],
+               [[vector signed int one = (vector signed int) {1, 1, 1, 1};]])],
+            [curlies=1
+             initializer='{}'],
+            [AC_COMPILE_IFELSE(
+               [AC_LANG_PROGRAM(
+                  [[#include <altivec.h>]],
+                  [[vector signed int one = (vector signed int) (1);]])],
+               [curlies=0
+                initializer='()'],
+               [AC_MSG_FAILURE([[unknown vector initializer syntax]])])])
+          CFLAGS="$saved_CFLAGS"
+          AC_DEFINE_UNQUOTED(
+            [RC_ALTIVEC_CURLY_BRACES],
+            [$curlies],
+            [Define to 1 to use {1, 1, ...} instead of (1) in vector literals])
+          AC_MSG_RESULT([$initializer])
           ;;
    *)
           backend_info_name=`echo ${OPT_BACKEND} | tr $az $AZ`

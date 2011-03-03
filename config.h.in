@@ -70,6 +70,9 @@
 /* Name of SIMD back-end header file */
 #undef RAPP_VECTOR_BACKEND_HEADER
 
+/* Define to 1 to use {1, 1, ...} instead of (1) in vector literals */
+#undef RC_ALTIVEC_CURLY_BRACES
+
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
