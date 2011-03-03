@@ -262,7 +262,7 @@ rc_test_exec(int (*test)(), int (*ref)(),
              uint8_t *dst_buf, uint8_t *ref_buf,
              const uint8_t *src1_buf, const uint8_t *src2_buf, int arg)
 {
-    int t, r;
+    int t, r, ret;
 
     memset(ref_buf, 0, RC_VEC_SIZE);
     memset(dst_buf, 0, RC_VEC_SIZE);
@@ -277,7 +277,16 @@ rc_test_exec(int (*test)(), int (*ref)(),
         return false;
     }
 
-    return memcmp(dst_buf, ref_buf, RC_VEC_SIZE) == 0;
+    ret = memcmp(dst_buf, ref_buf, RC_VEC_SIZE) == 0;
+    if (!ret) {
+        rc_test_dump("src1 = ", src1_buf);
+        if (src2_buf != NULL) {
+            rc_test_dump("src2 = ", src2_buf);
+        }
+        rc_test_dump("dst  = ", dst_buf);
+        rc_test_dump("ref  = ", ref_buf);
+    }
+    return ret;
 }
 
 static bool
