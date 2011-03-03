@@ -98,6 +98,7 @@ int main(void)
     tcase = tcase_create("rapp_" #func);        \
     tcase_add_checked_fixture(tcase, setup, teardown); \
     tcase_add_test(tcase, tcase_ ## func);      \
+    tcase_set_timeout(tcase, 30);               \
     suite_add_tcase(suite, tcase);
 
 #define RAPP_TESTH(func, s)                     \
