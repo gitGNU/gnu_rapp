@@ -87,8 +87,12 @@
 
 /**
  *  The vector type definition.
+ *
+ *  The AltiVec PIM says (in 2.2 New Keywords) we can only use "vector"
+ *  in front of basic integer types; specifically not typedefs.
+ *  For such use, it mandates using "__vector".
  */
-typedef vector uint8_t rc_vec_t;
+typedef __vector uint8_t rc_vec_t;
 
 /**
  *  The number of bytes in a vector.
@@ -384,8 +388,8 @@ do {                                          \
     rc_vec_t vec__;                           \
     vec__  = vec_xor(srcv,                    \
                      RC_ALTIVEC_INIT16(0x80));\
-    vec__  = (rc_vec_t)vec_abs((vector int8_t)\
-                               vec__);        \
+    vec__  = (rc_vec_t)                       \
+             vec_abs((__vector int8_t)vec__); \
     (dstv) = vec_adds(vec__, vec__);          \
 } while (0)
 
@@ -436,17 +440,17 @@ do {                                         \
 do {                                                         \
     rc_vec_t       sv1__ = (srcv1);                          \
     rc_vec_t       sv2__ = (srcv2);                          \
-    vector int16_t bv__  = (vector int16_t)(blendv);         \
-    vector int16_t lo1__ = (vector int16_t)                  \
+    vector short   bv__  = (vector short)(blendv);           \
+    vector short   lo1__ = (vector short)                    \
                            vec_mergel(RC_ALTIVEC_INIT16(0),  \
                                       sv1__);                \
-    vector int16_t hi1__ = (vector int16_t)                  \
+    vector short   hi1__ = (vector short)                    \
                            vec_mergeh(RC_ALTIVEC_INIT16(0),  \
                                       sv1__);                \
-    vector int16_t lo2__ = (vector int16_t)                  \
+    vector short   lo2__ = (vector short)                    \
                            vec_mergel(RC_ALTIVEC_INIT16(0),  \
                                       sv2__);                \
-    vector int16_t hi2__ = (vector int16_t)                  \
+    vector short hi2__   = (vector short)                    \
                            vec_mergeh(RC_ALTIVEC_INIT16(0),  \
                                       sv2__);                \
     lo2__  = vec_sub(lo2__, lo1__);                          \
@@ -633,9 +637,9 @@ do {                                                                     \
 do {                                           \
     type        scal__ = (scal);               \
     rc_vec_t    map__  = vec_lvsl(0, &scal__); \
-    vector type vec__  = vec_lde(0, &scal__);  \
+    __vector type vec__ = vec_lde(0, &scal__); \
     map__ = (rc_vec_t)                         \
-            vec_splat((vector type)map__, 0);  \
+            vec_splat((__vector type)map__, 0);\
     (vec) = (rc_vec_t)                         \
             vec_perm(vec__, vec__, map__);     \
 } while (0)
@@ -646,8 +650,9 @@ do {                                           \
 #define RC_VEC_VTOI__(scal, vec, type)                            \
 do {                                                              \
     type        scal__;                                           \
-    vector type vec__;                                            \
-    vec__ = vec_splat((vector type)(vec), 16 / sizeof(type) - 1); \
+    __vector type vec__;                                          \
+    vec__ =                                                       \
+        vec_splat((__vector type)(vec), 16 / sizeof(type) - 1);   \
     vec_ste(vec__, 0, &scal__);                                   \
     (scal) = scal__;                                              \
 } while (0)
@@ -657,23 +662,23 @@ do {                                                              \
  */
 #define RC_VEC_LERP__(dstv, srcv1, srcv2, blend8v, bias)     \
 do {                                                         \
-    vector int16_t bv__  = (vector int16_t)(blendv);         \
-    vector int16_t lob__ = (vector int16_t)                  \
+    vector short   bv__  = (vector short)(blendv);           \
+    vector short   lob__ = (vector short)                    \
                            vec_mergel(RC_ALTIVEC_INIT16(0),  \
                                       bias);                 \
-    vector int16_t hib__ = (vector int16_t)                  \
+    vector short   hib__ = (vector short)                    \
                            vec_mergeh(RC_ALTIVEC_INIT16(0),  \
                                       bias);                 \
-    vector int16_t lo1__ = (vector int16_t)                  \
+    vector short   lo1__ = (vector short)                    \
                            vec_mergel(RC_ALTIVEC_INIT16(0),  \
                                       srcv1);                \
-    vector int16_t hi1__ = (vector int16_t)                  \
+    vector short   hi1__ = (vector short)                    \
                            vec_mergeh(RC_ALTIVEC_INIT16(0),  \
                                       srcv1);                \
-    vector int16_t lo2__ = (vector int16_t)                  \
+    vector short   lo2__ = (vector short)                    \
                            vec_mergel(RC_ALTIVEC_INIT16(0),  \
                                       srcv2);                \
-    vector int16_t hi2__ = (vector int16_t)                  \
+    vector short   hi2__ = (vector short)                    \
                            vec_mergeh(RC_ALTIVEC_INIT16(0),  \
                                       srcv2);                \
     lo2__  = vec_sub(lo2__, lo1__);                          \
@@ -681,9 +686,11 @@ do {                                                         \
     lo1__  = vec_mladd(lo2__, bv__, lob__);                  \
     hi1__  = vec_mladd(hi2__, bv__, hib__);                  \
     lo1__  = vec_sr(lo1__,                                   \
-                    RC_ALTIVEC_TINIT8(vector uint16_t, 8));  \
+                    RC_ALTIVEC_TINIT8(vector unsigned short, \
+                                      8));                   \
     hi1__  = vec_sr(hi1__,                                   \
-                    RC_ALTIVEC_TINIT8(vector uint16_t, 8));  \
+                    RC_ALTIVEC_TINIT8(vector unsigned short, \
+                                      8));                   \
     (dstv) = (rc_vec_t)vec_pack(hi1__, lo1__);               \
     (dstv) = vec_add(dstv, srcv1);                           \
 } while (0)
