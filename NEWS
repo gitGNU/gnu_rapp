@@ -1,4 +1,21 @@
 rapp-0.7dev: Prerelease for a future 0.7 release.
-Placeholder version bump, no news yet.
+News and visible changes in this version, since the previous version:
+
+Changes regarding usage:
+- Bugs exposed on MAC OS X (bug #31888 in the
+savannah.nongnu.org database), causing wrong results and
+spurious overlap indications, have been fixed.
+
+Changes affecting only build, test and installation:
+- Bug #31887, exposed on MAC OS X, has been fixed.
+
+- Bug #32618, causing build errors when using the AltiVec
+backend with GCC (any non-Apple release), have been fixed.
+
+- Bug #31874, breaking "make uninstall DESTDIR=/some/dir" (and
+indirectly "make distcheck"), has been fixed.
+
+- Tunefiles for powerpc and powerpc64 have been added, reducing
+build time on native systems and simplifying cross-builds.
 
 rapp-0.6: Initial public release.
