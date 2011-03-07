@@ -17,7 +17,7 @@
 
 #  Automake file for the RAPP benchmark application.
 
-#  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+#  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
 #
 #  This file is part of RAPP.
 #
@@ -576,7 +576,7 @@ distdir: $(DISTFILES)
 	  dist-hook
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(PROGRAMS)
+all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) all-local
 install-binPROGRAMS: install-libLTLIBRARIES
 
 installdirs:
@@ -640,8 +640,7 @@ install-dvi: install-dvi-am
 install-dvi-am:
 
 install-exec-am: install-binPROGRAMS install-libLTLIBRARIES
-	@$(NORMAL_INSTALL)
-	$(MAKE) $(AM_MAKEFLAGS) install-exec-hook
+
 install-html: install-html-am
 
 install-html-am:
@@ -682,19 +681,19 @@ ps-am:
 
 uninstall-am: uninstall-binPROGRAMS uninstall-libLTLIBRARIES
 
-.MAKE: install-am install-exec-am install-strip
+.MAKE: install-am install-strip
 
-.PHONY: CTAGS GTAGS all all-am check check-am clean clean-binPROGRAMS \
-	clean-generic clean-libLTLIBRARIES clean-libtool clean-local \
-	ctags dist-hook distclean distclean-compile distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-binPROGRAMS \
-	install-data install-data-am install-dvi install-dvi-am \
-	install-exec install-exec-am install-exec-hook install-html \
-	install-html-am install-info install-info-am \
-	install-libLTLIBRARIES install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
+.PHONY: CTAGS GTAGS all all-am all-local check check-am clean \
+	clean-binPROGRAMS clean-generic clean-libLTLIBRARIES \
+	clean-libtool clean-local ctags dist-hook distclean \
+	distclean-compile distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am html html-am info info-am \
+	install install-am install-binPROGRAMS install-data \
+	install-data-am install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-libLTLIBRARIES install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	tags uninstall uninstall-am uninstall-binPROGRAMS \
@@ -706,7 +705,7 @@ uninstall-am: uninstall-binPROGRAMS uninstall-libLTLIBRARIES
 # ----------------------------------------------------
 
 # Build the html plot file on 'all'
-all:
+all-local:
 	if test ! -f $(RB_PLOTFILE); then \
 	    $(MAKE) $(RB_PLOTFILE).stamp;      \
 	fi
@@ -719,17 +718,6 @@ dist-hook:
 # Also remove the install dir on clean
 clean-local:
 	rm -rf $(RB_INSTALLDIR)
-
-# Everything installed here is supposed to be staged in the
-# build tree using ordinary install rules with special values
-# for libdir and bindir, but this doesn't work when DESTDIR is set.
-# We can't stop installation or unset DESTDIR, but we can
-# uninstall what was installed when DESTDIR is non-empty and
-# hope that parent directories created just for this "install"
-# are ignored.
-install-exec-hook:
-	d=$(DESTDIR); test -z "$$d" || \
-	  { $(MAKE) uninstall && rm -rf $$d$(bindir) $$d$(libdir); }
 
 # Create the html plot file
 $(RB_PLOTFILE).stamp: $(RB_DATAFILE)

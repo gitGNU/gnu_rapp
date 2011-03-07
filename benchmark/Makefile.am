@@ -1,6 +1,6 @@
 #  Automake file for the RAPP benchmark application.
 
-#  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+#  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
 #
 #  This file is part of RAPP.
 #
@@ -88,7 +88,7 @@ libdir = `pwd`/$(RB_INSTALLDIR)
 # ----------------------------------------------------
 
 # Build the html plot file on 'all'
-all:
+all-local:
 	if test ! -f $(RB_PLOTFILE); then \
 	    $(MAKE) $(RB_PLOTFILE).stamp;      \
 	fi
@@ -101,17 +101,6 @@ dist-hook:
 # Also remove the install dir on clean
 clean-local:
 	rm -rf $(RB_INSTALLDIR)
-
-# Everything installed here is supposed to be staged in the
-# build tree using ordinary install rules with special values
-# for libdir and bindir, but this doesn't work when DESTDIR is set.
-# We can't stop installation or unset DESTDIR, but we can
-# uninstall what was installed when DESTDIR is non-empty and
-# hope that parent directories created just for this "install"
-# are ignored.
-install-exec-hook:
-	d=$(DESTDIR); test -z "$$d" || \
-	  { $(MAKE) uninstall && rm -rf $$d$(bindir) $$d$(libdir); }
 
 # Create the html plot file
 $(RB_PLOTFILE).stamp: $(RB_DATAFILE)

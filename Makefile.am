@@ -1,6 +1,6 @@
 #  Automake file for the RAPP library.
 
-#  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+#  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
 #
 #  This file is part of RAPP.
 #
@@ -29,8 +29,12 @@
 # Tell aclocal to search the m4 directory
 ACLOCAL_AMFLAGS = -I m4
 
-# The subdirectories to process
-SUBDIRS = doxygen/images compute/doxygen/images compute driver . test benchmark
+# The subdirectories to process. We separate "benchmark" from
+# the others so we only have to cater to our own use and not to
+# supporting standard rules like "make install DESTDIR=/some/prefix". 
+# Actual dependencies replace its order within SUBDIRS.
+SUBDIRS = doxygen/images compute/doxygen/images compute driver . test
+DIST_SUBDIRS = $(SUBDIRS) benchmark
 
 EXTRA_DIST = COPYING COPYING.FDL COPYING.LESSER \
              README AUTHORS NEWS TODO HACKING   \
@@ -360,3 +364,6 @@ uninstall-doxygen-html:
 else
 clean-local-doxy:
 endif
+
+all-local: $(librapp_la_LIBADD)
+	cd benchmark && $(MAKE) $@

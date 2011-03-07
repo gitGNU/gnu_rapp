@@ -17,7 +17,7 @@
 
 #  Automake file for the RAPP library.
 
-#  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+#  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
 #
 #  This file is part of RAPP.
 #
@@ -167,7 +167,6 @@ AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
 	distdir dist dist-all distcheck
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = $(SUBDIRS)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -349,8 +348,12 @@ top_srcdir = @top_srcdir@
 # Tell aclocal to search the m4 directory
 ACLOCAL_AMFLAGS = -I m4
 
-# The subdirectories to process
-SUBDIRS = doxygen/images compute/doxygen/images compute driver . test benchmark
+# The subdirectories to process. We separate "benchmark" from
+# the others so we only have to cater to our own use and not to
+# supporting standard rules like "make install DESTDIR=/some/prefix". 
+# Actual dependencies replace its order within SUBDIRS.
+SUBDIRS = doxygen/images compute/doxygen/images compute driver . test
+DIST_SUBDIRS = $(SUBDIRS) benchmark
 EXTRA_DIST = COPYING COPYING.FDL COPYING.LESSER \
              README AUTHORS NEWS TODO HACKING   \
              autogen.sh .gitignore
@@ -965,7 +968,7 @@ distcleancheck: distclean
 	       exit 1; } >&2
 check-am: all-am
 check: check-recursive
-all-am: Makefile $(LTLIBRARIES) $(DATA) $(HEADERS) config.h
+all-am: Makefile $(LTLIBRARIES) $(DATA) $(HEADERS) config.h all-local
 installdirs: installdirs-recursive
 installdirs-am:
 	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(rapp_includedir)" "$(DESTDIR)$(rapp_includedir)"; do \
@@ -1078,11 +1081,11 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-local \
 	ctags-recursive install-am install-strip tags-recursive
 
 .PHONY: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) CTAGS GTAGS \
-	all all-am am--refresh check check-am clean clean-generic \
-	clean-libLTLIBRARIES clean-libtool clean-local ctags \
-	ctags-recursive dist dist-all dist-bzip2 dist-gzip dist-lzma \
-	dist-shar dist-tarZ dist-xz dist-zip distcheck distclean \
-	distclean-compile distclean-generic distclean-hdr \
+	all all-am all-local am--refresh check check-am clean \
+	clean-generic clean-libLTLIBRARIES clean-libtool clean-local \
+	ctags ctags-recursive dist dist-all dist-bzip2 dist-gzip \
+	dist-lzma dist-shar dist-tarZ dist-xz dist-zip distcheck \
+	distclean distclean-compile distclean-generic distclean-hdr \
 	distclean-libtool distclean-tags distcleancheck distdir \
 	distuninstallcheck dvi dvi-am html html-am info info-am \
 	install install-am install-data install-data-am \
@@ -1306,6 +1309,9 @@ clean-local: clean-local-doxy
 @HAVE_DOXYGEN_TRUE@	rm -rf $(DESTDIR)$(htmldir)
 
 @HAVE_DOXYGEN_FALSE@clean-local-doxy:
+
+all-local: $(librapp_la_LIBADD)
+	cd benchmark && $(MAKE) $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
