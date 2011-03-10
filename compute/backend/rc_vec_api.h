@@ -757,7 +757,7 @@ typedef arch_vector_t rc_vec_t;
 /**
  *  Count bits in all vector fields, iteration count.
  *  The format of the accumulator vector is implementation-specific,
- *  but RC_VEC_CNTV() and RC_VEC_CNTR() together computes the bit count.
+ *  but RC_VEC_CNTV() and RC_VEC_CNTR() together compute the bit count.
  *  The accumulation step can be iterated at most #RC_VEC_CNTN times
  *  before the reduction step. The value of #RC_VEC_CNTN must be either
  *  one, or be divisible by four.
@@ -783,7 +783,7 @@ typedef arch_vector_t rc_vec_t;
 /**
  *  Sum all 8-bit vector fields, iteration count.
  *  The format of the accumulator vector is implementation-specific,
- *  but RC_VEC_SUMV() and RC_VEC_SUMR() together computes the sum.
+ *  but RC_VEC_SUMV() and RC_VEC_SUMR() together compute the sum.
  *  The accumulation step can be iterated at most #RC_VEC_SUMN times
  *  before the reduction step. The value of #RC_VEC_SUMN must be either
  *  one, or be divisible by four.
@@ -809,7 +809,7 @@ typedef arch_vector_t rc_vec_t;
 /**
  *  Multiply and accumulate all 8-bit fields, iteration count.
  *  The format of the accumulator vector is implementation-specific,
- *  but RC_VEC_MACV() and RC_VEC_MACR() together computes the sum.
+ *  but RC_VEC_MACV() and RC_VEC_MACR() together compute the sum.
  *  The accumulation step can be iterated at most #RC_VEC_MACN times
  *  before the reduction step. The value of #RC_VEC_MACN must be either
  *  one, or be divisible by four.
