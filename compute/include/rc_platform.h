@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -89,7 +89,7 @@
 #define RC_ALIGNMENT 16
 
 #elif defined __MMX__ || defined __SSE__ || defined __VADMX__ || \
-      RC_NATIVE_SIZE == 8
+      defined __mips_loongson_vector_rev || RC_NATIVE_SIZE == 8
 #define RC_ALIGNMENT 8
 
 #else

@@ -1,6 +1,6 @@
 #  Automake file for the RAPP Compute backend directory.
 
-#  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+#  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
 #
 #  This file is part of RAPP.
 #
@@ -38,4 +38,5 @@ EXTRA_DIST = rc_vector.h      \
              rc_vec_sse2.h    \
              rc_vec_ssse3.h   \
              rc_vec_altivec.h \
-             rc_vec_vadmx.h
+             rc_vec_vadmx.h   \
+             rc_vec_loongson2ef.h

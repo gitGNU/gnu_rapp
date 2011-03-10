@@ -233,6 +233,7 @@ AC_CHECK_DEFINED([__SSSE3__], [OPT_BACKEND=ssse3])
 AC_CHECK_DEFINED([__VEC__], [OPT_BACKEND=altivec])
 AC_CHECK_DEFINED([__ALTIVEC__], [OPT_BACKEND=altivec])
 AC_CHECK_DEFINED([__VADMX__], [OPT_BACKEND=vadmx])
+AC_CHECK_DEFINED([__mips_loongson_vector_rev], [OPT_BACKEND=loongson2ef])
 
 # Set the PLATFORM string to be the AC 'host_cpu' plus the compiler vendor
 PLATFORM=${host_cpu}-${ax_cv_c_compiler_vendor}
@@ -282,15 +283,16 @@ backend_info_name=
 AC_ARG_ENABLE([backend],
   [AS_HELP_STRING([[--enable-backend@<:@=auto@:>@]],
                   [Use vector accelerator backend:])
-   AS_HELP_STRING(,[auto:      Select backend automatically])
-   AS_HELP_STRING(,[nonvector: Disable all vector operations])
-   AS_HELP_STRING(,[none:      Disable all vector operations and tuned operations])
-   AS_HELP_STRING(,[mmx:       64-bit MMX vector backend])
-   AS_HELP_STRING(,[sse:       64-bit SSE vector backend])
-   AS_HELP_STRING(,[sse2:      128-bit SSE2 vector backend])
-   AS_HELP_STRING(,[ssse3:     128-bit SSSE3 vector backend])
-   AS_HELP_STRING(,[altivec:   128-bit AltiVec vector backend])
-   AS_HELP_STRING(,[vadmx:     64-bit VADMX vector backend])],
+   AS_HELP_STRING(,[auto:        Select backend automatically])
+   AS_HELP_STRING(,[nonvector:   Disable all vector operations])
+   AS_HELP_STRING(,[none:        Disable all vector operations and tuned operations])
+   AS_HELP_STRING(,[mmx:         64-bit MMX vector backend])
+   AS_HELP_STRING(,[sse:         64-bit SSE vector backend])
+   AS_HELP_STRING(,[sse2:        128-bit SSE2 vector backend])
+   AS_HELP_STRING(,[ssse3:       128-bit SSSE3 vector backend])
+   AS_HELP_STRING(,[altivec:     128-bit AltiVec vector backend])
+   AS_HELP_STRING(,[vadmx:       64-bit VADMX vector backend])
+   AS_HELP_STRING(,[loongson2ef: 64-bit Loongson-2E and -2F vector backend])],
   [case ${enableval} in
    auto)
        ;;
@@ -304,6 +306,15 @@ AC_ARG_ENABLE([backend],
    mmx | sse | sse2 | ssse3 | altivec | vadmx)
        OPT_BACKEND=${enableval}
        AM_CFLAGS="${AM_CFLAGS} -m${OPT_BACKEND}"
+       ;;
+   loongson2ef)
+       OPT_BACKEND=${enableval}
+       # There are two arch options enabling vector extensions, but we
+       # have to pick one option of fake two different backends with the
+       # same code. Luckily, it seems there's no actual code difference
+       # between -march=loongson2e and -march=loongson2f at least not in
+       # the upcoming (FSF) gcc-4.6.0.
+       AM_CFLAGS="${AM_CFLAGS} -march=loongson2f"
        ;;
    *)
        AC_MSG_ERROR([[Bad value "${enableval}" for --enable-backend option]])
@@ -341,6 +352,9 @@ case ${OPT_BACKEND} in
             [$curlies],
             [Define to 1 to use {1, 1, ...} instead of (1) in vector literals])
           AC_MSG_RESULT([$initializer])
+          ;;
+   loongson2ef)
+          backend_info_name="Loongson-2E and -2F"
           ;;
    *)
           backend_info_name=`echo ${OPT_BACKEND} | tr $az $AZ`

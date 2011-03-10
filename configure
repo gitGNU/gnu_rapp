@@ -1622,6 +1622,8 @@ Optional Features:
                              ssse3: 128-bit SSSE3 vector backend
                              altivec: 128-bit AltiVec vector backend
                              vadmx: 64-bit VADMX vector backend
+                             loongson2ef: 64-bit Loongson-2E and -2F vector
+                          backend
   --enable-tune-cache[=yes]
                           Use the pre-tuned cached configuration if it exists.
                              It has no effect if --enable-backend=none.
@@ -4565,13 +4567,13 @@ if test "${lt_cv_nm_interface+set}" = set; then
 else
   lt_cv_nm_interface="BSD nm"
   echo "int some_variable = 0;" > conftest.$ac_ext
-  (eval echo "\"\$as_me:4568: $ac_compile\"" >&5)
+  (eval echo "\"\$as_me:4570: $ac_compile\"" >&5)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:4571: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+  (eval echo "\"\$as_me:4573: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:4574: output\"" >&5)
+  (eval echo "\"\$as_me:4576: output\"" >&5)
   cat conftest.out >&5
   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
     lt_cv_nm_interface="MS dumpbin"
@@ -5777,7 +5779,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 5780 "configure"' > conftest.$ac_ext
+  echo '#line 5782 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -7632,11 +7634,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7635: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7637: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7639: \$? = $ac_status" >&5
+   echo "$as_me:7641: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -7971,11 +7973,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7974: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7976: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7978: \$? = $ac_status" >&5
+   echo "$as_me:7980: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8076,11 +8078,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8079: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8081: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8083: \$? = $ac_status" >&5
+   echo "$as_me:8085: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -8131,11 +8133,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8134: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8136: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8138: \$? = $ac_status" >&5
+   echo "$as_me:8140: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -10934,7 +10936,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 10937 "configure"
+#line 10939 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11030,7 +11032,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11033 "configure"
+#line 11035 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -13486,6 +13488,67 @@ if test $ac_cv_defined___VADMX__ != "no"; then
 fi
 
 
+{ $as_echo "$as_me:$LINENO: checking for __mips_loongson_vector_rev defined" >&5
+$as_echo_n "checking for __mips_loongson_vector_rev defined... " >&6; }
+if test "${ac_cv_defined___mips_loongson_vector_rev+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  #ifdef __mips_loongson_vector_rev
+  int ok;
+  #else
+  choke me
+  #endif
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_cv_defined___mips_loongson_vector_rev=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_defined___mips_loongson_vector_rev=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_defined___mips_loongson_vector_rev" >&5
+$as_echo "$ac_cv_defined___mips_loongson_vector_rev" >&6; }
+if test $ac_cv_defined___mips_loongson_vector_rev != "no"; then
+  OPT_BACKEND=loongson2ef
+fi
+
+
 # Set the PLATFORM string to be the AC 'host_cpu' plus the compiler vendor
 PLATFORM=${host_cpu}-${ax_cv_c_compiler_vendor}
 
@@ -13575,6 +13638,15 @@ if test "${enable_backend+set}" = set; then
    mmx | sse | sse2 | ssse3 | altivec | vadmx)
        OPT_BACKEND=${enableval}
        AM_CFLAGS="${AM_CFLAGS} -m${OPT_BACKEND}"
+       ;;
+   loongson2ef)
+       OPT_BACKEND=${enableval}
+       # There are two arch options enabling vector extensions, but we
+       # have to pick one option of fake two different backends with the
+       # same code. Luckily, it seems there's no actual code difference
+       # between -march=loongson2e and -march=loongson2f at least not in
+       # the upcoming (FSF) gcc-4.6.0.
+       AM_CFLAGS="${AM_CFLAGS} -march=loongson2f"
        ;;
    *)
        { { $as_echo "$as_me:$LINENO: error: Bad value \"${enableval}\" for --enable-backend option" >&5
@@ -13697,6 +13769,9 @@ _ACEOF
 
           { $as_echo "$as_me:$LINENO: result: $initializer" >&5
 $as_echo "$initializer" >&6; }
+          ;;
+   loongson2ef)
+          backend_info_name="Loongson-2E and -2F"
           ;;
    *)
           backend_info_name=`echo ${OPT_BACKEND} | tr $az $AZ`

@@ -109,6 +109,9 @@
  *    - rc_vec_vadmx.h: Axis VADMX.
  *         Uses 64-bit VADMX registers.
  *         Implements the complete interface.
+ *    - rc_vec_loongson2ef.h: Loongson-2E and -2F.
+ *         Uses 64-bit vector registers.
+ *         Implements the complete interface.
  *    - rc_vec_swar.h: SIMD-Within-A-Register.
  *         Software emulation on native machine words.
  *         Implements most of the interface.
@@ -119,8 +122,9 @@
  *  is endian-independent. The MMX/SSE* implementations rely on the
  *  presence of the *mmintrin.h intrinsics headers. They are available
  *  on systems using GCC, ICC (Intel) and CL (Microsoft). The AltiVec
- *  implementation uses the altivec.h intrinsics header. VADMX-support
- *  is only available through GCC builtins.
+ *  implementation uses the altivec.h intrinsics header. The Loongson-2E
+ *  and -2F implementation uses the loongson.h intrinsics header.
+ *  VADMX-support is only available through GCC builtins.
  *
  *  @section vec_api_test Correctness Tests
  *  There are extensive tests available for the vector interface.

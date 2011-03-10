@@ -6,6 +6,8 @@ Changes regarding usage:
 savannah.nongnu.org database), causing wrong results and
 spurious overlap indications, have been fixed.
 
+- New vector backend, for Loongson-2E and -2F.
+
 Changes affecting only build, test and installation:
 - Bug #31887, exposed on MAC OS X, has been fixed.
 
