@@ -5,7 +5,7 @@ License: GNU LGPLv3+, documentation with GNU FDLv1.3+
 Name: @PACKAGE@
 Version: @VERSION@
 Release: 1%{?dist}
-Source: http://download.savannah.gnu.org/releases/rapp/%{pkg0}.tar.gz
+Source: http://download.savannah.gnu.org/releases/%{name}/%{pkg0}.tar.gz
 Group: System Environment/Libraries
 URL: @HOMESITE@
 
@@ -46,8 +46,7 @@ make all html
 make install install-html DESTDIR=$RPM_BUILD_ROOT \
  docdir=%{devpackdocdir}/user devhtmldir=%{devpackdocdir}/internals
 # No, libtool is generally not used. This from the spec lib template.
-# Neither is pkgconfig used.
-find $RPM_BUILD_ROOT '(' -name '*.la' -o -name rapp.pc ')' -exec rm -f {} ';'
+find $RPM_BUILD_ROOT '(' -name '*.la' ')' -exec rm -f {} ';'
 # Can't use %doc - it removes the directory and we have the whole docs there.
 install README NEWS $RPM_BUILD_ROOT/%{devpackdocdir}
 
@@ -60,8 +59,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(-,root,root,-)
-%{_includedir}/rapp
+%{_includedir}/%{name}
 %{_libdir}/*.so
+%{_libdir}/pkgconfig/%{name}.pc
 %docdir %{devpackdocdir}
 %{devpackdocdir}
 
