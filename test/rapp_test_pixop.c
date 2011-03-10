@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -294,6 +294,7 @@ rapp_test_pixop_driver2(int (*test)(), void (*ref)(),
     uint8_t *src_buf = rapp_malloc(dim*RAPP_TEST_HEIGHT, 0);
     uint8_t *dst_buf = rapp_malloc(dim*RAPP_TEST_HEIGHT, 0);
     uint8_t *ref_buf = rapp_malloc(dim*RAPP_TEST_HEIGHT, 0);
+    uint8_t *odst_buf = rapp_malloc(dim*RAPP_TEST_HEIGHT, 0);
     int      iter;
     bool     ok = false;
 
@@ -331,6 +332,7 @@ rapp_test_pixop_driver2(int (*test)(), void (*ref)(),
         /* Initialize the dst and ref buffers */
         rapp_test_init(dst_buf, 0, dst_dim*height, 1, false);
         memcpy(ref_buf, dst_buf, dst_dim*height);
+        memcpy(odst_buf, dst_buf, dst_dim*height);
 
         /* Call the pixel operation function */
         if ((*test)(dst_buf, dst_dim, src_buf, src_dim,
@@ -347,10 +349,12 @@ rapp_test_pixop_driver2(int (*test)(), void (*ref)(),
         if (!rapp_test_compare_u8(ref_buf, dst_dim, dst_buf,
                                   dst_dim, width, height))
         {
-            DBG("Invalid result\n");
+            DBG("Invalid result at iteration %d\n", iter);
             DBG("src_dim=%d, dst_dim=%d, width=%d, height=%d, arg=%#x\nsrc=\n",
                     src_dim, dst_dim, width, height, arg);
             rapp_test_dump_u8(src_buf, src_dim, width, height);
+            DBG("original dst=\n");
+            rapp_test_dump_u8(odst_buf, dst_dim, width, height);
             DBG("dst=\n");
             rapp_test_dump_u8(dst_buf, dst_dim, width, height);
             DBG("ref=\n");
@@ -365,6 +369,7 @@ Done:
     rapp_free(src_buf);
     rapp_free(dst_buf);
     rapp_free(ref_buf);
+    rapp_free(odst_buf);
 
     return ok;
 }
