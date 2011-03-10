@@ -17,7 +17,7 @@ backend with GCC (any non-Apple release), have been fixed.
 - Bug #31874, breaking "make uninstall DESTDIR=/some/dir" (and
 indirectly "make distcheck"), has been fixed.
 
-- Tunefiles for powerpc and powerpc64 have been added, reducing
-build time on native systems and simplifying cross-builds.
+- Tunefiles for powerpc, powerpc64 and mips64el have been added,
+reducing build time on native systems and simplifying cross-builds.
 
 rapp-0.6: Initial public release.
