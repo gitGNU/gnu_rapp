@@ -292,7 +292,8 @@ AC_ARG_ENABLE([backend],
    AS_HELP_STRING(,[ssse3:       128-bit SSSE3 vector backend])
    AS_HELP_STRING(,[altivec:     128-bit AltiVec vector backend])
    AS_HELP_STRING(,[vadmx:       64-bit VADMX vector backend])
-   AS_HELP_STRING(,[loongson2ef: 64-bit Loongson-2E and -2F vector backend])],
+   AS_HELP_STRING(,[loongson2e:  64-bit Loongson-2E vector backend])
+   AS_HELP_STRING(,[loongson2f:  64-bit Loongson-2F vector backend])],
   [case ${enableval} in
    auto)
        ;;
@@ -307,14 +308,10 @@ AC_ARG_ENABLE([backend],
        OPT_BACKEND=${enableval}
        AM_CFLAGS="${AM_CFLAGS} -m${OPT_BACKEND}"
        ;;
-   loongson2ef)
-       OPT_BACKEND=${enableval}
-       # There are two arch options enabling vector extensions, but we
-       # have to pick one option of fake two different backends with the
-       # same code. Luckily, it seems there's no actual code difference
-       # between -march=loongson2e and -march=loongson2f at least not in
-       # the upcoming (FSF) gcc-4.6.0.
-       AM_CFLAGS="${AM_CFLAGS} -march=loongson2f"
+   loongson2e | loongson2f)
+       OPT_BACKEND=loongson2ef
+       # The difference is in the object code, not the generated assembly code.
+       AM_CFLAGS="${AM_CFLAGS} -march=${enableval}"
        ;;
    *)
        AC_MSG_ERROR([[Bad value "${enableval}" for --enable-backend option]])

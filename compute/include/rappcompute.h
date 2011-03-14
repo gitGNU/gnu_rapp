@@ -362,7 +362,8 @@
  *  ones to non-developers are:
  *
  *    - <em> --enable-backend = {auto, nonvector, none, mmx, sse,
- *                               sse2, ssse3, altivec, vadmx, loongson2ef} </em> \n
+ *                               sse2, ssse3, altivec, vadmx,
+ *                               loongson2e, loongson2f} </em> \n
  *         Use the specified SIMD backend. The compiler will then set
  *         standard preprocessor flags for the SIMD extension in question.
  *         The default value @e auto will detect the SIMD backend
