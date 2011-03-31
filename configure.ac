@@ -234,6 +234,7 @@ AC_CHECK_DEFINED([__VEC__], [OPT_BACKEND=altivec])
 AC_CHECK_DEFINED([__ALTIVEC__], [OPT_BACKEND=altivec])
 AC_CHECK_DEFINED([__VADMX__], [OPT_BACKEND=vadmx])
 AC_CHECK_DEFINED([__mips_loongson_vector_rev], [OPT_BACKEND=loongson2ef])
+AC_CHECK_DEFINED([__ARM_NEON__], [OPT_BACKEND=neon])
 
 # Set the PLATFORM string to be the AC 'host_cpu' plus the compiler vendor
 PLATFORM=${host_cpu}-${ax_cv_c_compiler_vendor}
@@ -293,7 +294,8 @@ AC_ARG_ENABLE([backend],
    AS_HELP_STRING(,[altivec:     128-bit AltiVec vector backend])
    AS_HELP_STRING(,[vadmx:       64-bit VADMX vector backend])
    AS_HELP_STRING(,[loongson2e:  64-bit Loongson-2E vector backend])
-   AS_HELP_STRING(,[loongson2f:  64-bit Loongson-2F vector backend])],
+   AS_HELP_STRING(,[loongson2f:  64-bit Loongson-2F vector backend])
+   AS_HELP_STRING(,[neon:        64-bit ARM NEON vector backend])],
   [case ${enableval} in
    auto)
        ;;
@@ -312,6 +314,10 @@ AC_ARG_ENABLE([backend],
        OPT_BACKEND=loongson2ef
        # The difference is in the object code, not the generated assembly code.
        AM_CFLAGS="${AM_CFLAGS} -march=${enableval}"
+       ;;
+   neon)
+       OPT_BACKEND=${enableval}
+       AM_CFLAGS="${AM_CFLAGS} -mfloat-abi=softfp -mfpu=neon"
        ;;
    *)
        AC_MSG_ERROR([[Bad value "${enableval}" for --enable-backend option]])

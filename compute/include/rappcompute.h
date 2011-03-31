@@ -313,8 +313,8 @@
  *           --enable-backend=auto is specified, the one used is
  *           determined by predefined C preprocessor macros set by the
  *           compiler. The macros __MMX__, __SSE__, __SSE2__, __SSSE3__,
- *           __ALTIVEC__, __VEC__, __VADMX__ and __mips_loongson_vector_rev
- *           are inspected, and the last
+ *           __ALTIVEC__, __VEC__, __VADMX__, __mips_loongson_vector_rev
+ *           and __ARM_NEON__ are inspected, and the last
  *           one found in that list is used. If no backend is found, no vector
  *           implementations are compiled.
  *
@@ -363,7 +363,7 @@
  *
  *    - <em> --enable-backend = {auto, nonvector, none, mmx, sse,
  *                               sse2, ssse3, altivec, vadmx,
- *                               loongson2e, loongson2f} </em> \n
+ *                               loongson2e, loongson2f, neon} </em> \n
  *         Use the specified SIMD backend. The compiler will then set
  *         standard preprocessor flags for the SIMD extension in question.
  *         The default value @e auto will detect the SIMD backend
