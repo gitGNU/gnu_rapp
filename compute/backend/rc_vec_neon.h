@@ -58,15 +58,12 @@
             [out0] "=w" (dstv1), [out1] "=w" (dstv2) :  \
             "0" (srcv1), "1" (srcv2))
 
-#define RC_NEON_CMPEQ_(dstv, srcv1, srcv2) \
-    ((dstv) = vceq_u8(srcv1, srcv2))
-
 /* see the porting documentation for generic comments. */
 
 /**
- *  NEON have native instructions for all other hintable backend instructions.
+ *  NEON have native instructions for all implemented hintable backend macros,
+ *  so no hint-macros apply.
  */
-#define RC_VEC_HINT_GETMASKW 1
 
 /**
  *  For now the NEON registers are used in doubleword configuration.
@@ -320,7 +317,12 @@ do {                                                        \
 
 /* Binary mask operations */
 
-#define RC_VEC_GETMASKV(maskv, vec)                     \
+/**
+ *  We hide this one as an internal macro, because for reasons to be
+ *  investigated, its use fails in the main test-suite while the backend
+ *  tests succeed.
+ */
+#define RC_VEC_GETMASKV_(maskv, vec)                    \
 do {                                                    \
     int8x8_t shv_ = {0, -1, -2, -3, -4, -5, -6, -7};    \
     rc_vec_t tmp_ = vrev64_u8(vec);                     \
@@ -333,7 +335,7 @@ do {                                                    \
 #define RC_VEC_GETMASKW(maskw, vec)         \
 do {                                        \
     rc_vec_t maskv_;                        \
-    RC_VEC_GETMASKV(maskv_, vec);           \
+    RC_VEC_GETMASKV_(maskv_, vec);          \
     (maskw) = RC_TVEC_(rc_vec_t, maskv_);   \
 } while (0)
 
