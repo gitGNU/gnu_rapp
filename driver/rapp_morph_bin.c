@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -355,6 +355,18 @@ rapp_morph_isotropic(uint8_t *dst, int dst_dim,
                      const rapp_morph_seq_t  *seq,
                      void *work);
 
+/**
+ *  The same as rapp_morph_isotropic, but without parameter validation
+ *  and without the radius parameter.
+ */
+static int
+rapp_morph_isotropic_unchecked(uint8_t *dst, int dst_dim,
+                               const uint8_t *src, int src_dim,
+                               int width, int height,
+                               bool erode, bool pad,
+                               const rapp_morph_atom_t *atm,
+                               const rapp_morph_seq_t *seq, void *work);
+
 static void
 rapp_morph_separable(uint8_t *dst, int dst_dim,
                      const uint8_t *src, int src_dim,
@@ -502,15 +514,17 @@ RAPP_API(int, rapp_morph_erode_rect_bin,
         }
         else if (wrect != 1) {
             /* Run the horizontal sequence */
-            return rapp_morph_isotropic(dst, dst_dim, src, src_dim,
-                                        width, height, 2, true, false,
-                                        rapp_morph_horz_tab, &wseq, work);
+            return rapp_morph_isotropic_unchecked(dst, dst_dim, src, src_dim,
+                                                  width, height, true, false,
+                                                  rapp_morph_horz_tab, &wseq,
+                                                  work);
         }
         else if (hrect != 1) {
             /* Run the vertical sequence */
-            return rapp_morph_isotropic(dst, dst_dim, src, src_dim,
-                                        width, height, 2, true, false,
-                                        rapp_morph_vert_tab, &hseq, work);
+            return rapp_morph_isotropic_unchecked(dst, dst_dim, src, src_dim,
+                                                  width, height, true, false,
+                                                  rapp_morph_vert_tab, &hseq,
+                                                  work);
         }
     }
 
@@ -601,15 +615,17 @@ RAPP_API(int, rapp_morph_dilate_rect_bin,
         }
         else if (wrect != 1) {
             /* Run the horizontal sequence */
-            return rapp_morph_isotropic(dst, dst_dim, src, src_dim,
-                                        width, height, 2, false, false,
-                                        rapp_morph_horz_tab, &wseq, work);
+            return rapp_morph_isotropic_unchecked(dst, dst_dim, src, src_dim,
+                                                  width, height, false, false,
+                                                  rapp_morph_horz_tab, &wseq,
+                                                  work);
         }
         else if (hrect != 1) {
             /* Run the vertical sequence */
-            return rapp_morph_isotropic(dst, dst_dim, src, src_dim,
-                                        width, height, 2, false, false,
-                                        rapp_morph_vert_tab, &hseq, work);
+            return rapp_morph_isotropic_unchecked(dst, dst_dim, src, src_dim,
+                                                  width, height, false, false,
+                                                  rapp_morph_vert_tab, &hseq,
+                                                  work);
         }
     }
 
@@ -734,7 +750,7 @@ RAPP_API(int, rapp_morph_dilate_disc_bin,
  */
 
 /**
- *  Perform an isotropic operation.
+ *  Perform an isotropic operation, with parameter validation.
  */
 static int
 rapp_morph_isotropic(uint8_t *dst, int dst_dim,
@@ -745,9 +761,6 @@ rapp_morph_isotropic(uint8_t *dst, int dst_dim,
                      const rapp_morph_seq_t  *seq,
                      void *work)
 {
-    uint8_t *tmp1;
-    uint8_t *tmp2;
-    int      dim;
     int      minxpadding = rc_align((MIN(radius - 1, 16) + 7) / 8);
     int      minypadding = MIN(radius - 1, 16);
 
@@ -795,6 +808,27 @@ rapp_morph_isotropic(uint8_t *dst, int dst_dim,
     if (!work) {
         return RAPP_ERR_PARM_NULL;
     }
+
+    return rapp_morph_isotropic_unchecked(dst, dst_dim, src, src_dim,
+                                          width, height,
+                                          erode, pad, atm, seq, work);
+}
+
+/**
+ *  Perform an isotropic operation, without parameter validation.
+ */
+static int
+rapp_morph_isotropic_unchecked(uint8_t *dst, int dst_dim,
+                               const uint8_t *src, int src_dim,
+                               int width, int height,
+                               bool erode, bool pad,
+                               const rapp_morph_atom_t *atm,
+                               const rapp_morph_seq_t *seq,
+                               void *work)
+{
+    int dim;
+    uint8_t *tmp1;
+    uint8_t *tmp2;
 
     /* Initialize the temporary working buffers */
     rapp_morph_setup(&tmp1, &tmp2, &dim, width, height, work);
