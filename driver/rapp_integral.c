@@ -53,6 +53,7 @@ RAPP_API(int, rapp_integral_sum_bin_u8,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -62,6 +63,7 @@ RAPP_API(int, rapp_integral_sum_bin_u8,
                                        rc_align((width + 7) / 8),
                                        0, rc_align(width)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -87,6 +89,7 @@ RAPP_API(int, rapp_integral_sum_bin_u16,
          int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -96,6 +99,7 @@ RAPP_API(int, rapp_integral_sum_bin_u16,
                                        rc_align((width + 7) / 8),
                                        0, rc_align(2*width)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -121,6 +125,7 @@ RAPP_API(int, rapp_integral_sum_bin_u32,
          int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -130,6 +135,7 @@ RAPP_API(int, rapp_integral_sum_bin_u32,
                                        rc_align((width + 7) / 8),
                                        0, rc_align(4*width)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -155,6 +161,7 @@ RAPP_API(int, rapp_integral_sum_u8_u16,
          int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -164,6 +171,7 @@ RAPP_API(int, rapp_integral_sum_u8_u16,
                                        rc_align(width),
                                        0, rc_align(2*width)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -189,6 +197,7 @@ RAPP_API(int, rapp_integral_sum_u8_u32,
          int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -198,6 +207,7 @@ RAPP_API(int, rapp_integral_sum_u8_u32,
                                        rc_align(width),
                                        0, rc_align(4*width)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 

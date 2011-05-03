@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2009, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -53,6 +53,7 @@ RAPP_API(int, rapp_reduce_1x2_rk1_bin,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -61,6 +62,7 @@ RAPP_API(int, rapp_reduce_1x2_rk1_bin,
                                      rc_align((width + 15) / 16),
                                      rc_align((width + 7) / 8)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -88,6 +90,7 @@ RAPP_API(int, rapp_reduce_1x2_rk2_bin,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -96,6 +99,7 @@ RAPP_API(int, rapp_reduce_1x2_rk2_bin,
                                      rc_align((width + 15) / 16),
                                      rc_align((width + 7) / 8)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -123,6 +127,7 @@ RAPP_API(int, rapp_reduce_2x1_rk1_bin,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -132,6 +137,7 @@ RAPP_API(int, rapp_reduce_2x1_rk1_bin,
                                      rc_align((width + 7) / 8),
                                      rc_align((width + 7) / 8)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -159,6 +165,7 @@ RAPP_API(int, rapp_reduce_2x1_rk2_bin,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -168,6 +175,7 @@ RAPP_API(int, rapp_reduce_2x1_rk2_bin,
                                      rc_align((width + 7) / 8),
                                      rc_align((width + 7) / 8)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -195,6 +203,7 @@ RAPP_API(int, rapp_reduce_2x2_rk1_bin,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -204,6 +213,7 @@ RAPP_API(int, rapp_reduce_2x2_rk1_bin,
                                      rc_align((width + 15) / 16),
                                      rc_align((width + 7) / 8)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -231,6 +241,7 @@ RAPP_API(int, rapp_reduce_2x2_rk2_bin,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -240,6 +251,7 @@ RAPP_API(int, rapp_reduce_2x2_rk2_bin,
                                      rc_align((width + 15) / 16),
                                      rc_align((width + 7) / 8)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -267,6 +279,7 @@ RAPP_API(int, rapp_reduce_2x2_rk3_bin,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -276,6 +289,7 @@ RAPP_API(int, rapp_reduce_2x2_rk3_bin,
                                      rc_align((width + 15) / 16),
                                      rc_align((width + 7) / 8)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -303,6 +317,7 @@ RAPP_API(int, rapp_reduce_2x2_rk4_bin,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -312,6 +327,7 @@ RAPP_API(int, rapp_reduce_2x2_rk4_bin,
                                      rc_align((width + 15) / 16),
                                      rc_align((width + 7) / 8)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 

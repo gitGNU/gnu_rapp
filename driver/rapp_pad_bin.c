@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -66,6 +66,7 @@ RAPP_API(int, rapp_pad_align_bin,
     int right = 8*RC_ALIGNMENT - (left + width - 1) % (8*RC_ALIGNMENT) - 1;
 
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -97,6 +98,7 @@ RAPP_API(int, rapp_pad_const_bin,
     int      vlen; /* Vector-aligned row length */
 
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -137,6 +139,7 @@ RAPP_API(int, rapp_pad_clamp_bin,
     int      y, i;
 
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 

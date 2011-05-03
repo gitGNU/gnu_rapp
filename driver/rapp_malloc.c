@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -34,6 +34,7 @@
 #include "rapp_api.h"    /* API symbol macro */
 #include "rapp_util.h"   /* Validation       */
 #include "rapp_malloc.h" /* Malloc API       */
+#include "rapp_error_int.h"
 
 /*
  * -------------------------------------------------------------
@@ -53,6 +54,7 @@ const unsigned int rapp_alignment = RC_ALIGNMENT;
 RAPP_API(size_t, rapp_align, (size_t size))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return (size_t) -1;
     }
 
@@ -62,6 +64,7 @@ RAPP_API(size_t, rapp_align, (size_t size))
 RAPP_API(void*, rapp_malloc, (size_t size, unsigned hint))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return NULL;
     }
 

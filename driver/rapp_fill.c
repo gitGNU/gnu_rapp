@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -104,6 +104,7 @@ rapp_fill_driver(uint8_t *restrict dst, int dst_dim,
     int cnt = 0;     /* Iteration counter         */
 
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -111,6 +112,7 @@ rapp_fill_driver(uint8_t *restrict dst, int dst_dim,
     if (!RAPP_VALIDATE_RESTRICT(dst, dst_dim, map, map_dim, height,
                                 (width + 7) / 8))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -124,6 +126,7 @@ rapp_fill_driver(uint8_t *restrict dst, int dst_dim,
     if (xseed < 0 || xseed >= width ||
         yseed < 0 || yseed >= height)
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_RANGE;
     }
 

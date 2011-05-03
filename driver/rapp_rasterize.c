@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -34,6 +34,7 @@
 #include "rapp_api.h"        /* API symbol macro  */
 #include "rapp_util.h"       /* Validation        */
 #include "rapp_error.h"      /* Error codes       */
+#include "rapp_error_int.h"
 #include "rapp_rasterize.h"  /* Rasterization API */
 
 
@@ -50,10 +51,12 @@ RAPP_API(int, rapp_rasterize_4conn,
          (char *line, int x0, int y0, int x1, int y1))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
     if (!line) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_NULL;
     }
 
@@ -68,10 +71,12 @@ RAPP_API(int, rapp_rasterize_8conn,
          (char *line, int x0, int y0, int x1, int y1))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
     if (!line) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_NULL;
     }
 

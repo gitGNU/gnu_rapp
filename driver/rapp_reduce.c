@@ -53,6 +53,7 @@ RAPP_API(int, rapp_reduce_1x2_u8,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -60,6 +61,7 @@ RAPP_API(int, rapp_reduce_1x2_u8,
     if (!RAPP_VALIDATE_RESTRICT_PLUS(dst, dst_dim, src, src_dim, height,
                                      rc_align(width/2), rc_align(width)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -86,6 +88,7 @@ RAPP_API(int, rapp_reduce_2x1_u8,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -94,6 +97,7 @@ RAPP_API(int, rapp_reduce_2x1_u8,
                                      dst_dim*(height/2 - 1) + rc_align(width),
                                      rc_align(width)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -120,6 +124,7 @@ RAPP_API(int, rapp_reduce_2x2_u8,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -129,6 +134,7 @@ RAPP_API(int, rapp_reduce_2x2_u8,
                                       rc_align(width/2)),
                                      rc_align(width)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 

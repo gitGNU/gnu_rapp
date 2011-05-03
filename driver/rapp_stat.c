@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -51,6 +51,7 @@ RAPP_API(int32_t, rapp_stat_sum_bin,
          (const uint8_t *buf, int dim, int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -70,6 +71,7 @@ RAPP_API(int32_t, rapp_stat_sum_u8,
          (const uint8_t *buf, int dim, int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -90,6 +92,7 @@ RAPP_API(int, rapp_stat_sum2_u8,
           int width, int height, uintmax_t sum[2]))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -98,6 +101,7 @@ RAPP_API(int, rapp_stat_sum2_u8,
         return rapp_error_u8(buf, dim, width, height);
     }
     if (!sum) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_NULL;
     }
 
@@ -116,6 +120,7 @@ RAPP_API(int, rapp_stat_xsum_u8,
           int width, int height, uintmax_t sum[5]))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -127,6 +132,7 @@ RAPP_API(int, rapp_stat_xsum_u8,
                                 src2, src2_dim, width, height);
     }
     if (!sum) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_NULL;
     }
 
@@ -140,6 +146,7 @@ RAPP_API(int, rapp_stat_min_bin,
          (const uint8_t *buf, int dim, int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -156,6 +163,7 @@ RAPP_API(int, rapp_stat_max_bin,
          (const uint8_t *buf, int dim, int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -172,6 +180,7 @@ RAPP_API(int, rapp_stat_min_u8,
          (const uint8_t *buf, int dim, int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -188,6 +197,7 @@ RAPP_API(int, rapp_stat_max_u8,
          (const uint8_t *buf, int dim, int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 

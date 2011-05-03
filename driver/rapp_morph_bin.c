@@ -420,10 +420,12 @@ RAPP_API(int, rapp_morph_worksize_bin,
          (int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
     if (width < 1 || height < 1) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_IMG_SIZE;
     }
 
@@ -444,6 +446,7 @@ RAPP_API(int, rapp_morph_erode_rect_bin,
     int minypadding = MIN(hrect / 2, 16);
 
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -454,6 +457,7 @@ RAPP_API(int, rapp_morph_erode_rect_bin,
                                        rc_align((width + 7) / 8),
                                        0, rc_align((width + 7) / 8)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -464,6 +468,7 @@ RAPP_API(int, rapp_morph_erode_rect_bin,
                                        0,
                                        rc_morph_worksize_bin(width, height)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -471,6 +476,7 @@ RAPP_API(int, rapp_morph_erode_rect_bin,
                                      rc_align((width + 7) / 8),
                                      rc_morph_worksize_bin(width, height)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -484,9 +490,11 @@ RAPP_API(int, rapp_morph_erode_rect_bin,
     if (wrect < 1 || wrect > 63 ||
         hrect < 1 || hrect > 63)
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_RANGE;
     }
     else if (!work) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_NULL;
     }
 
@@ -544,6 +552,7 @@ RAPP_API(int, rapp_morph_dilate_rect_bin,
     int minypadding = MIN(hrect / 2, 16);
 
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -554,6 +563,7 @@ RAPP_API(int, rapp_morph_dilate_rect_bin,
                                        rc_align((width + 7) / 8),
                                        0, rc_align((width + 7) / 8)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -564,6 +574,7 @@ RAPP_API(int, rapp_morph_dilate_rect_bin,
                                        0,
                                        rc_morph_worksize_bin(width, height)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -571,6 +582,7 @@ RAPP_API(int, rapp_morph_dilate_rect_bin,
                                      rc_align((width + 7) / 8),
                                      rc_morph_worksize_bin(width, height)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -584,9 +596,11 @@ RAPP_API(int, rapp_morph_dilate_rect_bin,
     if (wrect < 1 || wrect > 63 ||
         hrect < 1 || hrect > 63)
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_RANGE;
     }
     else if (!work) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_NULL;
     }
 
@@ -763,6 +777,7 @@ rapp_morph_isotropic(uint8_t *dst, int dst_dim,
     int      minypadding = MIN(radius - 1, 16);
 
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -773,6 +788,7 @@ rapp_morph_isotropic(uint8_t *dst, int dst_dim,
                                        rc_align((width + 7) / 8),
                                        0, rc_align((width + 7) / 8)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -783,6 +799,7 @@ rapp_morph_isotropic(uint8_t *dst, int dst_dim,
                                        0,
                                        rc_morph_worksize_bin(width, height)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -790,6 +807,7 @@ rapp_morph_isotropic(uint8_t *dst, int dst_dim,
                                      rc_align((width + 7) / 8),
                                      rc_morph_worksize_bin(width, height)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -801,9 +819,11 @@ rapp_morph_isotropic(uint8_t *dst, int dst_dim,
                                   src, src_dim, width + 2*RC_ALIGNMENT, height);
     }
     if (radius < 2 || radius > 32) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_RANGE;
     }
     if (!work) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_NULL;
     }
 

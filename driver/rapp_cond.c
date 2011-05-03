@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -52,6 +52,7 @@ RAPP_API(int, rapp_cond_set_u8,
           int width, int height, unsigned value))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -60,6 +61,7 @@ RAPP_API(int, rapp_cond_set_u8,
                                      rc_align(width),
                                      rc_align((width + 7) / 8)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -70,6 +72,7 @@ RAPP_API(int, rapp_cond_set_u8,
         return rapp_error_u8_bin(dst, dst_dim, map, map_dim, width, height);
     }
     if (value > 0xff) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_RANGE;
     }
 
@@ -90,6 +93,7 @@ RAPP_API(int, rapp_cond_copy_u8,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -98,10 +102,12 @@ RAPP_API(int, rapp_cond_copy_u8,
                                      rc_align(width),
                                      rc_align((width + 7) / 8)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
     if (!RAPP_VALIDATE_RESTRICT(dst, dst_dim, src, src_dim, height, width)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 

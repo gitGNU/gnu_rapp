@@ -395,6 +395,7 @@ rapp_bitblt_driver(uint8_t *restrict dst_orig, int dst_dim, int dst_off_orig,
 
     /* Check arguments */
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -415,6 +416,7 @@ rapp_bitblt_driver(uint8_t *restrict dst_orig, int dst_dim, int dst_off_orig,
                                      (RAPP_BITBLT_BLOCKS(width, src_off) *
                                       RC_ALIGNMENT)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 

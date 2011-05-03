@@ -341,15 +341,27 @@ AM_CONDITIONAL([INSTALLALL_INCLUDES_HTML],
 
 # Check for debug option
 OPT_DEBUG=default
+asserted_returns=0
 AC_ARG_ENABLE([debug],
-  [AS_HELP_STRING([[--enable-debug@<:@=no@:>@]], [Enable debugging])],
+  [AS_HELP_STRING([[--enable-debug@<:@=no@:>@]], [Enable debugging:])
+   AS_HELP_STRING(,[no:               Disable debugging])
+   AS_HELP_STRING(,[yes:              Enable debugging])
+   AS_HELP_STRING(,[asserted-returns: For erroneous parameters,]
+                   [ call abort() instead of returning])],
   [OPT_DEBUG=${enableval}
    case ${enableval} in
    yes|no) ;;
+   asserted-returns)
+       OPT_DEBUG=yes
+       asserted_returns=1
+       ;;
    *)
        AC_MSG_ERROR([[Bad value "${enableval}" for --enable-debug option]])
        ;;
    esac])
+AC_DEFINE_UNQUOTED([RC_ASSERTED_RETURNS], [${asserted_returns}],
+                   [Define to 1 to not return but call abort()]
+                   [ for erroneous parameters])
 
 # Check for vector backend option.
 # Unfortunately, the second field in the help-strings will

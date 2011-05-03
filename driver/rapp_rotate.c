@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -72,6 +72,7 @@ RAPP_API(int, rapp_rotate_cw_u8,
     int yb, y;
 
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -80,6 +81,7 @@ RAPP_API(int, rapp_rotate_cw_u8,
                                      dst_dim*(width - 1) + rc_align(height),
                                      rc_align(width)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -154,6 +156,7 @@ RAPP_API(int, rapp_rotate_ccw_u8,
     int yb, y;
 
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -162,6 +165,7 @@ RAPP_API(int, rapp_rotate_ccw_u8,
                                      dst_dim*(width - 1) + rc_align(height),
                                      rc_align(width)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 

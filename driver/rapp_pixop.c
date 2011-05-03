@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -52,6 +52,7 @@ RAPP_API(int, rapp_pixop_set_u8,
          (uint8_t *buf, int dim, int width, int height, unsigned value))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -60,6 +61,7 @@ RAPP_API(int, rapp_pixop_set_u8,
         return rapp_error_u8(buf, dim, width, height);
     }
     if (value > 0xff) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_RANGE;
     }
 
@@ -77,6 +79,7 @@ RAPP_API(int, rapp_pixop_not_u8,
          (uint8_t *buf, int dim, int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -99,6 +102,7 @@ RAPP_API(int, rapp_pixop_flip_u8,
          (uint8_t *buf, int dim, int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -122,6 +126,7 @@ RAPP_API(int, rapp_pixop_lut_u8,
           int width, int height, const uint8_t *restrict lut))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -130,6 +135,7 @@ RAPP_API(int, rapp_pixop_lut_u8,
         return rapp_error_u8(buf, dim, width, height);
     }
     if (!lut) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_NULL;
     }
 
@@ -147,6 +153,7 @@ RAPP_API(int, rapp_pixop_abs_u8,
          (uint8_t *buf, int dim, int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -169,6 +176,7 @@ RAPP_API(int, rapp_pixop_addc_u8,
          (uint8_t *buf, int dim, int width, int height, int value))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -177,6 +185,7 @@ RAPP_API(int, rapp_pixop_addc_u8,
         return rapp_error_u8(buf, dim, width, height);
     }
     if (abs(value) > 0xff) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_RANGE;
     }
 
@@ -195,6 +204,7 @@ RAPP_API(int, rapp_pixop_lerpc_u8,
           int height, unsigned value, unsigned alpha8))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -203,6 +213,7 @@ RAPP_API(int, rapp_pixop_lerpc_u8,
         return rapp_error_u8(buf, dim, width, height);
     }
     if (value > 0xff || alpha8 > 0x100) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_RANGE;
     }
 
@@ -234,6 +245,7 @@ RAPP_API(int, rapp_pixop_lerpnc_u8,
           int height, unsigned value, unsigned alpha8))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -242,6 +254,7 @@ RAPP_API(int, rapp_pixop_lerpnc_u8,
         return rapp_error_u8(buf, dim, width, height);
     }
     if (value > 0xff || alpha8 > 0x100) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_RANGE;
     }
 
@@ -279,11 +292,13 @@ RAPP_API(int, rapp_pixop_copy_u8,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
     /* Validate arguments */
     if (!RAPP_VALIDATE_RESTRICT(dst, dst_dim, src, src_dim, height, width)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -311,11 +326,13 @@ RAPP_API(int, rapp_pixop_add_u8,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
     /* Validate arguments */
     if (!RAPP_VALIDATE_RESTRICT(dst, dst_dim, src, src_dim, height, width)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -343,11 +360,13 @@ RAPP_API(int, rapp_pixop_avg_u8,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
     /* Validate arguments */
     if (!RAPP_VALIDATE_RESTRICT(dst, dst_dim, src, src_dim, height, width)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -375,11 +394,13 @@ RAPP_API(int, rapp_pixop_sub_u8,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
     /* Validate arguments */
     if (!RAPP_VALIDATE_RESTRICT(dst, dst_dim, src, src_dim, height, width)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -407,11 +428,13 @@ RAPP_API(int, rapp_pixop_subh_u8,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
     /* Validate arguments */
     if (!RAPP_VALIDATE_RESTRICT(dst, dst_dim, src, src_dim, height, width)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -439,11 +462,13 @@ RAPP_API(int, rapp_pixop_suba_u8,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
     /* Validate arguments */
     if (!RAPP_VALIDATE_RESTRICT(dst, dst_dim, src, src_dim, height, width)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -471,11 +496,13 @@ RAPP_API(int, rapp_pixop_lerp_u8,
           int width, int height, unsigned alpha8))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
     /* Validate arguments */
     if (!RAPP_VALIDATE_RESTRICT(dst, dst_dim, src, src_dim, height, width)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -488,6 +515,7 @@ RAPP_API(int, rapp_pixop_lerp_u8,
     }
     if (alpha8 > 0x100) {
         /* Return the error code */
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_RANGE;
     }
 
@@ -521,11 +549,13 @@ RAPP_API(int, rapp_pixop_lerpn_u8,
           int width, int height, unsigned alpha8))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
     /* Validate arguments */
     if (!RAPP_VALIDATE_RESTRICT(dst, dst_dim, src, src_dim, height, width)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -537,7 +567,7 @@ RAPP_API(int, rapp_pixop_lerpn_u8,
                                 src, src_dim, width, height);
     }
     if (alpha8 > 0x100) {
-        /* Return the error code */
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_RANGE;
     }
 
@@ -571,11 +601,13 @@ RAPP_API(int, rapp_pixop_lerpi_u8,
           int width, int height, unsigned alpha8))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
     /* Validate arguments */
     if (!RAPP_VALIDATE_RESTRICT(dst, dst_dim, src, src_dim, height, width)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -587,7 +619,7 @@ RAPP_API(int, rapp_pixop_lerpi_u8,
                                 src, src_dim, width, height);
     }
     if (alpha8 > 0x100) {
-        /* Return the error code */
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_RANGE;
     }
 
@@ -621,11 +653,13 @@ RAPP_API(int, rapp_pixop_norm_u8,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
     /* Validate arguments */
     if (!RAPP_VALIDATE_RESTRICT(dst, dst_dim, src, src_dim, height, width)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 

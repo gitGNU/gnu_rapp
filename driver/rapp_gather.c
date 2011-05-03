@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -54,6 +54,7 @@ RAPP_API(int, rapp_gather_u8,
           int width, int height, int rows))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -63,6 +64,7 @@ RAPP_API(int, rapp_gather_u8,
                                       /* Length unknown, assume 1 */
                                       1), rc_align(width)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
@@ -71,23 +73,28 @@ RAPP_API(int, rapp_gather_u8,
                                       /* Length unknown, assume 1 */
                                       1), rc_align((width + 7) / 8)))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
     if (!pack) {
         /* The pack buffer must be non-NULL */
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_BUF_NULL;
     }
     if ((uintptr_t)pack % RC_ALIGNMENT != 0) {
         /* The pack buffer must be aligned */
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_BUF_ALIGN;
     }
     if (pack_dim <= 0 && rows > 1) {
         /* The pack dim must be positive if more than one row */
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_IMG_SIZE;
     }
     if (pack_dim % RC_ALIGNMENT != 0) {
         /* The pack dim must be aligned */
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_DIM_ALIGN;
     }
     if (!RAPP_VALIDATE_U8 (src, src_dim, width, height) ||
@@ -98,6 +105,7 @@ RAPP_API(int, rapp_gather_u8,
     }
     if (rows < 1) {
         /* The number of rows must be at least one */
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_RANGE;
     }
 

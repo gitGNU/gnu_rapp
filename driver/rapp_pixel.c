@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -34,6 +34,7 @@
 #include "rapp_api.h"     /* API symbol macro    */
 #include "rapp_util.h"    /* RAPP_OK             */
 #include "rapp_error.h"   /* Error codes         */
+#include "rapp_error_int.h"
 #include "rapp_pixel.h"   /* Pixel access API    */
 
 /*
@@ -46,16 +47,20 @@ RAPP_API(int, rapp_pixel_get_bin,
          (const uint8_t *buf, int dim, int off, int x, int y))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
     if (!buf) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_BUF_NULL;
     }
     if (y != 0 && dim <= 0) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_IMG_SIZE;
     }
     if (off & ~7) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_BUF_OFFSET;
     }
 
@@ -66,19 +71,24 @@ RAPP_API(int, rapp_pixel_set_bin,
          (uint8_t *buf, int dim, int off, int x, int y, int value))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
     if (!buf) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_BUF_NULL;
     }
     if (y != 0 && dim <= 0) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_IMG_SIZE;
     }
     if (off & ~7) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_BUF_OFFSET;
     }
     if (value & ~1) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_RANGE;
     }
 
@@ -91,13 +101,16 @@ RAPP_API(int, rapp_pixel_get_u8,
          (const uint8_t *buf, int dim, int x, int y))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
     if (!buf) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_BUF_NULL;
     }
     if (y != 0 && dim <= 0) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_IMG_SIZE;
     }
 
@@ -108,16 +121,20 @@ RAPP_API(int, rapp_pixel_set_u8,
          (uint8_t *buf, int dim, int x, int y, int value))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
     if (!buf) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_BUF_NULL;
     }
     if (y != 0 && dim <= 0) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_IMG_SIZE;
     }
     if (value & ~0xff) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_RANGE;
     }
 

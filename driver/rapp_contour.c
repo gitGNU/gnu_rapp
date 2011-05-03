@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -65,6 +65,7 @@ RAPP_API(int, rapp_contour_4conn_bin,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -73,16 +74,20 @@ RAPP_API(int, rapp_contour_4conn_bin,
         !RAPP_VALIDATE_RESTRICT_PLUS(buf, dim, contour, 0, height,
                                      rc_align((width + 7) / 8), len))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
     if (!origin) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_NULL;
     }
     if (!RAPP_CONTOUR_VALD(contour, len)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_RANGE;
     }
     if (!RAPP_VALIDATE_BIN(buf, dim, width, height)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return rapp_error_bin(buf, dim, width, height);
     }
 
@@ -99,6 +104,7 @@ RAPP_API(int, rapp_contour_8conn_bin,
           int width, int height))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -107,13 +113,16 @@ RAPP_API(int, rapp_contour_8conn_bin,
         !RAPP_VALIDATE_RESTRICT_PLUS(buf, dim, contour, 0, height,
                                      rc_align((width + 7) / 8), len))
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
 
     if (!origin) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_NULL;
     }
     if (!RAPP_CONTOUR_VALD(contour, len)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_RANGE;
     }
     if (!RAPP_VALIDATE_BIN(buf, dim, width, height)) {

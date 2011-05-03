@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -150,7 +150,17 @@ int
 rapp_error_u8_u32(const uint8_t *buf1, int dim1, int width1, int height1,
                   const uint32_t *buf2, int dim2, int width2, int height2);
 
+/**
+ *  Just call abort.
+ */
+void
+rapp_abort(void);
 
+#if RC_ASSERTED_RETURNS
+#define RAPP_ABORT_FOR_ASSERTED_RETURNS() rapp_abort()
+#else
+#define RAPP_ABORT_FOR_ASSERTED_RETURNS()
+#endif
 
 #ifdef __cplusplus
 };

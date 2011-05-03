@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -91,18 +91,22 @@ int
 rapp_error_bin(const uint8_t *buf, int dim, int width, int height)
 {
     if (!buf) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_BUF_NULL;
     }
     if (RAPP_ERROR_ALIGNED(buf)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_BUF_ALIGN;
     }
     if (RAPP_ERROR_ALIGNED(dim)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_DIM_ALIGN;
     }
     if (width <= 0              ||
         ((width + 7) / 8) > dim ||
         height <= 0)
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_IMG_SIZE;
     }
 
@@ -117,18 +121,22 @@ rapp_error_noalign_bin(const uint8_t *buf, int dim,
                        int off, int width, int height)
 {
     if (!buf) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_BUF_NULL;
     }
     if (RAPP_ERROR_ALIGNED(dim)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_DIM_ALIGN;
     }
     if (off < 0 || off > 7) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_BUF_OFFSET;
     }
     if (width <= 0              ||
         ((width + 7) / 8) > dim ||
         height <= 0)
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_IMG_SIZE;
     }
 
@@ -142,18 +150,22 @@ int
 rapp_error_u8(const uint8_t *buf, int dim, int width, int height)
 {
     if (!buf) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_BUF_NULL;
     }
     if (RAPP_ERROR_ALIGNED(buf)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_BUF_ALIGN;
     }
     if (RAPP_ERROR_ALIGNED(dim)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_DIM_ALIGN;
     }
     if (width  <= 0  ||
         width  > dim ||
         height <= 0)
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_IMG_SIZE;
     }
 
@@ -167,18 +179,22 @@ int
 rapp_error_u16(const uint16_t *buf, int dim, int width, int height)
 {
     if (!buf) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_BUF_NULL;
     }
     if (RAPP_ERROR_ALIGNED(buf)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_BUF_ALIGN;
     }
     if (RAPP_ERROR_ALIGNED(dim)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_DIM_ALIGN;
     }
     if (width  <= 0  ||
         width  > dim / 2 ||
         height <= 0)
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_IMG_SIZE;
     }
 
@@ -192,18 +208,22 @@ int
 rapp_error_u32(const uint32_t *buf, int dim, int width, int height)
 {
     if (!buf) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_BUF_NULL;
     }
     if (RAPP_ERROR_ALIGNED(buf)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_BUF_ALIGN;
     }
     if (RAPP_ERROR_ALIGNED(dim)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_DIM_ALIGN;
     }
     if (width  <= 0  ||
         width  > dim / 4 ||
         height <= 0)
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_IMG_SIZE;
     }
 
@@ -218,15 +238,18 @@ int
 rapp_error_noalign_u8(const uint8_t *buf, int dim, int width, int height)
 {
     if (!buf) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_BUF_NULL;
     }
     if (RAPP_ERROR_ALIGNED(dim)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_DIM_ALIGN;
     }
     if (width  <= 0  ||
         width  > dim ||
         height <= 0)
     {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_IMG_SIZE;
     }
 
@@ -380,3 +403,17 @@ rapp_error_u8_u32(const uint8_t *buf1, int dim1, int width1, int height1,
 
     return err;
 }
+
+#if RC_ASSERTED_RETURNS
+/**
+ *  Call abort.
+ *  Indirected to improve backtrace quality for gcc versions where calls
+ *  to abort() otherwise negatively affect the debug quality of the
+ *  current stack-frame.
+ */
+void
+rapp_abort(void)
+{
+  abort();
+}
+#endif /* RC_ASSERTED_RETURNS */

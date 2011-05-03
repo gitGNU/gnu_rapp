@@ -388,6 +388,16 @@
  *    - <em> --enable-debug </em> \n
  *         Build in debug mode (default no). This enables asserts and debugging
  *         information, and disables optimization. The default is @e no.
+ *         There is an optional argument, which can be one of @e yes, @e no,
+ *         and @e asserted-returns. The latter value is like @e yes, but also
+ *         forces each function in the RAPP API to call abort() instead of
+ *         returning an error code, if a parameter is found to be erroneous.
+ *         This may be helpful when debugging upper-layer code, particularly
+ *         when poor error handling is suspected. Don't use it for regular
+ *         development, as the test-suite is deliberately not adopted to its
+ *         use and will fail early. (Error handling can't be properly tested
+ *         with asserted returns anyway, so better to not add any related
+ *         complexity at all.)
  *
  *  For the full set of options, use @c configure @c --help.
  *

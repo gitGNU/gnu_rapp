@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -52,6 +52,7 @@ RAPP_API(int, rapp_moment_order1_bin,
           int width, int height, uint32_t mom[3]))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -60,6 +61,7 @@ RAPP_API(int, rapp_moment_order1_bin,
         return rapp_error_bin(buf, dim, width, height);
     }
     if (!mom) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_NULL;
     }
 
@@ -77,6 +79,7 @@ RAPP_API(int, rapp_moment_order2_bin,
           int width, int height, uintmax_t mom[6]))
 {
     if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_UNINITIALIZED;
     }
 
@@ -85,6 +88,7 @@ RAPP_API(int, rapp_moment_order2_bin,
         return rapp_error_bin(buf, dim, width, height);
     }
     if (!mom) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_PARM_NULL;
     }
 
