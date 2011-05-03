@@ -24,5 +24,8 @@ backend with GCC (any non-Apple release).
 - Bug #31874, breaking "make uninstall DESTDIR=/some/dir" (and
 indirectly "make distcheck").
 
+- Bug #32835, breaking "make all" for sparc64 at the final
+benchmark step (i.e. before tunefiles were added).
+
 
 rapp-0.6: Initial public release.
