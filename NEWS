@@ -8,6 +8,7 @@ spurious overlap indications, have been fixed.
 
 - New vector backend, for Loongson-2E and -2F.
 - New vector backend, for ARM NEON.
+- New vector backend, for SPARC VIS.
 
 Changes affecting only build, test and installation:
 - Bug #31887, exposed on MAC OS X, has been fixed.
