@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -464,7 +464,6 @@ rc_stat_xsum_u8(const uint8_t *restrict src1, int src1_dim,
     else {
         rc_stat_xsum_acc(src1, src1_dim, src2, src2_dim, len, height, sum);
     }
-    RC_VEC_CLEANUP();
 }
 #endif
 #endif
@@ -625,6 +624,8 @@ rc_stat_xsum_gen(const uint8_t *restrict src1, int src1_dim,
     sum[2] = s11;
     sum[3] = s22;
     sum[4] = s12;
+
+    RC_VEC_CLEANUP();
 }
 
 
@@ -714,6 +715,8 @@ rc_stat_xsum_acc(const uint8_t *restrict src1, int src1_dim,
     sum[2] = s11;
     sum[3] = s22;
     sum[4] = s12;
+
+    RC_VEC_CLEANUP();
 }
 #endif
 

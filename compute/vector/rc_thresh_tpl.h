@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -204,7 +204,6 @@ do {                                                             \
             RC_WORD_STORE(&(dst)[j_], acc_);                     \
         }                                                        \
     }                                                            \
-    RC_VEC_CLEANUP();                                            \
 } while (0)
 
 /**
@@ -357,7 +356,6 @@ do {                                                                 \
             RC_VEC_STORE(&(dst)[j_], acc_);                          \
         }                                                            \
     }                                                                \
-    RC_VEC_CLEANUP();                                                \
 } while (0)
 
 /**

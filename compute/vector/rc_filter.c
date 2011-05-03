@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -914,6 +914,8 @@ rc_filter_diff_2x2_magn_u8(uint8_t *restrict dst, int dst_dim,
     int len = tot / MAX(2, RC_UNROLL(rc_filter_diff_2x2_magn_u8));
     int rem = tot % MAX(2, RC_UNROLL(rc_filter_diff_2x2_magn_u8));
     int y;
+
+    RC_VEC_DECLARE();
 
     for (y = 0; y < height; y++) {
         rc_vec_t v11, v12;
