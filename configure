@@ -13697,7 +13697,9 @@ $as_echo "$as_me: error: Bad value \"${withval}\" for --with-internal-tune-gener
 fi
 
 
-# Determine the vector backend from the predefined macros
+# Determine the vector backend from predefined macros and other observations.
+{ $as_echo "$as_me:$LINENO: Scanning default present vector support" >&5
+$as_echo "$as_me: Scanning default present vector support" >&6;}
 
 { $as_echo "$as_me:$LINENO: checking for __MMX__ defined" >&5
 $as_echo_n "checking for __MMX__ defined... " >&6; }
@@ -13818,6 +13820,128 @@ fi
 $as_echo "$ac_cv_defined___SSE__" >&6; }
 if test $ac_cv_defined___SSE__ != "no"; then
   OPT_BACKEND=sse
+fi
+
+
+{ $as_echo "$as_me:$LINENO: checking for __mips_loongson_vector_rev defined" >&5
+$as_echo_n "checking for __mips_loongson_vector_rev defined... " >&6; }
+if test "${ac_cv_defined___mips_loongson_vector_rev+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  #ifdef __mips_loongson_vector_rev
+  int ok;
+  #else
+  choke me
+  #endif
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_cv_defined___mips_loongson_vector_rev=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_defined___mips_loongson_vector_rev=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_defined___mips_loongson_vector_rev" >&5
+$as_echo "$ac_cv_defined___mips_loongson_vector_rev" >&6; }
+if test $ac_cv_defined___mips_loongson_vector_rev != "no"; then
+  OPT_BACKEND=loongson2ef
+fi
+
+
+{ $as_echo "$as_me:$LINENO: checking for __ARM_NEON__ defined" >&5
+$as_echo_n "checking for __ARM_NEON__ defined... " >&6; }
+if test "${ac_cv_defined___ARM_NEON__+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  #ifdef __ARM_NEON__
+  int ok;
+  #else
+  choke me
+  #endif
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_cv_defined___ARM_NEON__=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_defined___ARM_NEON__=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_defined___ARM_NEON__" >&5
+$as_echo "$ac_cv_defined___ARM_NEON__" >&6; }
+if test $ac_cv_defined___ARM_NEON__ != "no"; then
+  OPT_BACKEND=neon
 fi
 
 
@@ -14123,128 +14247,6 @@ fi
 $as_echo "$ac_cv_defined___VADMX__" >&6; }
 if test $ac_cv_defined___VADMX__ != "no"; then
   OPT_BACKEND=vadmx
-fi
-
-
-{ $as_echo "$as_me:$LINENO: checking for __mips_loongson_vector_rev defined" >&5
-$as_echo_n "checking for __mips_loongson_vector_rev defined... " >&6; }
-if test "${ac_cv_defined___mips_loongson_vector_rev+set}" = set; then
-  $as_echo_n "(cached) " >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  #ifdef __mips_loongson_vector_rev
-  int ok;
-  #else
-  choke me
-  #endif
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (ac_try="$ac_compile"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
-$as_echo "$ac_try_echo") >&5
-  (eval "$ac_compile") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && {
-	 test -z "$ac_c_werror_flag" ||
-	 test ! -s conftest.err
-       } && test -s conftest.$ac_objext; then
-  ac_cv_defined___mips_loongson_vector_rev=yes
-else
-  $as_echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	ac_cv_defined___mips_loongson_vector_rev=no
-fi
-
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-fi
-{ $as_echo "$as_me:$LINENO: result: $ac_cv_defined___mips_loongson_vector_rev" >&5
-$as_echo "$ac_cv_defined___mips_loongson_vector_rev" >&6; }
-if test $ac_cv_defined___mips_loongson_vector_rev != "no"; then
-  OPT_BACKEND=loongson2ef
-fi
-
-
-{ $as_echo "$as_me:$LINENO: checking for __ARM_NEON__ defined" >&5
-$as_echo_n "checking for __ARM_NEON__ defined... " >&6; }
-if test "${ac_cv_defined___ARM_NEON__+set}" = set; then
-  $as_echo_n "(cached) " >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  #ifdef __ARM_NEON__
-  int ok;
-  #else
-  choke me
-  #endif
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (ac_try="$ac_compile"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
-$as_echo "$ac_try_echo") >&5
-  (eval "$ac_compile") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && {
-	 test -z "$ac_c_werror_flag" ||
-	 test ! -s conftest.err
-       } && test -s conftest.$ac_objext; then
-  ac_cv_defined___ARM_NEON__=yes
-else
-  $as_echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	ac_cv_defined___ARM_NEON__=no
-fi
-
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-fi
-{ $as_echo "$as_me:$LINENO: result: $ac_cv_defined___ARM_NEON__" >&5
-$as_echo "$ac_cv_defined___ARM_NEON__" >&6; }
-if test $ac_cv_defined___ARM_NEON__ != "no"; then
-  OPT_BACKEND=neon
 fi
 
 
