@@ -543,7 +543,7 @@ AM_COND_IF([RAPP_USE_TUNECACHE],
 
    # Besides the known working versions, accept future 2.x series
    if test ${PYTHON} = python; then
-       if python -V | ${EGREP} 'Python 2.@<:@456789@>:@'; then
+       if python -V 2>&1 | ${EGREP} 'Python 2.@<:@456789@:>@'; then
           :
        else
           AC_MSG_ERROR(
