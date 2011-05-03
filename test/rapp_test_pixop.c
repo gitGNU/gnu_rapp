@@ -239,19 +239,21 @@ rapp_test_pixop_driver(int (*test)(), void (*ref)(),
     uint8_t *ref_buf = rapp_malloc(dim*RAPP_TEST_HEIGHT, 0);
     uint8_t  lut[256];
     int      iter;
+    bool     ok = false;
+    intptr_t arg1;
+    int width, height, arg2, dst_dim;
 
     /* Initialize the LUT */
     rapp_test_init(lut, 0, sizeof lut, 1, false);
 
     /* Perform tests */
     for (iter = 0; iter < RAPP_TEST_ITER; iter++) {
-        int      width   = rapp_test_rand(1, RAPP_TEST_WIDTH);
-        int      height  = rapp_test_rand(1, RAPP_TEST_HEIGHT);
-        intptr_t arg1    = arg1_lut ? (intptr_t)lut :
-                           rapp_test_rand(arg1_min, arg1_max);
-        int      arg2    = rapp_test_rand(arg2_min, arg2_max);
-        int      dst_dim = rapp_test_rand(0, 1) ?
-                           (int)rapp_align(width) : dim;
+        width   = rapp_test_rand(1, RAPP_TEST_WIDTH);
+        height  = rapp_test_rand(1, RAPP_TEST_HEIGHT);
+        arg1    = arg1_lut ? (intptr_t)lut :
+                  rapp_test_rand(arg1_min, arg1_max);
+        arg2    = rapp_test_rand(arg2_min, arg2_max);
+        dst_dim = rapp_test_rand(0, 1) ? (int)rapp_align(width) : dim;
 
         /* Initialize the buf and ref buffers */
         rapp_test_init(dst_buf, 0, dst_dim*height, 1, true);
@@ -259,8 +261,8 @@ rapp_test_pixop_driver(int (*test)(), void (*ref)(),
 
         /* Call the pixel operation function */
         if ((*test)(dst_buf, dst_dim, width, height, arg1, arg2) < 0) {
-            DBG("Got FAIL return value\n");
-            return false;
+            DBG("Got FAIL return value at iteration %d\n", iter);
+            goto Done;
         }
 
         /* Call the reference function */
@@ -270,20 +272,26 @@ rapp_test_pixop_driver(int (*test)(), void (*ref)(),
         if (!rapp_test_compare_u8(ref_buf, dst_dim,
                                   dst_buf, dst_dim, width, height))
         {
-            DBG("Invalid result\n");
-            DBG("dst_dim=%d, width=%d, height=%d, arg1=%ld, arg2=%d\ndst=\n",
-                    dst_dim, width, height, (long) arg1, arg2);
+            DBG("Invalid result at iteration %d\ndst=\n", iter);
             rapp_test_dump_u8(dst_buf, dst_dim, width, height);
             DBG("ref=\n");
             rapp_test_dump_u8(ref_buf, dst_dim, width, height);
-            return false;
+            goto Done;
         }
+    }
+
+    ok = true;
+
+Done:
+    if (!ok) {
+        DBG("dst_dim=%d, width=%d, height=%d, arg1=%ld, arg2=%d\n",
+            dst_dim, width, height, (long) arg1, arg2);
     }
 
     rapp_free(dst_buf);
     rapp_free(ref_buf);
 
-    return true;
+    return ok;
 }
 
 static bool
@@ -297,18 +305,17 @@ rapp_test_pixop_driver2(int (*test)(), void (*ref)(),
     uint8_t *odst_buf = rapp_malloc(dim*RAPP_TEST_HEIGHT, 0);
     int      iter;
     bool     ok = false;
+    int width, height, arg, src_dim, dst_dim;
 
     /* Initialize the src buffer */
     rapp_test_init(src_buf, 0, dim*RAPP_TEST_HEIGHT, 1, false);
 
     for (iter = 0; iter < RAPP_TEST_ITER; iter++) {
-        int width   = rapp_test_rand(1, RAPP_TEST_WIDTH);
-        int height  = rapp_test_rand(1, RAPP_TEST_HEIGHT);
-        int arg     = rapp_test_rand(arg_min, arg_max);
-        int src_dim = rapp_test_rand(0, 1) ?
-                      (int)rapp_align(width) : dim;
-        int dst_dim = rapp_test_rand(0, 1) ?
-                      (int)rapp_align(width) : dim;
+        width   = rapp_test_rand(1, RAPP_TEST_WIDTH);
+        height  = rapp_test_rand(1, RAPP_TEST_HEIGHT);
+        arg     = rapp_test_rand(arg_min, arg_max);
+        src_dim = rapp_test_rand(0, 1) ? (int)rapp_align(width) : dim;
+        dst_dim = rapp_test_rand(0, 1) ? (int)rapp_align(width) : dim;
 
         /* Verify that we get an overlap error for overlapping buffers */
         if (/* src == dst */
@@ -325,7 +332,7 @@ rapp_test_pixop_driver2(int (*test)(), void (*ref)(),
                                   rapp_align(width) - rapp_alignment),
                        src_dim, width, height) != RAPP_ERR_OVERLAP)
         {
-            DBG("Overlap undetected\n");
+            DBG("Overlap undetected at iteration %d\n", iter);
             goto Done;
         }
 
@@ -338,7 +345,7 @@ rapp_test_pixop_driver2(int (*test)(), void (*ref)(),
         if ((*test)(dst_buf, dst_dim, src_buf, src_dim,
                     width, height, arg) < 0)
         {
-            DBG("Got FAIL return value\n");
+            DBG("Got FAIL return value at iteration %d\n", iter);
             goto Done;
         }
 
@@ -349,9 +356,7 @@ rapp_test_pixop_driver2(int (*test)(), void (*ref)(),
         if (!rapp_test_compare_u8(ref_buf, dst_dim, dst_buf,
                                   dst_dim, width, height))
         {
-            DBG("Invalid result at iteration %d\n", iter);
-            DBG("src_dim=%d, dst_dim=%d, width=%d, height=%d, arg=%#x\nsrc=\n",
-                    src_dim, dst_dim, width, height, arg);
+            DBG("Invalid result at iteration %d\nsrc=\n", iter);
             rapp_test_dump_u8(src_buf, src_dim, width, height);
             DBG("original dst=\n");
             rapp_test_dump_u8(odst_buf, dst_dim, width, height);
@@ -366,6 +371,11 @@ rapp_test_pixop_driver2(int (*test)(), void (*ref)(),
     ok = true;
 
 Done:
+    if (!ok) {
+        DBG("src_dim=%d, dst_dim=%d, width=%d, height=%d, arg=%#x\n",
+            src_dim, dst_dim, width, height, arg);
+    }
+
     rapp_free(src_buf);
     rapp_free(dst_buf);
     rapp_free(ref_buf);
