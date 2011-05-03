@@ -84,6 +84,7 @@
 
 #elif defined __MMX__ || defined __SSE__ || defined __VADMX__ || \
       defined __mips_loongson_vector_rev || defined __ARM_NEON__ || \
+      defined RC_VEC_BACKEND_VIS || \
       RC_NATIVE_SIZE == 8
 #define RC_ALIGNMENT 8
 

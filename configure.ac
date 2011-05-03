@@ -283,6 +283,24 @@ AC_CHECK_DEFINED([__MMX__], [OPT_BACKEND=mmx])
 AC_CHECK_DEFINED([__SSE__], [OPT_BACKEND=sse])
 AC_CHECK_DEFINED([__mips_loongson_vector_rev], [OPT_BACKEND=loongson2ef])
 AC_CHECK_DEFINED([__ARM_NEON__], [OPT_BACKEND=neon])
+# For SPARC VIS and GCC, there are no macros or headers and we
+# can't induce VIS from other macros as it's not "standard SPARC".
+# To see if VIS is on by default, we have to try to compile
+# something that'll fail if a VIS-specific builtin isn't defined.
+# Even then, don't enable it; it fails silently on e.g. Niagara T1.
+if test ${rapp_tune_generation} = no; then
+    AC_MSG_CHECKING([[for intrinsics support for VIS]])
+    have_vis=no
+    AC_COMPILE_IFELSE(
+      [AC_LANG_PROGRAM(
+         [],
+         [[typedef unsigned char v8qi __attribute__((__vector_size__(8)));
+           v8qi x,y,z;
+           void f(void){x=__builtin_vis_faligndatav8qi(y,z);}]])],
+      # Adjust text and prepend "OPT_BACKEND=vis; " to enable by default.
+      [have_vis="yes, configure with --enable-backend=vis to enable"]);
+    AC_MSG_RESULT([[$have_vis]])
+fi
 AC_CHECK_DEFINED([__SSE2__], [OPT_BACKEND=sse2])
 AC_CHECK_DEFINED([__SSSE3__], [OPT_BACKEND=ssse3])
 AC_CHECK_DEFINED([__VEC__], [OPT_BACKEND=altivec])
@@ -351,7 +369,8 @@ AC_ARG_ENABLE([backend],
    AS_HELP_STRING(,[vadmx:       64-bit VADMX vector backend])
    AS_HELP_STRING(,[loongson2e:  64-bit Loongson-2E vector backend])
    AS_HELP_STRING(,[loongson2f:  64-bit Loongson-2F vector backend])
-   AS_HELP_STRING(,[neon:        64-bit ARM NEON vector backend])],
+   AS_HELP_STRING(,[neon:        64-bit ARM NEON vector backend])
+   AS_HELP_STRING(,[vis:         64-bit SPARC VIS 1 vector backend])],
   [case ${enableval} in
    yes|auto)
        ;;
@@ -362,7 +381,7 @@ AC_ARG_ENABLE([backend],
        OPT_BACKEND=
        PLATFORM=generic
        ;;
-   mmx | sse | sse2 | ssse3 | altivec | vadmx)
+   mmx | sse | sse2 | ssse3 | altivec | vadmx | vis)
        OPT_BACKEND=${enableval}
        AM_CFLAGS="${AM_CFLAGS} -m${OPT_BACKEND}"
        ;;
@@ -412,6 +431,18 @@ case ${OPT_BACKEND} in
             [Define to 1 to use {1, 1, ...} instead of (1) in vector literals])
           AC_MSG_RESULT([[$initializer]])
           ;;
+   vis)
+          backend_info_name="VIS 1"
+
+          # Need to provide a macro to show explicitly when we
+          # want to use this support, as there is no indicator
+          # other than that the code compiles.
+          AC_DEFINE_UNQUOTED(
+            [RC_VEC_BACKEND_VIS],
+            [1],
+            [Define to 1 when using the RAPP VIS vector back-end])
+          ;;
+
    loongson2ef)
           backend_info_name="Loongson-2E and -2F"
           ;;

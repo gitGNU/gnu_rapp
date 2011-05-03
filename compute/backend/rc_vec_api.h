@@ -115,6 +115,9 @@
  *    - rc_vec_neon.h: ARM NEON.
  *         Uses 64-bit vector registers.
  *         Implements the complete interface.
+ *    - rc_vec_vis.h: SPARC VIS 1
+ *         Uses 64-bit vector registers.
+ *         Implements the complete interface.
  *    - rc_vec_swar.h: SIMD-Within-A-Register.
  *         Software emulation on native machine words.
  *         Implements most of the interface.
@@ -128,7 +131,7 @@
  *  implementation uses the altivec.h intrinsics header. The Loongson-2E
  *  and -2F implementation uses the loongson.h intrinsics header.
  *  The ARM NEON implementation uses the arm_neon.h intrinsics header.
- *  VADMX-support is only available through GCC builtins.
+ *  VADMX- and VIS-support are only available through GCC builtins.
  *
  *  @section vec_api_test Correctness Tests
  *  There are extensive tests available for the vector interface.
