@@ -58,7 +58,13 @@
 #define RC_TSCAL_(t, x) \
     (((union { t v; uint64_t i; })(uint64_t)(x)).v)
 
-/* see the porting documentation for generic comments. */
+/**
+ *  See the porting documentation for generic comments.
+ *
+ *  For the machine specifics,
+ *  <http://dev.lemote.com/files/resource/documents/
+ *   Loongson/ls2f/Loongson2FUserGuide.pdf> was used.
+ */
 
 #define RC_VEC_HINT_CMPGE 1
 
@@ -220,12 +226,12 @@ do {                                           \
     rc_vec_t sv1_ = (srcv1);                   \
     rc_vec_t sv2_ = (srcv2);                   \
     rc_vec_t adj_1_, adj_xor_, adj_, avg_;     \
-    rc_vec_t cmp_, adj_cmpx_;                  \
+    rc_vec_t le_, adj_cmpx_;                   \
     RC_VEC_SPLAT(adj_1_, 1);                   \
-    RC_VEC_CMPGT(cmp_, sv2_, sv1_);            \
+    RC_VEC_CMPLE_(le_, sv2_, sv1_);            \
     RC_VEC_XOR(adj_xor_, sv1_, sv2_);          \
     RC_VEC_AVGR(avg_, sv1_, sv2_);             \
-    RC_VEC_AND(adj_cmpx_, adj_xor_, cmp_);     \
+    RC_VEC_ANDNOT(adj_cmpx_, adj_xor_, le_);   \
     RC_VEC_AND(adj_, adj_cmpx_, adj_1_);       \
     (dstv) = psubb_u(avg_, adj_);              \
 } while (0)
@@ -258,13 +264,25 @@ do {                                            \
     RC_VEC_ADDS(dstv, abs1_, abs1_);            \
 } while (0)
 
+/**
+ *  We can only use the byte-sized equality operator (not e.g. pcmpgtb),
+ *  as the byte-sized compares works on *signed* bytes.
+ *  See also <http://gcc.gnu.org/bugzilla/show_bug.cgi?id=48348>.
+ */
+
 #define RC_VEC_CMPGT(dstv, srcv1, srcv2)        \
 do {                                            \
+    rc_vec_t le_;                               \
+    RC_VEC_CMPLE_(le_, srcv1, srcv2);           \
+    RC_VEC_NOT(dstv, le_);                      \
+} while (0)
+
+#define RC_VEC_CMPLE_(dstv, srcv1, srcv2)       \
+do {                                            \
     rc_vec_t cmpsv1_ = (srcv1);                 \
-    rc_vec_t minsv_, lte_;                      \
+    rc_vec_t minsv_;                            \
     RC_VEC_MIN(minsv_, cmpsv1_, srcv2);         \
-    RC_VEC_CMPEQ_(lte_, cmpsv1_, minsv_);       \
-    RC_VEC_NOT(dstv, lte_);                     \
+    RC_VEC_CMPEQ_(dstv, cmpsv1_, minsv_);       \
 } while (0)
 
 #define RC_VEC_CMPGE(dstv, srcv1, srcv2)        \
