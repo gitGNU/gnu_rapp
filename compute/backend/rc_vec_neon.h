@@ -61,7 +61,7 @@
 /* see the porting documentation for generic comments. */
 
 /**
- *  NEON have native instructions for all implemented hintable backend macros,
+ *  NEON has native instructions for all implemented hintable backend macros,
  *  so no hint-macros apply.
  */
 
