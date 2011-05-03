@@ -79,6 +79,9 @@
 /* Define to 1 to use {1, 1, ...} instead of (1) in vector literals */
 #undef RC_ALTIVEC_CURLY_BRACES
 
+/* Define to 1 to not return but call abort() for erroneous parameters */
+#undef RC_ASSERTED_RETURNS
+
 /* Define to the default unit access size; one of 2 4 and 8 */
 #undef RC_COMPUTED_NATIVE_SIZE
 
