@@ -309,14 +309,7 @@
  *    - <em> RAPP_USE_SIMD </em> \n
  *           Use the SIMD vector backend instead of the SWAR one.
  *           The --enable-backend configure-time option determines what
- *           backend to use. When not specified, or when
- *           --enable-backend=auto is specified, the one used is
- *           determined by predefined C preprocessor macros set by the
- *           compiler. The macros __MMX__, __SSE__, __mips_loongson_vector_rev,
- *           __ARM_NEON__, __SSE2__, __SSSE3__, __VEC__, __ALTIVEC__ and
- *           __VADMX__ are inspected, and the last
- *           one found in that list is used. If no backend is found, no vector
- *           implementations are compiled.
+ *           backend to use.
  *
  *    - <em> RAPP_FORCE_GENERIC </em> \n
  *           Force the generic implementations to be used everywhere,
@@ -364,15 +357,23 @@
  *    - <em> --enable-backend = {auto, nonvector, none, mmx, sse,
  *                               sse2, ssse3, altivec, vadmx,
  *                               loongson2e, loongson2f, neon} </em> \n
- *         Use the specified SIMD backend. The compiler will then set
- *         standard preprocessor flags for the SIMD extension in question.
- *         The default value @e auto will detect the SIMD backend
- *         automatically from the C compiler characteristics.
+ *         Use the specified SIMD backend. The compiler will be asked to
+ *         enable the named SIMD extension.
  *         The @e nonvector value will disable all vector implementations.
  *         The @e none value will disable all vector implementations and
  *         all tuning.
  *         The default is @e auto, equal to @c --enable-backend=yes and plain
- *         @c --enable-backend.
+ *         @c --enable-backend. This setting will detect the SIMD backend
+ *         automatically from the C compiler characteristics. Preprocessor
+ *         macros expected to be predefined by the compiler are inspected,
+ *         and determine which backend to use.
+ *         The macros __MMX__, __SSE__, __mips_loongson_vector_rev,
+ *         __ARM_NEON__, __SSE2__, __SSSE3__, __VEC__, __ALTIVEC__ and
+ *         __VADMX__ are checked in that order, and the last one in that list
+ *         found to be defined, wins. If no backend is found, no vector
+ *         implementation is used. This is a bit different from naming a
+ *         specific backend, where required SIMD-enabling compiler options are
+ *         passed automatically.
  *
  *    - <em> --enable-tune-cache </em> \n
  *         Use the pre-tuned cached configuration file if it exists.
