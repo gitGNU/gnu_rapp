@@ -388,7 +388,7 @@ case ${OPT_BACKEND} in
           # Need to check the supported syntax for vector initializers:
           # FSF GCC never supported ALTIVECPIM parentheses syntax and early
           # Apple GCC didn't support curly-braces.
-          AC_MSG_CHECKING([for working vector initializer syntax])
+          AC_MSG_CHECKING([[for working vector initializer syntax]])
           initializer=unknown
           saved_CFLAGS="$CFLAGS"
           CFLAGS="$CFLAGS $AM_CFLAGS"
@@ -410,7 +410,7 @@ case ${OPT_BACKEND} in
             [RC_ALTIVEC_CURLY_BRACES],
             [$curlies],
             [Define to 1 to use {1, 1, ...} instead of (1) in vector literals])
-          AC_MSG_RESULT([$initializer])
+          AC_MSG_RESULT([[$initializer]])
           ;;
    loongson2ef)
           backend_info_name="Loongson-2E and -2F"
