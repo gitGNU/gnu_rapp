@@ -6,6 +6,7 @@ includedir=@includedir@
 Name: rapp
 Description: A library of low-level image processing operations.
 Version: @RAPP_MAJOR_VERSION@.@RAPP_MINOR_VERSION@
+URL: @HOMESITE@
 Requires:
 Libs: -L${libdir} -lrapp
 Cflags: -I${includedir}/rapp
