@@ -94,6 +94,7 @@ do {                                               \
     RC_VEC_CNTR(tmp, acc1);                        \
     RC_VEC_ZERO(acc1);                             \
     (sum1) += tmp;                                 \
+    (void)(acc2);                                  \
 } while (0)
 #endif
 
@@ -104,6 +105,7 @@ do {                                               \
     RC_VEC_SUMR(tmp, acc1);                        \
     RC_VEC_ZERO(acc1);                             \
     (sum1) += tmp;                                 \
+    (void)(acc2);                                  \
 } while (0)
 #endif
 
