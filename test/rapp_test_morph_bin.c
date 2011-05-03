@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -386,8 +386,9 @@ rapp_test_rectangle_driver(int (*morph)(), int width,
     int      dst_dim;         /* Destination buffer dimension  */
     int      pad_len;         /* Padded source buffer in bytes */
     int      size    = MIN(width, height);
-    int      minpixpad = MIN(MAX(width, height) / 2, 16);
-    int      minxpad = rapp_align((minpixpad + 7) / 8);
+    int      minxpixpad = MIN(width / 2, 16);
+    int      minypixpad = MIN(height / 2, 16);
+    int      minxpad = rapp_align((minxpixpad + 7) / 8);
     int      pos;
     bool     ok = false;
 
@@ -395,9 +396,9 @@ rapp_test_rectangle_driver(int (*morph)(), int width,
     dst_dim = rapp_align((width + 7) / 8);
     src_dim = dst_dim + 2*minxpad;
     pat_buf = rapp_malloc(height*dst_dim, 0);
-    pad_len = (height + 2*minpixpad)*src_dim;
+    pad_len = (height + 2*minypixpad)*src_dim;
     pad_buf = rapp_malloc(pad_len, 0);
-    src_buf = &pad_buf[minpixpad*src_dim + minxpad];
+    src_buf = &pad_buf[minypixpad*src_dim + minxpad];
     dst_buf = rapp_malloc(height*dst_dim, 0);
     ref_buf = rapp_malloc(height*dst_dim, 0);
     work    = rapp_malloc(rapp_morph_worksize_bin(width, height), 0);

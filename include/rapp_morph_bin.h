@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -70,11 +70,12 @@
  *
  *  @section Padding
  *  The user is responsible for @ref padding "padding" the source buffer.
- *  The padding needed is the same both in horizontal and vertical
- *  directions. For rectangular structuring elements, it is bounded by
- *  min(maxside / 2, 16), where maxside is the maximum size of the
- *  structuring element in the horizontal and vertical directions, and
- *  maxside / 2 is rounded <em>down</em> to the nearest integer. For
+ *  The padding needed depends on the size of the structuring element,
+ *  and may thus be different in vertical and horizontal directions for
+ *  rectangular structuring elements. For them, the required padding is
+ *  bounded by min(side / 2, 16), where side is the size of the structuring
+ *  element in that direction, horizontally and vertically, and side / 2 is
+ *  rounded <em>down</em> to the nearest integer. For
  *  other objects, the padding is bounded by min(radius - 1, 16). If the
  *  source buffer is padded with values other than all-zeros or all-ones
  *  the behaviour is undefined.
