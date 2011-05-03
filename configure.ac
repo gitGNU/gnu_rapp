@@ -95,7 +95,7 @@ RAPP_RELEASE_PHASE=rapp_release_phase
 RAPP_LIB_CUR=1
 
 # Interface revision
-RAPP_LIB_REV=0
+RAPP_LIB_REV=1
 
 # Interface age
 RAPP_LIB_AGE=1
