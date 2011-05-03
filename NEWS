@@ -21,6 +21,10 @@ Changes and fixed bugs affecting only build, test and installation:
 backends have been added, reducing build time on native systems
 and simplifying cross-builds.
 
+- When configured with --enable-checking=asserted-returns,
+the RAPP library will abort instead of returning an error code,
+and will be built for debugging.
+
 - Bug #31887, "make check" failing when building the test-suite,
 exposed on MAC OS X.
 
