@@ -170,10 +170,47 @@ AC_ARG_VAR([CHECK], [the CHECK unit test framework])
 # at tuning; PKG_CONFIG being declared precious apparently has
 # no effect).
 AC_PATH_PROGS([PKG_CONFIG], [${host}-pkg-config pkg-config])
-PKG_CHECK_MODULES([CHECK],
-                  [check >= 0.9.4],
-                  [have_check=yes],
-                  [have_check=no])
+
+# We use --with-check/--without-check mainly because
+# --disable-check sounds a little bit more like we're disabling
+# the testsuite or some runtime-checks.
+rapp_try_check=yes
+AC_ARG_WITH([check],
+  [AS_HELP_STRING([[--with-check]],
+                  [Use the CHECK test framework if present])
+   AS_HELP_STRING(,[(default yes)])],
+  [rapp_try_check=${withval}
+   case ${withval} in
+   yes|no) ;;
+   *)
+       AC_MSG_ERROR([[Bad value "${withval}" for --with-check option]])
+       ;;
+   esac])
+
+have_check=no
+if test ${rapp_try_check} = yes; then
+    # Don't regenerate configure without the pkg-config package;
+    # it's required to expand the PKG_CHECK_MODULES below.
+    PKG_CHECK_MODULES(
+      [CHECK],
+      [check >= 0.9.4],
+      [AC_MSG_CHECKING([[whether CHECK as installed can be linked in]])
+       saved_CFLAGS="$CFLAGS"
+       CFLAGS="$CFLAGS $AM_CFLAGS $CHECK_CFLAGS"
+       saved_LIBS="$LIBS"
+       LIBS="$LIBS $CHECK_LIBS"
+       AC_LINK_IFELSE([AC_LANG_PROGRAM(
+                         [[#include <stddef.h>
+                           #include <check.h>]],
+                         [[SRunner *sr = srunner_create(NULL);]])],
+                      [[have_check=yes]],
+                      [[CHECK_CFLAGS= CHECK_LIBS=]])
+       CFLAGS="$saved_CFLAGS"
+       LIBS="$saved_LIBS"
+       AC_MSG_RESULT([[$have_check]])],
+       # Just a dummy to make CHECK optional, allowing failure here.
+       [:])
+fi
 AM_CONDITIONAL([HAVE_CHECK], [test ${have_check} = yes])
 
 # Check for Doxygen
