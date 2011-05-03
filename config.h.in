@@ -9,6 +9,9 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
+/* Define to 1 if you have the <limits.h> header file. */
+#undef HAVE_LIMITS_H
+
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
@@ -32,6 +35,9 @@
 
 /* Define to 1 if you have the <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
+
+/* Define to 1 if the system has the type `uintptr_t'. */
+#undef HAVE_UINTPTR_T
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
@@ -73,6 +79,12 @@
 /* Define to 1 to use {1, 1, ...} instead of (1) in vector literals */
 #undef RC_ALTIVEC_CURLY_BRACES
 
+/* Define to the default unit access size; one of 2 4 and 8 */
+#undef RC_COMPUTED_NATIVE_SIZE
+
+/* The size of `uintptr_t', as computed by sizeof. */
+#undef SIZEOF_UINTPTR_T
+
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
@@ -103,3 +115,7 @@
 #if defined __SUNPRO_CC && !defined __RESTRICT
 # define _Restrict
 #endif
+
+/* Define to the type of an unsigned integer type wide enough to hold a
+   pointer, if such a type exists, and if the system does not define it. */
+#undef uintptr_t
