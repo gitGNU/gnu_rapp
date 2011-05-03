@@ -15039,7 +15039,7 @@ $as_echo "$as_me: error: No python found, required to create tune-files (try 2.4
 
    # Besides the known working versions, accept future 2.x series
    if test ${PYTHON} = python; then
-       if python -V | ${EGREP} 'Python 2.[456789@>:@'; then
+       if python -V 2>&1 | ${EGREP} 'Python 2.[456789]'; then
           :
        else
           { { $as_echo "$as_me:$LINENO: error: No python 2.4 - 2.9 found, required to create tune-files" >&5
