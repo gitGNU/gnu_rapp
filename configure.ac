@@ -141,11 +141,26 @@ AC_C_RESTRICT
 # Check for headers
 AC_HEADER_STDC
 AC_HEADER_STDBOOL
-AC_CHECK_HEADER([stdint.h], [],
-  [AC_MSG_ERROR([[Required header stdint.h missing]])])
+AC_CHECK_HEADERS([stdint.h limits.h], [],
+  [AC_MSG_ERROR([[Required header file ${ac_header} missing]])])
 
 # Check C compiler vendor
 AX_COMPILER_VENDOR
+
+# Find out the native size.  We use the sizeof a pointer-containing int.
+# Perhaps we could use UINTPTR_MAX, but this is easier.
+AC_TYPE_UINTPTR_T
+AC_CHECK_SIZEOF([uintptr_t])
+case ${ac_cv_sizeof_uintptr_t} in
+2|4|8) ;;
+*)
+    # More changes are needed than updating the match above.
+    AC_MSG_ERROR([[Unsupported native word size: ${ac_cv_sizeof_uintptr_t}]])
+    ;;
+esac
+AC_DEFINE_UNQUOTED([RC_COMPUTED_NATIVE_SIZE], [${ac_cv_sizeof_uintptr_t}],
+                   [Define to the default unit access size; one of 2 4 and 8])
+rc_bits=`expr ${ac_cv_sizeof_uintptr_t} '*' 8`
 
 # Check for the CHECK unit test framework
 AC_ARG_VAR([CHECK], [the CHECK unit test framework])
@@ -236,7 +251,10 @@ AC_CHECK_DEFINED([__VADMX__], [OPT_BACKEND=vadmx])
 AC_CHECK_DEFINED([__mips_loongson_vector_rev], [OPT_BACKEND=loongson2ef])
 AC_CHECK_DEFINED([__ARM_NEON__], [OPT_BACKEND=neon])
 
-# Set the PLATFORM string to be the AC 'host_cpu' plus the compiler vendor
+# Set the PLATFORM string to be the AC 'host_cpu' plus the compiler vendor,
+# plus a suffix built from native bit-size as defined by uintptr_t, if
+# different than the first encountered (hopefully the most common)
+# configuration, if there's more than one known.
 PLATFORM=${host_cpu}-${ax_cv_c_compiler_vendor}
 
 OPT_DOXYGEN=yes
@@ -397,6 +415,15 @@ else
     rapp_vector_backend_header='"no-such-backend-header-exists.h"'
     enable_simd=0
 fi
+case ${host_cpu} in
+x86_64)
+    test ${rc_bits} != 64 && PLATFORM="${PLATFORM}-${rc_bits}"
+    ;;
+sparc*|mips*|powerpc*)
+    test ${rc_bits} != 32 && PLATFORM="${PLATFORM}-${rc_bits}"
+    ;;
+esac
+
 AC_DEFINE_UNQUOTED([RAPP_ENABLE_SIMD], [${enable_simd}],
                    [Define to 1 when a SIMD back-end exists and is enabled])
 AC_DEFINE_UNQUOTED([RAPP_VECTOR_BACKEND_HEADER],

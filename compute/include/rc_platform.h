@@ -69,17 +69,11 @@
 #ifdef  RAPP_FORCE_SIZE
 #define RC_NATIVE_SIZE RAPP_FORCE_SIZE
 
-#elif UINTPTR_MAX > 0xffffffffUL
-#define RC_NATIVE_SIZE 8
-
-#elif UINTPTR_MAX == 0xffffffffUL
-#define RC_NATIVE_SIZE 4
-
-#elif USHORT_MAX == 0xffffU
-#define RC_NATIVE_SIZE 2
-
 #else
-#error  "Unsupported native word size"
+
+/* See configure.ac; it's trivial but better have it in one place only. */
+#define RC_NATIVE_SIZE RC_COMPUTED_NATIVE_SIZE
+
 #endif
 
 /**

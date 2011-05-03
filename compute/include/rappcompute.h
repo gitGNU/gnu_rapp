@@ -413,11 +413,14 @@
  *  directory. If found, a symbolic link @c compute/tune/rapptune.h is
  *  created to this file. During build time, this symbolic link will be
  *  used for @ref select "selecting" the appropriate implementations. The file
- *  benchmarkplot-@<host@>-@<backend@>.html in the
- *  @c benchmark/arch directory is handled analogously.
+ *  benchmarkplot-@<host@>-@<backend@>-@<wordsize@>.html
+ *  in the @c benchmark/arch directory is handled analogously.
  *  The symbolic links are only removed on @e distclean.
+ *  The @c -@<wordsize@> part, corresponding to the word size used by
+ *  the platform, is empty for the default size for the platform.
  *
- *  If the pre-tuned rapptune-@<host@>-@<backend@>.h is present but the
+ *  If the pre-tuned rapptune-@<host@>-@<backend@>-@<wordsize@>.h is
+ *  present but the
  *  set of tuned functions has changed since it was generated, the
  *  default build behaviour is to generate a new tuning. Alternatively,
  *  with an explicit @c --enable-tune-cache option, untuned fallback
