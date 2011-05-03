@@ -82,6 +82,9 @@
 /* Define to the default unit access size; one of 2 4 and 8 */
 #undef RC_COMPUTED_NATIVE_SIZE
 
+/* Define to 1 when using the RAPP VIS vector back-end */
+#undef RC_VEC_BACKEND_VIS
+
 /* The size of `uintptr_t', as computed by sizeof. */
 #undef SIZEOF_UINTPTR_T
 
