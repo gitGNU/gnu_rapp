@@ -1,4 +1,4 @@
-Copyright (C) 2010, Axis Communications AB, LUND, SWEDEN
+Copyright (C) 2010-2011, Axis Communications AB, LUND, SWEDEN
 See the end for copying conditions.
 
 Higher priority, unordered (criteria: critical for build/legal/correctness):
@@ -16,6 +16,8 @@ Lower priority, unordered:
 
 - more SIMD ports
 - more tunefiles
+- multiple SIMD variants in the same build (at least two, or one
+  with a binary parameter), supporting NEON 64 and 128 bit vector lengths. 
 - simd infrastructure supporting, and implementations for, integral images
 - method (documented) to find out which vectorized functions are missing
   (due to e.g. missing VAL macros).
