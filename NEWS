@@ -6,6 +6,12 @@ Changes regarding usage and related fixed bugs:
 savannah.nongnu.org database), causing wrong results and
 spurious overlap indications.
 
+- For rectangular structuring elements (the functions
+rapp_morph_erode_rect_bin and rapp_morph_dilate_rect_bin), the
+required padding in each direction now corresponds to the size
+of the structuring element in that direction, not the size of
+the maximum side.
+
 - New vector backend, for Loongson-2E and -2F.
 - New vector backend, for ARM NEON.
 - New vector backend, for SPARC VIS.
