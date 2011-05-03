@@ -312,9 +312,9 @@
  *           backend to use. When not specified, or when
  *           --enable-backend=auto is specified, the one used is
  *           determined by predefined C preprocessor macros set by the
- *           compiler. The macros __MMX__, __SSE__, __SSE2__, __SSSE3__,
- *           __ALTIVEC__, __VEC__, __VADMX__, __mips_loongson_vector_rev
- *           and __ARM_NEON__ are inspected, and the last
+ *           compiler. The macros __MMX__, __SSE__, __mips_loongson_vector_rev,
+ *           __ARM_NEON__, __SSE2__, __SSSE3__, __VEC__, __ALTIVEC__ and
+ *           __VADMX__ are inspected, and the last
  *           one found in that list is used. If no backend is found, no vector
  *           implementations are compiled.
  *

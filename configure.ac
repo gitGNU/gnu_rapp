@@ -277,16 +277,17 @@ AC_ARG_WITH([internal-tune-generation], [],
        ;;
    esac])
 
-# Determine the vector backend from the predefined macros
+# Determine the vector backend from predefined macros and other observations.
+AC_MSG_NOTICE([[Scanning default present vector support]])
 AC_CHECK_DEFINED([__MMX__], [OPT_BACKEND=mmx])
 AC_CHECK_DEFINED([__SSE__], [OPT_BACKEND=sse])
+AC_CHECK_DEFINED([__mips_loongson_vector_rev], [OPT_BACKEND=loongson2ef])
+AC_CHECK_DEFINED([__ARM_NEON__], [OPT_BACKEND=neon])
 AC_CHECK_DEFINED([__SSE2__], [OPT_BACKEND=sse2])
 AC_CHECK_DEFINED([__SSSE3__], [OPT_BACKEND=ssse3])
 AC_CHECK_DEFINED([__VEC__], [OPT_BACKEND=altivec])
 AC_CHECK_DEFINED([__ALTIVEC__], [OPT_BACKEND=altivec])
 AC_CHECK_DEFINED([__VADMX__], [OPT_BACKEND=vadmx])
-AC_CHECK_DEFINED([__mips_loongson_vector_rev], [OPT_BACKEND=loongson2ef])
-AC_CHECK_DEFINED([__ARM_NEON__], [OPT_BACKEND=neon])
 
 # Set the PLATFORM string to be the AC 'host_cpu' plus the compiler vendor,
 # plus a suffix built from native bit-size as defined by uintptr_t, if
