@@ -63,25 +63,6 @@
 
 /*
  * -------------------------------------------------------------
- *  Test functions
- * -------------------------------------------------------------
- */
-
-#include "rc_test_vec_def.h"
-
-/*
- * -------------------------------------------------------------
- *  Reference functions
- * -------------------------------------------------------------
- */
-
-#define RC_TEST_VEC_REF
-#include "rc_vec_ref.h"
-#include "rc_test_vec_def.h"
-
-
-/*
- * -------------------------------------------------------------
  *  Local functions fwd declare
  * -------------------------------------------------------------
  */
@@ -104,13 +85,32 @@ rc_test_vec_rand(int (*test)(), int (*ref)(),
                  uint8_t *src1_buf, uint8_t *src2_buf,
                  const int *args);
 static void
-rc_test_dump(const char *text, const uint8_t *vec);
+rc_test_dump(const char *text, const void *vec);
 
 static int
 rc_test_rand(int min, int max);
 
 static void
 rc_test_init(uint8_t *buf, int len);
+
+
+/*
+ * -------------------------------------------------------------
+ *  Test functions
+ * -------------------------------------------------------------
+ */
+
+#include "rc_test_vec_def.h"
+
+/*
+ * -------------------------------------------------------------
+ *  Reference functions
+ * -------------------------------------------------------------
+ */
+
+#define RC_TEST_VEC_REF
+#include "rc_vec_ref.h"
+#include "rc_test_vec_def.h"
 
 
 /*
@@ -243,10 +243,6 @@ rc_test_vector(void)
                                   entry->op2 ? src2 : NULL, entry->arg))
             {
                 DBG("Failed\n");
-                rc_test_dump("src1 = ", src1);
-                rc_test_dump("src2 = ", src2);
-                rc_test_dump("dst  = ", dst);
-                rc_test_dump("ref  = ", ref);
                 return false;
             }
         }
@@ -365,10 +361,16 @@ rc_test_vec_rand(int (*test)(), int (*ref)(),
     return true;
 }
 
+/**
+ *  The vector parameter is deliberately opaque, so the implementation
+ *  too can use this function as needed.
+ */
+
 static void
-rc_test_dump(const char *text, const uint8_t *vec)
+rc_test_dump(const char *text, const void *xvec)
 {
     int k;
+    const uint8_t *vec = (const uint8_t *) xvec;
     DBG("%s", text);
     for (k = 0; k < RC_VEC_SIZE; k++) {
         DBG(" %02x", vec[k]);
