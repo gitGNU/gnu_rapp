@@ -14330,7 +14330,7 @@ backend_info_name=
 # Check whether --enable-backend was given.
 if test "${enable_backend+set}" = set; then
   enableval=$enable_backend; case ${enableval} in
-   auto)
+   yes|auto)
        ;;
    nonvector)
        OPT_BACKEND=
