@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -155,8 +155,6 @@ do {                                                            \
     int rem = tot % (unroll);                                   \
     int y;                                                      \
                                                                 \
-    RC_VEC_DECLARE();                                           \
-                                                                \
     /* Process all rows */                                      \
     for (y = 0; y < (height); y++) {                            \
         int i = y*(dim);                                        \
@@ -178,7 +176,6 @@ do {                                                            \
             RC_PIXOP_ITER(buf, i, pixop, arg1, arg2, arg3);     \
         }                                                       \
     }                                                           \
-    RC_VEC_CLEANUP();                                           \
 } while (0)
 
 /**
@@ -191,8 +188,6 @@ do {                                                                 \
     int len = tot / (unroll);                                        \
     int rem = tot % (unroll);                                        \
     int y;                                                           \
-                                                                     \
-    RC_VEC_DECLARE();                                                \
                                                                      \
     /* Process all rows */                                           \
     for (y = 0; y < (height); y++) {                                 \
@@ -216,7 +211,6 @@ do {                                                                 \
             RC_PIXOP_ITER2(dst, src, j, i, pixop, arg1, arg2);       \
         }                                                            \
     }                                                                \
-    RC_VEC_CLEANUP();                                                \
 } while (0)
 
 /**
@@ -261,11 +255,14 @@ void
 rc_pixop_set_u8(uint8_t *buf, int dim, int width, int height, unsigned value)
 {
     rc_vec_t vec;
+    RC_VEC_DECLARE();
 
     RC_VEC_SPLAT(vec, value);
     RC_PIXOP_TEMPLATE(buf, dim, width, height,
                       RC_PIXOP_COPY, vec, 0, 0,
                       RC_UNROLL(rc_pixop_set_u8));
+
+    RC_VEC_CLEANUP();
 }
 #endif
 #endif
@@ -279,9 +276,13 @@ rc_pixop_set_u8(uint8_t *buf, int dim, int width, int height, unsigned value)
 void
 rc_pixop_not_u8(uint8_t *buf, int dim, int width, int height)
 {
+    RC_VEC_DECLARE();
+
     RC_PIXOP_TEMPLATE(buf, dim, width, height,
                       RC_PIXOP_NOT, 0, 0, 0,
                       RC_UNROLL(rc_pixop_not_u8));
+
+    RC_VEC_CLEANUP();
 }
 #endif
 #endif
@@ -296,11 +297,14 @@ void
 rc_pixop_flip_u8(uint8_t *buf, int dim, int width, int height)
 {
     rc_vec_t msbv;
+    RC_VEC_DECLARE();
 
     RC_VEC_SPLAT(msbv, 0x80);
     RC_PIXOP_TEMPLATE(buf, dim, width, height,
                       RC_PIXOP_FLIP, msbv, 0, 0,
                       RC_UNROLL(rc_pixop_flip_u8));
+
+    RC_VEC_CLEANUP();
 }
 #endif
 #endif
@@ -314,9 +318,13 @@ rc_pixop_flip_u8(uint8_t *buf, int dim, int width, int height)
 void
 rc_pixop_abs_u8(uint8_t *buf, int dim, int width, int height)
 {
+    RC_VEC_DECLARE();
+
     RC_PIXOP_TEMPLATE(buf, dim, width, height,
                       RC_PIXOP_ABS, 0, 0, 0,
                       RC_UNROLL(rc_pixop_abs_u8));
+
+    RC_VEC_CLEANUP();
 }
 #endif
 #endif
@@ -331,6 +339,7 @@ void
 rc_pixop_addc_u8(uint8_t *buf, int dim, int width, int height, int value)
 {
     rc_vec_t vec;
+    RC_VEC_DECLARE();
 
     if (value > 0) {
         /* Positive value - use ADDS() */
@@ -346,6 +355,8 @@ rc_pixop_addc_u8(uint8_t *buf, int dim, int width, int height, int value)
                           RC_PIXOP_SUBS, vec, 0, 0,
                           RC_UNROLL(rc_pixop_addc_u8));
     }
+
+    RC_VEC_CLEANUP();
 }
 #endif
 #endif
@@ -362,6 +373,7 @@ rc_pixop_lerpc_u8(uint8_t *buf, int dim, int width,
                   int height, unsigned value, unsigned alpha8)
 {
     rc_vec_t vec;
+    RC_VEC_DECLARE();
 
     /* Vectorize argument */
     RC_VEC_SPLAT(vec, value);
@@ -389,6 +401,8 @@ rc_pixop_lerpc_u8(uint8_t *buf, int dim, int width,
                           RC_PIXOP_LERP_REV, vec, alpha8, blendv,
                           RC_UNROLL(rc_pixop_lerpc_u8));
     }
+
+    RC_VEC_CLEANUP();
 }
 #endif
 #endif
@@ -405,6 +419,7 @@ rc_pixop_lerpnc_u8(uint8_t *buf, int dim, int width,
                    int height, unsigned value, unsigned alpha8)
 {
     rc_vec_t vec;
+    RC_VEC_DECLARE();
 
     /* Vectorize argument */
     RC_VEC_SPLAT(vec, value);
@@ -432,6 +447,8 @@ rc_pixop_lerpnc_u8(uint8_t *buf, int dim, int width,
                           RC_PIXOP_LERPN_REV, vec, alpha8, blendv,
                           RC_UNROLL(rc_pixop_lerpnc_u8));
     }
+
+    RC_VEC_CLEANUP();
 }
 #endif
 #endif
@@ -453,9 +470,13 @@ rc_pixop_add_u8(uint8_t *restrict dst, int dst_dim,
                 const uint8_t *restrict src, int src_dim,
                 int width, int height)
 {
+    RC_VEC_DECLARE();
+
     RC_PIXOP_TEMPLATE2(dst, dst_dim, src, src_dim, width, height,
                        RC_PIXOP_ADDS, 0, 0,
                        RC_UNROLL(rc_pixop_add_u8));
+
+    RC_VEC_CLEANUP();
 }
 #endif
 #endif
@@ -471,9 +492,13 @@ rc_pixop_avg_u8(uint8_t *restrict dst, int dst_dim,
                 const uint8_t *restrict src, int src_dim,
                 int width, int height)
 {
+    RC_VEC_DECLARE();
+
     RC_PIXOP_TEMPLATE2(dst, dst_dim, src, src_dim, width, height,
                        RC_PIXOP_AVG, 0, 0,
                        RC_UNROLL(rc_pixop_avg_u8));
+
+    RC_VEC_CLEANUP();
 }
 #endif
 #endif
@@ -489,9 +514,13 @@ rc_pixop_sub_u8(uint8_t *restrict dst, int dst_dim,
                 const uint8_t *restrict src, int src_dim,
                 int width, int height)
 {
+    RC_VEC_DECLARE();
+
     RC_PIXOP_TEMPLATE2(dst, dst_dim, src, src_dim, width, height,
                        RC_PIXOP_SUBS, 0, 0,
                        RC_UNROLL(rc_pixop_sub_u8));
+
+    RC_VEC_CLEANUP();
 }
 #endif
 #endif
@@ -507,9 +536,13 @@ rc_pixop_subh_u8(uint8_t *restrict dst, int dst_dim,
                  const uint8_t *restrict src, int src_dim,
                  int width, int height)
 {
+    RC_VEC_DECLARE();
+
     RC_PIXOP_TEMPLATE2(dst, dst_dim, src, src_dim, width, height,
                        RC_PIXOP_SUBH, 0, 0,
                        RC_UNROLL(rc_pixop_subh_u8));
+
+    RC_VEC_CLEANUP();
 }
 #endif
 #endif
@@ -525,9 +558,13 @@ rc_pixop_suba_u8(uint8_t *restrict dst, int dst_dim,
                  const uint8_t *restrict src, int src_dim,
                  int width, int height)
 {
+    RC_VEC_DECLARE();
+
     RC_PIXOP_TEMPLATE2(dst, dst_dim, src, src_dim, width, height,
                        RC_PIXOP_SUBA, 0, 0,
                        RC_UNROLL(rc_pixop_suba_u8));
+
+    RC_VEC_CLEANUP();
 }
 #endif
 #endif
@@ -548,20 +585,26 @@ rc_pixop_lerp_u8(uint8_t *restrict dst, int dst_dim,
     }
     else if (alpha8 < 0x80) {
         rc_vec_t blendv;
+        RC_VEC_DECLARE();
 
         RC_PIXOP_BLEND_NOR(blendv, alpha8);
         RC_PIXOP_TEMPLATE2(dst, dst_dim, src, src_dim, width, height,
                            RC_PIXOP_LERP_NOR, alpha8, blendv,
                            RC_UNROLL(rc_pixop_lerp_u8));
+
+        RC_VEC_CLEANUP();
     }
     else { /* alpha8 > 0x80 */
         rc_vec_t blendv;
+        RC_VEC_DECLARE();
 
         alpha8 = 0x100 - alpha8;
         RC_PIXOP_BLEND_REV(blendv, alpha8);
         RC_PIXOP_TEMPLATE2(dst, dst_dim, src, src_dim, width, height,
                            RC_PIXOP_LERP_REV, alpha8, blendv,
                            RC_UNROLL(rc_pixop_lerp_u8));
+
+        RC_VEC_CLEANUP();
     }
 }
 #endif
@@ -579,6 +622,8 @@ rc_pixop_lerpn_u8(uint8_t *restrict dst, int dst_dim,
                   const uint8_t *restrict src, int src_dim,
                   int width, int height, unsigned alpha8)
 {
+    RC_VEC_DECLARE();
+
     if (alpha8 == 0x80) {
         RC_PIXOP_TEMPLATE2(dst, dst_dim, src, src_dim, width, height,
                            RC_PIXOP_AVGN, 0, 0,
@@ -601,6 +646,8 @@ rc_pixop_lerpn_u8(uint8_t *restrict dst, int dst_dim,
                            RC_PIXOP_LERPN_REV, alpha8, blendv,
                            RC_UNROLL(rc_pixop_lerpn_u8));
     }
+
+    RC_VEC_CLEANUP();
 }
 #endif
 #endif
@@ -621,20 +668,26 @@ rc_pixop_lerpi_u8(uint8_t *restrict dst, int dst_dim,
     }
     else if (alpha8 < 0x80) {
         rc_vec_t blendv;
+        RC_VEC_DECLARE();
 
         RC_PIXOP_BLENDI_NOR(blendv, alpha8);
         RC_PIXOP_TEMPLATE2(dst, dst_dim, src, src_dim, width, height,
                            RC_PIXOP_LERPI_NOR, alpha8, blendv,
                            RC_UNROLL(rc_pixop_lerpi_u8));
+
+        RC_VEC_CLEANUP();
     }
     else { /* alpha8 > 0x80 */
         rc_vec_t blendv;
+        RC_VEC_DECLARE();
 
         alpha8 = 0x100 - alpha8;
         RC_PIXOP_BLENDI_REV(blendv, alpha8);
         RC_PIXOP_TEMPLATE2(dst, dst_dim, src, src_dim, width, height,
                            RC_PIXOP_LERPI_REV, alpha8, blendv,
                            RC_UNROLL(rc_pixop_lerpi_u8));
+
+        RC_VEC_CLEANUP();
     }
 }
 #endif
@@ -651,9 +704,13 @@ rc_pixop_norm_u8(uint8_t *restrict dst, int dst_dim,
                  const uint8_t *restrict src, int src_dim,
                  int width, int height)
 {
+    RC_VEC_DECLARE();
+
     RC_PIXOP_TEMPLATE2(dst, dst_dim, src, src_dim, width, height,
                        RC_PIXOP_NORM, 0, 0,
                        RC_UNROLL(rc_pixop_norm_u8));
+
+    RC_VEC_CLEANUP();
 }
 #endif
 #endif

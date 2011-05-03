@@ -326,8 +326,6 @@ do {                                                            \
     int rem  = (len) % (unroll);                                \
     int y;                                                      \
                                                                 \
-    RC_VEC_DECLARE();                                           \
-                                                                \
     for (y = 0; y < (height); y++) {                            \
         int i = (y)*(dim);                                      \
         int x;                                                  \
@@ -352,8 +350,6 @@ do {                                                            \
                                                                 \
     /* Find min or max in the resulting vector */               \
     RC_STAT_MINMAX_REDUCE(vec, res, reduce);                    \
-                                                                \
-    RC_VEC_CLEANUP();                                           \
 } while (0)
 
 /*
@@ -479,11 +475,14 @@ rc_stat_min_bin(const uint8_t *buf, int dim, int width, int height)
 {
     rc_vec_t vec;
     uint8_t  min;
+    RC_VEC_DECLARE();
 
     RC_VEC_SPLAT(vec, 0xff);
     RC_STAT_MINMAX_TEMPLATE(buf, dim, RC_DIV_CEIL(width, 8),
                             height, vec, min, RC_VEC_AND, MIN,
                             RC_UNROLL(rc_stat_min_bin));
+
+    RC_VEC_CLEANUP();
     return min == 0xff;
 }
 #endif
@@ -500,11 +499,14 @@ rc_stat_max_bin(const uint8_t *buf, int dim, int width, int height)
 {
     rc_vec_t vec;
     uint8_t  max;
+    RC_VEC_DECLARE();
 
     RC_VEC_ZERO(vec);
     RC_STAT_MINMAX_TEMPLATE(buf, dim, RC_DIV_CEIL(width, 8),
                             height, vec, max, RC_VEC_OR, MAX,
                             RC_UNROLL(rc_stat_max_bin));
+
+    RC_VEC_CLEANUP();
     return max != 0;
 }
 #endif
@@ -521,11 +523,14 @@ rc_stat_min_u8(const uint8_t *buf, int dim, int width, int height)
 {
     rc_vec_t vec;
     uint8_t  min;
+    RC_VEC_DECLARE();
 
     RC_VEC_SPLAT(vec, 0xff);
     RC_STAT_MINMAX_TEMPLATE(buf, dim, width, height,
                             vec, min, RC_VEC_MIN, MIN,
                             RC_UNROLL(rc_stat_min_u8));
+
+    RC_VEC_CLEANUP();
     return min;
 }
 #endif
@@ -542,11 +547,14 @@ rc_stat_max_u8(const uint8_t *buf, int dim, int width, int height)
 {
     rc_vec_t vec;
     uint8_t  max;
+    RC_VEC_DECLARE();
 
     RC_VEC_ZERO(vec);
     RC_STAT_MINMAX_TEMPLATE(buf, dim, width, height,
                             vec, max, RC_VEC_MAX, MAX,
                             RC_UNROLL(rc_stat_max_u8));
+
+    RC_VEC_CLEANUP();
     return max;
 }
 #endif
