@@ -371,7 +371,8 @@
  *         The @e nonvector value will disable all vector implementations.
  *         The @e none value will disable all vector implementations and
  *         all tuning.
- *         The default is @e auto.
+ *         The default is @e auto, equal to @c --enable-backend=yes and plain
+ *         @c --enable-backend.
  *
  *    - <em> --enable-tune-cache </em> \n
  *         Use the pre-tuned cached configuration file if it exists.

@@ -353,7 +353,7 @@ AC_ARG_ENABLE([backend],
    AS_HELP_STRING(,[loongson2f:  64-bit Loongson-2F vector backend])
    AS_HELP_STRING(,[neon:        64-bit ARM NEON vector backend])],
   [case ${enableval} in
-   auto)
+   yes|auto)
        ;;
    nonvector)
        OPT_BACKEND=
