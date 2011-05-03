@@ -1,25 +1,28 @@
 rapp-0.7dev: Prerelease for a future 0.7 release.
 News and visible changes in this version, since the previous version:
 
-Changes regarding usage:
+Changes regarding usage and related fixed bugs:
 - Bugs exposed on MAC OS X (bug #31888 in the
 savannah.nongnu.org database), causing wrong results and
-spurious overlap indications, have been fixed.
+spurious overlap indications.
 
 - New vector backend, for Loongson-2E and -2F.
 - New vector backend, for ARM NEON.
 - New vector backend, for SPARC VIS.
 
-Changes affecting only build, test and installation:
-- Bug #31887, exposed on MAC OS X, has been fixed.
+Changes and fixed bugs affecting only build, test and installation:
+- Tunefiles for powerpc, powerpc64 and mips64el and their vector
+backends have been added, reducing build time on native systems
+and simplifying cross-builds.
+
+- Bug #31887, "make check" failing when building the test-suite,
+exposed on MAC OS X.
 
 - Bug #32618, causing build errors when using the AltiVec
-backend with GCC (any non-Apple release), have been fixed.
+backend with GCC (any non-Apple release).
 
 - Bug #31874, breaking "make uninstall DESTDIR=/some/dir" (and
-indirectly "make distcheck"), has been fixed.
+indirectly "make distcheck").
 
-- Tunefiles for powerpc, powerpc64 and mips64el have been added,
-reducing build time on native systems and simplifying cross-builds.
 
 rapp-0.6: Initial public release.
