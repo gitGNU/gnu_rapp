@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -534,9 +534,20 @@ rapp_bmark_setup(int width, int height)
     int pad_u8  = rapp_align(RAPP_BMARK_VPAD);
     int pad_bin = rapp_align((RAPP_BMARK_VPAD + 7) / 8);
     int offset  = RAPP_BMARK_HPAD*dim_u8 + pad_u8;
-    int size    = offset + 256 +
-                  RAPP_BMARK_ROWS*MAX(dim_u8*height + 2*RAPP_BMARK_HPAD,
-                                      rot_u8*width  + 2*RAPP_BMARK_HPAD);
+    int size;
+
+    /**
+     *  We perform an extra alignment of "offset", since it adjusts
+     *  pointers to types that might require alignment larger than
+     *  RAPP_ALIGNMEMT, e.g. uintmax_t being 64 bits and requiring
+     *  64-bit alignments on a target with 32-bit pointers and
+     *  RC_ALIGNMENT 4, such as sparc64 with the 32-bit ABI.
+     *  We assume that doubling the alignment is sufficient.
+     */
+    offset = 2*rapp_align(offset / 2 + 1);
+    size = offset + 256 +
+           RAPP_BMARK_ROWS*MAX(dim_u8*height + 2*RAPP_BMARK_HPAD,
+                               rot_u8*width  + 2*RAPP_BMARK_HPAD);
 
     rapp_bmark_data.dst     = rapp_malloc(size, 0);
     rapp_bmark_data.set     = rapp_malloc(size, 0);
