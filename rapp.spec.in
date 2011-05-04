@@ -13,6 +13,10 @@ URL: @HOMESITE@
 # tuned platforms, but we'd have to enumerate those so just put
 # it as a general requirement.
 BuildRequires: doxygen python
+# Older rpm build systems (rpm-build-4.4.2.3-3.fc9) apparently
+# require "BuildRoot:" to be present or else the build will be
+# *without* buildroot.
+BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 RAPP is a library of low-level image processing operations,
