@@ -17,8 +17,8 @@ the maximum side.
 - New vector backend, for SPARC VIS.
 
 Changes and fixed bugs affecting only build, test and installation:
-- Tunefiles for powerpc, powerpc64 and mips64el and their vector
-backends have been added, reducing build time on native systems
+- Tunefiles for sparc64, powerpc, powerpc64 and mips64el and their
+vector backends have been added, reducing build time on native systems
 and simplifying cross-builds.
 
 - When configured with --enable-checking=asserted-returns,
