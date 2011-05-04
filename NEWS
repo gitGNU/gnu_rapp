@@ -17,6 +17,10 @@ the maximum side.
 - New vector backend, for SPARC VIS.
 
 Changes and fixed bugs affecting only build, test and installation:
+- The size of a pointer, the preferred unit in absence of a
+vector backend, now plays a part in the "platform" identifier,
+which selects tunefiles etc.
+
 - Tunefiles for sparc64, powerpc, powerpc64 and mips64el and their
 vector backends have been added, reducing build time on native systems
 and simplifying cross-builds.
