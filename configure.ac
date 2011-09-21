@@ -382,7 +382,8 @@ AC_ARG_ENABLE([backend],
    AS_HELP_STRING(,[loongson2e:  64-bit Loongson-2E vector backend])
    AS_HELP_STRING(,[loongson2f:  64-bit Loongson-2F vector backend])
    AS_HELP_STRING(,[neon:        64-bit ARM NEON vector backend])
-   AS_HELP_STRING(,[vis:         64-bit SPARC VIS 1 vector backend])],
+   AS_HELP_STRING(,[vis:         64-bit SPARC VIS 1 vector backend])
+   AS_HELP_STRING(,[armv6:       32-bit ARMv6 vector backend])],
   [case ${enableval} in
    yes|auto)
        ;;
@@ -405,6 +406,10 @@ AC_ARG_ENABLE([backend],
    neon)
        OPT_BACKEND=${enableval}
        AM_CFLAGS="${AM_CFLAGS} -mfloat-abi=softfp -mfpu=neon"
+       ;;
+   armv6)
+       OPT_BACKEND=${enableval}
+       AM_CFLAGS="${AM_CFLAGS}"
        ;;
    *)
        AC_MSG_ERROR([[Bad value "${enableval}" for --enable-backend option]])

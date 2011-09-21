@@ -356,7 +356,8 @@
  *
  *    - <em> --enable-backend = {auto, nonvector, none, mmx, sse,
  *                               sse2, ssse3, altivec, vadmx,
- *                               loongson2e, loongson2f, neon, vis} </em> \n
+ *                               loongson2e, loongson2f, neon, vis, armv6}
+ *      </em> \n
  *         Use the specified SIMD backend. The compiler will be asked to
  *         enable the named SIMD extension.
  *         The @e nonvector value will disable all vector implementations.

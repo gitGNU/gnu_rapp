@@ -118,6 +118,9 @@
  *    - rc_vec_vis.h: SPARC VIS 1
  *         Uses 64-bit vector registers.
  *         Implements the complete interface.
+ *    - rc_vec_armv6.h: ARMv6
+ *         Uses ARMv6 parallel arithmetic instructions.
+ *         Increases performance of some parts of the swar implementation.
  *    - rc_vec_swar.h: SIMD-Within-A-Register.
  *         Software emulation on native machine words.
  *         Implements most of the interface.

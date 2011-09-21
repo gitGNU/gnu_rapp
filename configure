@@ -1631,6 +1631,7 @@ Optional Features:
                              loongson2f: 64-bit Loongson-2F vector backend
                              neon: 64-bit ARM NEON vector backend
                              vis: 64-bit SPARC VIS 1 vector backend
+                             armv6: 32-bit ARMv6 vector backend
   --enable-tune-cache[=yes]
                           Use the pre-tuned cached configuration if it exists.
                              It has no effect if --enable-backend=none.
@@ -4576,13 +4577,13 @@ if test "${lt_cv_nm_interface+set}" = set; then
 else
   lt_cv_nm_interface="BSD nm"
   echo "int some_variable = 0;" > conftest.$ac_ext
-  (eval echo "\"\$as_me:4579: $ac_compile\"" >&5)
+  (eval echo "\"\$as_me:4580: $ac_compile\"" >&5)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:4582: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+  (eval echo "\"\$as_me:4583: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:4585: output\"" >&5)
+  (eval echo "\"\$as_me:4586: output\"" >&5)
   cat conftest.out >&5
   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
     lt_cv_nm_interface="MS dumpbin"
@@ -5788,7 +5789,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 5791 "configure"' > conftest.$ac_ext
+  echo '#line 5792 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -7643,11 +7644,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7646: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7647: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7650: \$? = $ac_status" >&5
+   echo "$as_me:7651: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -7982,11 +7983,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7985: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7986: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7989: \$? = $ac_status" >&5
+   echo "$as_me:7990: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8087,11 +8088,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8090: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8091: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8094: \$? = $ac_status" >&5
+   echo "$as_me:8095: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -8142,11 +8143,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8145: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8146: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8149: \$? = $ac_status" >&5
+   echo "$as_me:8150: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -10945,7 +10946,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 10948 "configure"
+#line 10949 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11041,7 +11042,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11044 "configure"
+#line 11045 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -14423,6 +14424,10 @@ if test "${enable_backend+set}" = set; then
    neon)
        OPT_BACKEND=${enableval}
        AM_CFLAGS="${AM_CFLAGS} -mfloat-abi=softfp -mfpu=neon"
+       ;;
+   armv6)
+       OPT_BACKEND=${enableval}
+       AM_CFLAGS="${AM_CFLAGS}"
        ;;
    *)
        { { $as_echo "$as_me:$LINENO: error: Bad value \"${enableval}\" for --enable-backend option" >&5

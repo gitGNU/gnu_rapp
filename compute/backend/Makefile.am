@@ -41,4 +41,5 @@ EXTRA_DIST = rc_vector.h      \
              rc_vec_vadmx.h   \
              rc_vec_neon.h    \
              rc_vec_vis.h     \
+             rc_vec_armv6.h   \
              rc_vec_loongson2ef.h
