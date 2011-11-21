@@ -1,6 +1,6 @@
 #  Autoconf file for the RAPP library.
 
-#  Copyright (C) 2005-2014, Axis Communications AB, LUND, SWEDEN
+#  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
 #
 #  This file is part of RAPP.
 #
@@ -328,6 +328,7 @@ AC_CHECK_DEFINED([__SSSE3__], [OPT_BACKEND=ssse3])
 AC_CHECK_DEFINED([__VEC__], [OPT_BACKEND=altivec])
 AC_CHECK_DEFINED([__ALTIVEC__], [OPT_BACKEND=altivec])
 AC_CHECK_DEFINED([__VADMX__], [OPT_BACKEND=vadmx])
+AC_CHECK_DEFINED([__VADMX2__], [OPT_BACKEND=vadmx2])
 
 # Set the PLATFORM string to be the AC 'host_cpu' plus the compiler vendor,
 # plus a suffix built from native bit-size as defined by uintptr_t, if
@@ -411,6 +412,7 @@ AC_ARG_ENABLE([backend],
    AS_HELP_STRING(,[ssse3:       128-bit SSSE3 vector backend])
    AS_HELP_STRING(,[altivec:     128-bit AltiVec vector backend])
    AS_HELP_STRING(,[vadmx:       64-bit VADMX vector backend])
+   AS_HELP_STRING(,[vadmx2:      128-bit VADMX2 vector backend])
    AS_HELP_STRING(,[loongson2e:  64-bit Loongson-2E vector backend])
    AS_HELP_STRING(,[loongson2f:  64-bit Loongson-2F vector backend])
    AS_HELP_STRING(,[neon:        64-bit ARM NEON vector backend])
@@ -425,7 +427,7 @@ AC_ARG_ENABLE([backend],
        OPT_BACKEND=
        PLATFORM=generic
        ;;
-   mmx | sse | sse2 | ssse3 | altivec | vadmx | vis)
+   mmx | sse | sse2 | ssse3 | altivec | vadmx | vadmx2 | vis)
        OPT_BACKEND=${enableval}
        AM_CFLAGS="${AM_CFLAGS} -m${OPT_BACKEND}"
        ;;

@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -108,6 +108,9 @@
  *         Implements the complete interface.
  *    - rc_vec_vadmx.h: Axis VADMX.
  *         Uses 64-bit VADMX registers.
+ *         Implements the complete interface.
+ *    - rc_vec_vadmx2.h: Axis VADMX2.
+ *         Uses 128-bit VADMX2 registers.
  *         Implements the complete interface.
  *    - rc_vec_loongson2ef.h: Loongson-2E and -2F.
  *         Uses 64-bit vector registers.

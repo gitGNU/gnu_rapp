@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -355,7 +355,7 @@
  *  ones to non-developers are:
  *
  *    - <em> --enable-backend = {auto, nonvector, none, mmx, sse,
- *                               sse2, ssse3, altivec, vadmx,
+ *                               sse2, ssse3, altivec, vadmx, vadmx2,
  *                               loongson2e, loongson2f, neon, vis} </em> \n
  *         Use the specified SIMD backend. The compiler will be asked to
  *         enable the named SIMD extension.
@@ -368,9 +368,9 @@
  *         macros expected to be predefined by the compiler are inspected,
  *         and determine which backend to use.
  *         The macros __MMX__, __SSE__, __mips_loongson_vector_rev,
- *         __ARM_NEON__, __SSE2__, __SSSE3__, __VEC__, __ALTIVEC__ and
- *         __VADMX__ are checked in that order, and the last one in that list
- *         found to be defined, wins. If no backend is found, no vector
+ *         __ARM_NEON__, __SSE2__, __SSSE3__, __VEC__, __ALTIVEC__, __VADMX__,
+ *         and __VADMX2__ are checked in that order, and the last one in that
+ *         list found to be defined, wins. If no backend is found, no vector
  *         implementation is used. This is a bit different from naming a
  *         specific backend, where required SIMD-enabling compiler options are
  *         passed automatically.

@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2014, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -82,7 +82,7 @@
  *  than the former.
  */
 #if defined __SSE2__ || defined __VEC__ || defined __ALTIVEC__ || \
-    defined __SSSE3__
+    defined __SSSE3__ || defined __VADMX2__
 #define RC_ALIGNMENT 16
 
 #elif defined __MMX__ || defined __SSE__ || defined __VADMX__ || \
