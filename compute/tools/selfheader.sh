@@ -73,6 +73,19 @@ OFFSET=`getoffset $0 '^# -- ARCHIVE BOUNDARY --'`
 
 # Extract the archive data
 tail -n +${OFFSET} $0 | (cd ${TMPDIR} && gunzip | tar -xf -)
+test $? -ne 0 && {
+  echo
+  echo "$0: Maybe the error is tar failing to read uncompressed, retrying..."
+  rm -rf ${TMPDIR}/payload ${TMPDIR}/bootstrap.sh
+  # The broken tar ("tar (GNU tar) 1.15") seems to read stdin wrongly for
+  # the raw tar file, probably the very bug fixed in 1.15.1. A "tar xf -
+  # < file" works, but "cat file | tar xf -" does not. It does have "z"
+  # capability, working around the issue, so we try to use that instead of
+  # going through gunzip. Don't copy the tarfile instead of the pipe: we
+  # may not have room. Don't use "z" always: tar might not support it.
+  tail -n +${OFFSET} $0 | (cd ${TMPDIR} && tar -zxf -)
+  test $? -ne 0 && echo "$0: Nope, that didn't fix it. Sorry!" && exit 1
+}
 
 # Stop now, if so requested
 test -n "${RAPP_STOP_AFTER_SELFEXTRACT}" &&
