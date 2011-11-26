@@ -51,6 +51,8 @@ getoffset()
     fi
 }
 
+test -n "${RAPP_SCRIPT_TRACE}" && set -x
+
 # Create a temporary directory for extracted files
 # As mktemp has no -d in busybox 0.52 we go for the autoconf-documented method
 : ${TMPDIR=/tmp}
