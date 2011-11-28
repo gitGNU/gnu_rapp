@@ -661,7 +661,7 @@ typedef arch_vector_t rc_vec_t;
 /**
  *  Linear interpolation.
  *  Computes dstv = srcv1 + ((blend8*(srcv2 - srcv1) + 0x80) >> 8) for each
- *  8-bit field. The Q.8 blend factor @e blend8 must be in the range [0,0x7f].
+ *  8-bit field. The Q.8 blend factor @e blend8 must be in the range [0x1,0x7f].
  *
  *  @param dstv    The output vector.
  *  @param srcv1   The first input vector.
@@ -683,7 +683,7 @@ typedef arch_vector_t rc_vec_t;
  *  Linear interpolation rounded towards srcv1.
  *  Computes dstv = srcv1 + (blend8*(srcv2 - srcv1)/256) for each 8-bit
  *  field, with the update term rounded towards zero. The Q.8 blend factor
- *  @e blend8 must be in the range [0,0x7f].
+ *  @e blend8 must be in the range [0x1,0x7f].
  *
  *  @param dstv    The output vector.
  *  @param srcv1   The first input vector.
@@ -705,7 +705,7 @@ typedef arch_vector_t rc_vec_t;
  *  Linear interpolation rounded towards srcv2.
  *  Computes dstv = srcv1 + (blend8*(srcv2 - srcv1)/256) for each 8-bit
  *  field, with the update term rounded away from zero. The Q.8 blend factor
- *  @e blend8 must be in the range [0,0x7f].
+ *  @e blend8 must be in the range [0x1,0x7f].
  *
  *  @param dstv    The output vector.
  *  @param srcv1   The first input vector.
