@@ -31,6 +31,7 @@
  */
 
 #include <string.h>          /* memcpy()      */
+#include <assert.h>
 #include "rapp.h"            /* RAPP API      */
 #include "rapp_ref_stat.h"   /* Reference API */
 #include "rapp_test_util.h"  /* Test utils    */
@@ -98,7 +99,8 @@ rapp_test_stat_sum_u8(void)
 bool
 rapp_test_stat_sum2_u8(void)
 {
-    return rapp_test_stat_driver(&rapp_stat_sum2_u8,
+    assert(sizeof(int) == sizeof(int32_t));
+    return rapp_test_stat_driver((int32_t (*)())&rapp_stat_sum2_u8,
                                  (int32_t (*)())&rapp_ref_stat_sum2_u8,
                                  0, false);
 }
@@ -153,7 +155,8 @@ rapp_test_stat_xsum_u8(void)
 bool
 rapp_test_stat_min_bin(void)
 {
-    return rapp_test_stat_driver(&rapp_stat_min_bin,
+    assert(sizeof(int) == sizeof(int32_t));
+    return rapp_test_stat_driver((int32_t (*)())&rapp_stat_min_bin,
                                  (int32_t (*)())&rapp_ref_stat_min_bin,
                                  1, true);
 }
@@ -161,7 +164,8 @@ rapp_test_stat_min_bin(void)
 bool
 rapp_test_stat_max_bin(void)
 {
-    return rapp_test_stat_driver(&rapp_stat_max_bin,
+    assert(sizeof(int) == sizeof(int32_t));
+    return rapp_test_stat_driver((int32_t (*)())&rapp_stat_max_bin,
                                  (int32_t (*)())&rapp_ref_stat_max_bin,
                                  0, true);
 }
@@ -169,7 +173,8 @@ rapp_test_stat_max_bin(void)
 bool
 rapp_test_stat_min_u8(void)
 {
-    return rapp_test_stat_driver(&rapp_stat_min_u8,
+    assert(sizeof(int) == sizeof(int32_t));
+    return rapp_test_stat_driver((int32_t (*)())&rapp_stat_min_u8,
                                  (int32_t (*)())&rapp_ref_stat_min_u8,
                                  1, false);
 }
@@ -177,7 +182,8 @@ rapp_test_stat_min_u8(void)
 bool
 rapp_test_stat_max_u8(void)
 {
-    return rapp_test_stat_driver(&rapp_stat_max_u8,
+    assert(sizeof(int) == sizeof(int32_t));
+    return rapp_test_stat_driver((int32_t (*)())&rapp_stat_max_u8,
                                  (int32_t (*)())&rapp_ref_stat_max_u8,
                                  0, false);
 }
@@ -225,7 +231,7 @@ rapp_test_stat_driver(int32_t (*test)(), int32_t (*ref)(),
         /* Call the statistical function */
         t = (*test)(buf, dim, width, height, tsum.uim);
         if (t < 0) {
-            DBG("Got FAIL return value %d\n", t);
+            DBG("Got FAIL return value %d\n", (int) t);
             return false;
         }
 
@@ -234,7 +240,8 @@ rapp_test_stat_driver(int32_t (*test)(), int32_t (*ref)(),
 
         /* Compare the return values if sum[0] is unused */
         if (tsum.uim[0] == RAPP_TEST_MAGIC && t != r) {
-            DBG("Failed; return value is %d (expected %d)\nsrc=\n", t, r);
+            DBG("Failed; return value is %d (expected %d)\nsrc=\n",
+		(int) t, (int) r);
             goto dump_failed_result;
         }
 
