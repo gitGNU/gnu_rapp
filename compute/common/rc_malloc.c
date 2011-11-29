@@ -30,8 +30,9 @@
  *  @brief  Memory allocation.
  */
 
+#include <config.h>
 #include <stdlib.h>    /* malloc(), _aligned_malloc(), free() */
-#if defined __linux__ || defined __CYGWIN__
+#ifdef HAVE_MALLOC_H
 #include <malloc.h>    /* memalign()                          */
 #endif
 
@@ -69,20 +70,28 @@ rc_malloc(size_t size)
     /* Use standard malloc() for normal alignment restrictions */
     return malloc(size);
 
-#elif defined __APPLE__
-    /* On OSX malloc() uses 128-bit alignment */
-    return malloc(size);
-
 #elif defined __WIN32__
     /* Use special aligned malloc */
     return _aligned_malloc(size, RC_ALIGNMENT);
 
-#elif defined __linux__ || defined __CYGWIN__
+#elif defined __APPLE__
+    /* On OSX malloc() uses 128-bit alignment */
+    return malloc(size);
+
+#elif defined HAVE_MEMALIGN
     /* Use the memalign() function */
     return memalign(RC_ALIGNMENT, size);
 
+#elif defined HAVE_POSIX_MEMALIGN
+    {
+      void *ptr;
+      if (posix_memalign(&ptr, RC_ALIGNMENT, size) != 0)
+        return NULL;
+      return ptr;
+    }
 #else
-#error "Unknown architecture"
+    /* An error should have been emitted by configure.ac. */
+#error "Internal inconsistency in finding a memalign-equivalent"
 #endif
 }
 
@@ -93,15 +102,18 @@ rc_free(void *ptr)
     /* Use standard free() for normal alignment restrictions */
     free(ptr);
 
-#elif defined __APPLE__ || defined __linux__ || defined __CYGWIN__
-    /* Memory allocated by malloc() or memalign() - use free() */
-    free(ptr);
-
 #elif defined __WIN32__
     /* Use special aligned free */
     _aligned_free(ptr);
 
+#elif defined __APPLE__ || defined HAVE_MEMALIGN || defined HAVE_POSIX_MEMALIGN
+    /**
+     *  Memory allocated by malloc(), posix_memalign() or memalign() -
+     *  use free().
+     */
+    free(ptr);
+
 #else
-#error "Unknown architecture"
+#error "Internal inconsistency in finding a free() for memalign-equivalent"
 #endif
 }

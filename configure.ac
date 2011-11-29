@@ -143,6 +143,22 @@ AC_HEADER_STDC
 AC_HEADER_STDBOOL
 AC_CHECK_HEADERS([stdint.h limits.h], [],
   [AC_MSG_ERROR([[Required header file ${ac_header} missing]])])
+AC_CHECK_HEADERS([malloc.h])
+have_standard_memalign=unknown
+AC_CHECK_FUNCS([memalign posix_memalign],
+  [have_standard_memalign=yes],
+  # Fallbacks provided for historic reasons and lack of testing.
+  # FIXME: We shouldn't emit an error when malloc is sufficient,
+  # but we can't check RC_ALIGNMENT here.
+  [if test ${have_standard_memalign} != yes; then
+       AC_COMPILE_IFELSE(
+         [AC_LANG_PROGRAM(, [[
+#if !defined(__APPLE__) && !defined(__WIN32__)
+choke me
+#endif]])],
+         [],
+         [AC_MSG_FAILURE([[Missing or unknown memalign equivalent]])])
+   fi])
 
 # Check C compiler vendor
 AX_COMPILER_VENDOR
