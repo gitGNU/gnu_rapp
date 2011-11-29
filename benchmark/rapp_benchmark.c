@@ -37,7 +37,6 @@
 #include <math.h>
 #include <signal.h>
 #include <unistd.h>
-#include <dlfcn.h>
 #include <sys/time.h>
 #include "rapp.h"
 
