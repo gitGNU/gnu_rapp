@@ -81,5 +81,9 @@ rapp_initialize(void);
 RAPP_EXPORT void
 rapp_terminate(void);
 
+#ifdef __cplusplus
+};
+#endif
+
 #endif /* RAPP_MAIN_H */
 /** @} */

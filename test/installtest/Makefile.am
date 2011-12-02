@@ -34,3 +34,11 @@ check_PROGRAMS = $(TESTS)
 closing_CPPFLAGS = \
  -DEXPECTED_MAJOR_VERSION=$(EXPECTED_MAJOR_VERSION) \
  -DEXPECTED_MINOR_VERSION=$(EXPECTED_MINOR_VERSION)
+
+# This arrangement is not critical, just make sure only
+# dummy.cxx (and nothing else) is compiled as C++ and make sure
+# whatever is built isn't installed.
+EXTRA_LTLIBRARIES = libdummy.la
+libdummy_la_SOURCES = dummy.cxx
+CLEANFILES = $(EXTRA_LTLIBRARIES)
+all-local: $(EXTRA_LTLIBRARIES)

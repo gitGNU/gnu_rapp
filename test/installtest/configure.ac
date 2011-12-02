@@ -43,6 +43,9 @@ AC_PROG_CC_C89
 AC_PROG_LN_S
 AC_PROG_MKDIR_P
 
+# For checking syntax correctness of header-files.
+AC_PROG_CXX
+
 # Restore user CFLAGS
 CFLAGS=$USER_CFLAGS
 
