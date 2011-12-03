@@ -77,7 +77,9 @@
 #endif
 
 /**
- *  The buffer alignment value in bytes.
+ *  The maximum of the required buffer alignment value in bytes for
+ *  vector memory access and the vector size: the latter can be bigger
+ *  than the former.
  */
 #if defined __SSE2__ || defined __VEC__ || defined __ALTIVEC__
 #define RC_ALIGNMENT 16
