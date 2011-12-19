@@ -249,9 +249,13 @@ rapp_test_bitblt_driver(int (*test)(), void (*ref)())
             memcmp (src_buf, srcref_buf, src_len) != 0)
         {
             DBG("Invalid result (%d,%d) dim %d -> %d, off %d -> %d;"
-                " %p to %p (%d)\n",
+                " %p+%d to %p+%d (%d)\n",
                 width, height, src_dim, dst_dim, src_off, dst_off,
-                &src_buf[src_idx], &dst_buf[dst_idx], rapp_alignment);
+                src_buf, src_idx, dst_buf, dst_idx, rapp_alignment);
+            DBG("src_ref=\n");
+            rapp_test_dump_bin(&srcref_buf[src_idx],
+                               src_dim, src_off,
+                               width, height);
             DBG("src=\n");
             rapp_test_dump_bin(&src_buf[src_idx],
                                src_dim, src_off,
