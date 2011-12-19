@@ -84,6 +84,12 @@ int
 rapp_test_rand(int min, int max);
 
 /**
+ *  Initialize the randomness sequence, like srand() is to rand().
+ */
+void
+rapp_test_srand(unsigned int seed);
+
+/**
  *  Initialize a 2-dimensional byte array.
  */
 void

@@ -35,6 +35,22 @@
 #include "rapp.h"           /* RAPP API         */
 #include "rapp_test_util.h" /* Test utility API */
 
+/**
+ *  These two functions, rapp_test_srand and rc_test_rand, are the only
+ *  ones that need to be replaced when recreating random sequences or
+ *  making repeatable across rand / srand implementations.
+ */
+int
+rc_test_rand(void)
+{
+  return rand();
+}
+
+void
+rapp_test_srand(unsigned int seed)
+{
+  srand(seed);
+}
 
 /*
  * -------------------------------------------------------------
@@ -45,7 +61,7 @@
 int
 rapp_test_rand(int min, int max)
 {
-    return min + rand() % (max - min + 1);
+    return min + rc_test_rand() % (max - min + 1);
 }
 
 void
@@ -57,7 +73,7 @@ rapp_test_init(uint8_t *buf, int dim, int width, int height, bool rnd)
         int i = y*dim;
 
         for (x = 0; x < width; x++, i++, k++) {
-            buf[i] = rnd ? rand() : k;
+            buf[i] = rnd ? rc_test_rand() : k;
         }
     }
 }

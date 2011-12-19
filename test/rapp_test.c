@@ -34,6 +34,7 @@
 #include <stdio.h>      /* printf()           */
 #include "rc_stdbool.h" /* Portable stdbool.h */
 #include "rapp.h"
+#include "rapp_test_util.h"
 
 /*
  * -------------------------------------------------------------
@@ -104,7 +105,7 @@ int main(void)
         }
 
         /* Make pseudo-random element of tests independent of earlier tests */
-        srand(1);
+        rapp_test_srand(1);
 
         /* Print function name */
         printf("  %s\n", rapp_test_table[k].name);
