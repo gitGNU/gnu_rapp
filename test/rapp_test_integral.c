@@ -48,9 +48,11 @@
 #define RAPP_TEST_ITER 128
 
 /**
- *  Test image maximum width.
+ *  Test image maximum width.  Keeping this at most 512 and height at
+ *  most 768 helps testing on targets with at most 8 MeB free, while
+ *  not sacrificing coverage.
  */
-#define RAPP_TEST_WIDTH 1024
+#define RAPP_TEST_WIDTH 512
 
 /**
  *  Test image maximum height.
