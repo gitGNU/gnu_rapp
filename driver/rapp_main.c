@@ -46,7 +46,7 @@ int rc_initialized = 0;
 /**
  *  Initialize the library. Empty for now, except for verification that
  *  it hasn't been called before, not without a matching call to
- *  rapp_terminate, and only when debugging.
+ *  rapp_terminate.
  */
 RAPP_API(void, rapp_initialize, (void))
 {
@@ -59,8 +59,7 @@ RAPP_API(void, rapp_initialize, (void))
 
 /**
  *  Finish working with the library. Empty for now, except for
- *  verification that there has been a matching call to rapp_initialize,
- *  and only when debugging.
+ *  book-keeping that there has been a call.
  */
 RAPP_API(void, rapp_terminate, (void))
 {
