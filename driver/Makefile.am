@@ -1,6 +1,6 @@
 #  Automake file for the RAPP driver directory.
 
-#  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+#  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
 #
 #  This file is part of RAPP.
 #
@@ -32,14 +32,23 @@ AM_CPPFLAGS += -I../include            \
                -I$(top_srcdir)/include \
                -I$(top_srcdir)/compute/include
 
+# There's a naked /usr/bin/perl in Doxyfile.in to also adjust,
+# if it ever needs autoconf'ing.
+PERL = /usr/bin/perl
+
 # The RAPP driver convenience library
 noinst_LTLIBRARIES = librappdriver.la
+
+# The script for extracting RAPP_API calls for logging.
+EXTRA_DIST = gen-rapp-logmacros.pl
+MOSTLYCLEANFILES = *.tmp
 
 librappdriver_la_LDFLAGS = -no-undefined
 
 # The RAPP driver source files
 librappdriver_la_SOURCES = rapp_api.h         \
                            rapp_util.h        \
+                           rapp_logdefs.h     \
                            rapp_main.c        \
                            rapp_version.c     \
                            rapp_info.c        \
@@ -73,3 +82,9 @@ librappdriver_la_SOURCES = rapp_api.h         \
                            rapp_scatter.c     \
                            rapp_scatter_bin.c \
                            rapp_integral.c
+
+genlogmacros: $(srcdir)/rapp_logdefs.h
+
+$(srcdir)/rapp_logdefs.h: $(srcdir)/gen-rapp-logmacros.pl Makefile
+	cd $(srcdir) && $(PERL) gen-rapp-logmacros.pl > $@.tmp \
+	 $(librappdriver_la_SOURCES) && mv $@.tmp $@

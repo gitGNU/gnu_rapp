@@ -1,6 +1,6 @@
 #  Autoconf file for the RAPP library.
 
-#  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
+#  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
 #
 #  This file is part of RAPP.
 #
@@ -545,6 +545,11 @@ AC_ARG_ENABLE([werror],
    esac])
 if test ${enable_werror} = yes; then
     AX_CFLAGS_GCC_OPTION([-Werror], [AM_CFLAGS])
+    AX_CFLAGS_GCC_OPTION([-Wno-error=cpp], [HASHWARN_CFLAGS])
+    case " ${HASHWARN_CFLAGS} " in
+    *" -Wno-error=cpp "*) ;;
+    *) AX_CFLAGS_GCC_OPTION([-Wno-error], [HASHWARN_CFLAGS]) ;;
+    esac
 fi
 
 # Set the default compiler flags. See m4/ax_compiler_vendor.m4
@@ -575,6 +580,20 @@ fi
 
 test "x${rapp_gflag}" = x && test "$ac_cv_prog_cc_g" != no && rapp_gflag=-g
 test ${OPT_DEBUG} != no && AM_CFLAGS="${AM_CFLAGS} ${rapp_gflag}"
+
+rapp_enable_logging=no
+AC_ARG_ENABLE([logging],
+  [AS_HELP_STRING([[--enable-logging@<:@=no@:>@]],
+                  [Log calls to the RAPP API functions. See docs for details.])],
+  [rapp_enable_logging=${enableval}
+   case ${enableval} in
+   yes|no) ;;
+   *) AC_MSG_ERROR([[Bad parameter "${enableval}" for --enable-logging option]]);;
+   esac])
+if test ${rapp_enable_logging} = yes; then
+    AM_CPPFLAGS="${AM_CPPFLAGS} -DRAPP_LOGGING"
+fi
+AM_CONDITIONAL([RAPP_LOGGING], [test ${rapp_enable_logging} = yes])
 
 # Check if we will use a tune-cache
 TUNEFILE=${srcdir}/compute/tune/arch/rapptune-${PLATFORM}.h
@@ -637,6 +656,9 @@ AM_COND_IF([RAPP_USE_TUNECACHE],
        AC_MSG_ERROR(
          [[No python found, required to create tune-files (try 2.4 - 2.7)]])
    fi
+
+   AM_COND_IF([RAPP_LOGGING],
+     [AC_MSG_ERROR([[Tuning with --enable-logging refused: would fill ${TMPDIR-/tmp}]])])
 
    # Besides the known working versions, accept future 2.x series
    if test ${PYTHON} = python; then
@@ -742,6 +764,7 @@ RB_NCANDIDATES=${rb_ncandidates}
 # Substitute variables in output files
 AC_SUBST([AM_CPPFLAGS])
 AC_SUBST([AM_CFLAGS])
+AC_SUBST([HASHWARN_CFLAGS])
 AC_SUBST([PLATFORM])
 AC_SUBST([RAPP_MAJOR_VERSION])
 AC_SUBST([RAPP_MINOR_VERSION])

@@ -1,6 +1,6 @@
 #  Automake file for the RAPP library.
 
-#  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
+#  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
 #
 #  This file is part of RAPP.
 #
@@ -265,6 +265,8 @@ release-distchecks:
 # hacking.
 MANY_DISTCHECKS = \
  --enable-debug/--disable-tune-cache \
+ --enable-debug/--enable-logging \
+ --disable-debug/--enable-logging \
  --disable-debug/--disable-tune-cache/--enable-backend=auto \
  --disable-debug/--disable-tune-cache/--enable-backend=nonvector \
  --disable-debug/--enable-tune-cache/--enable-backend=auto

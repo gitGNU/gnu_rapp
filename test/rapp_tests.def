@@ -2,6 +2,10 @@
 RAPP_TESTH(pixel_set_u8, "rapp_pixel - pixel access operations")
 RAPP_TEST(pixel_set_bin)
 
+#ifdef RAPP_LOGGING
+#warning Pruning test-suite because of logging to avoid excessive log file size
+#else
+
 /* Test cases for rapp_bitblt functions */
 RAPP_TESTH(bitblt_copy_bin, "rapp_bitblt - bitblit operations")
 RAPP_TEST(bitblt_not_bin)
@@ -169,3 +173,4 @@ RAPP_TEST(integral_bin_u32)
 /* Test cases for rapp_integral_u8 functions */
 RAPP_TESTH(integral_u8_u16, "rapp_integral_u8 - 8-bit integral images")
 RAPP_TEST(integral_u8_u32)
+#endif /* !RAPP_LOGGING */

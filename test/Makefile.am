@@ -1,6 +1,6 @@
 #  Automake file for the RAPP library unit tests.
 
-#  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+#  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
 #
 #  This file is part of RAPP.
 #
@@ -39,12 +39,45 @@ AM_CPPFLAGS += @CHECK_CFLAGS@                  \
 # Enable tests if the Check library is present
 if HAVE_CHECK
 testapp_src = rapp_check.c
+HAVE_CHECK_YESNO = yes
 else
 testapp_src = rapp_test.c
+HAVE_CHECK_YESNO = no
 endif
 
 # Set the test program
 TESTS = rapptest
+
+if RAPP_LOGGING
+
+# Inside the conditional, to catch stray references left outside
+# (that aren't satisfied with the default empty contents).
+RAPP_LOGFILE = rapp_log_results.txt
+
+# If logging is on, we'll have some #warning directives; make
+# sure they're not promoted to errors. N.B., we need this at
+# *_CFLAGS and not *_CPPFLAGS, as the latter would be emitted
+# before the -Werror and thus not override it.
+AM_CFLAGS += $(HASHWARN_CFLAGS)
+
+# Unfortunately, the simplest way to get the logfile anywhere
+# else than the default in /tmp, we have to setenv in the C
+# source files. While it'd be preferable to pass it from
+# outside of the program, that's still reasonably remote from
+# the library.
+AM_CFLAGS += -DRAPP_LOGFILE='"'`pwd`'/$(RAPP_LOGFILE)"'
+
+# N.B.: On a successful run, this also removes the logfile. It
+# has to run *after* the main test (each main test), but
+# thankfully automake currently (1.11) iterates on TESTS as a
+# list thus parallel-safe at the moment.
+TESTS += verify_logfile
+
+# We're not inspecting this file, we just want to make sure it's
+# out of the way and will be automatically removed.
+RAPP_INSTALLCHECK_ENVIRONMENT = env RAPP_LOGFILE=`pwd`/../$(RAPP_LOGFILE).tmp
+endif # RAPP_LOGGING
+
 check_PROGRAMS = $(TESTS)
 
 # The test sources
@@ -80,11 +113,22 @@ rapptest_SOURCES = $(testapp_src)          \
                    rapp_test_scatter_bin.c \
                    rapp_test_integral.c
 
+verify_logfile_SOURCES = verify_logfile.in
+
 # Link with the RAPP library and the reference implementation
 rapptest_LDADD = @CHECK_LIBS@ reference/librappref.la
 
 # Additional files to clean
-CLEANFILES = rapptest.log
+CLEANFILES = $(RAPP_LOGFILE) *.tmp
+
+if RAPP_LOGGING
+verify_logfile: verify_logfile.in Makefile
+	sed -e 's,@LOGFILE@,$(RAPP_LOGFILE),g' \
+            -e 's,@HAVE_CHECK_YESNO@,$(HAVE_CHECK_YESNO),g' \
+            < $< > $@.tmp
+	chmod +x $@.tmp
+	mv $@.tmp $@
+endif
 
 # Distribute the installcheck-directory. It can't be configured
 # until after RAPP has been installed, so we can't put it in
@@ -103,7 +147,8 @@ installcheck-local:
 	 `test -n "$(target)" && echo '--target=$(target)'` \
 	 'CPPFLAGS=-I$(includedir)' 'LDFLAGS=-L$(libdir)' \
 	 $(INSTALLCHECK_CONFIGURE_OPTIONS)
-	cd installtest && $(MAKE) check \
+	cd installtest && $(RAPP_INSTALLCHECK_ENVIRONMENT) \
+	 $(MAKE) check \
 	 EXPECTED_MAJOR_VERSION=@RAPP_MAJOR_VERSION@ \
 	 EXPECTED_MINOR_VERSION=@RAPP_MINOR_VERSION@
 	cd installtest && $(MAKE) distclean

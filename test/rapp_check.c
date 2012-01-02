@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -43,6 +43,13 @@
 
 void setup(void)
 {
+#ifdef RAPP_LOGFILE
+    if (setenv("RAPP_LOGFILE", RAPP_LOGFILE, 1) != 0) {
+        perror("setenv");
+        exit(1);
+    }
+#endif
+
     /* Initialize library */
     rapp_initialize();
 }

@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -398,6 +398,37 @@
  *         use and will fail early. (Error handling can't be properly tested
  *         with asserted returns anyway, so better to not add any related
  *         complexity at all.)
+ *
+ *    - <em> --enable-logging </em> \n
+ *         Enable code that logs each call to every function in the RAPP API,
+ *         appending a line for each call to a file. The file is settable using
+ *         the environment variable @c RAPP_LOGFILE, default @c "rapp_log.txt".
+ *         If RAPP_LOGFILE does not start with a @c "/", the standard environment
+ *         variable @c TMPDIR (in turn defaulting to "/tmp") is prepended to its
+ *         value with a "/" delimiter. On systems where symbols in the application
+ *         override library symbols (most Unix-like systems), the actual logging
+ *         can be specialized in the application or the calling library: just add
+ *         to it an overriding definition of the logging function,
+ *         rapp_log_rappcall. It has the following prototype:
+ *         <pre>
+ *         void rapp_log_rappcall(const char fname[], const struct timeval tv[],
+ *                                const char retformat[], const char argformats[],
+ *                                ...)
+ *         </pre> where @c fname is the name of the called function as a string,
+ *         e.g. "rapp_initialize", @c tv is a vector of two @c struct @c timeval
+ *         values, filled in by RAPP by calls to @c gettimeofday before (tv[0])
+ *         and after (tv[1]) the call to the proper function. The parameter
+ *         @c retformat contains a printf-format string for the return-value,
+ *         e.g. "%d" for functions returning int and the empty string "" for void
+ *         functions.  Similarly, the parameter @c argformats holds a format
+ *         string for the parameters, delimited by a single comma and space, ", "
+ *         and the empty string for functions without parameters.  Finally the
+ *         parameters to the proper function, followed by the return value after the
+ *         call (for non-void functions) are passed as the variable arguments
+ *         represented by the ellipsis. Beware: the RAPP library does not declare
+ *         this function in the installed headers, nor is it part of the versioned
+ *         API. The semantics of rapp_log_rappcall only apply when RAPP is
+ *         configured with --enable-logging.
  *
  *  For the full set of options, use @c configure @c --help.
  *

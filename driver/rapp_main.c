@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -34,6 +34,10 @@
 #include "rapp_api.h"
 #include "rapp_util.h"
 #include "rapp_error.h"
+#include <stdarg.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 /*
  * -------------------------------------------------------------
@@ -65,3 +69,101 @@ RAPP_API(void, rapp_terminate, (void))
 {
     rc_initialized = 0;
 }
+
+#ifdef RAPP_LOGGING
+
+/**
+ *  Log a call to a RAPP API function.
+ */
+void rapp_log_rappcall(const char fname[], const struct timeval tv[],
+                       const char retformat[], const char argformats[],
+                       ...)
+{
+    static uint64_t t0;
+    uint64_t td, tb;
+    static FILE *logfile;
+    va_list ap;
+    const char *logformat;
+    int ret;
+    static char modf_format[(RAPP_LOG_MAX_RETURN_FORMAT_LENGTH +
+                             RAPP_LOG_MAX_ARGS_FORMAT_LENGTH +
+                             sizeof ") = \n")];
+
+    if (logfile == NULL) {
+        char *logfilebase = getenv("RAPP_LOGFILE");
+        char *tmpdir = getenv("TMPDIR");
+        size_t tmpnamsiz;
+        char *logfilenam;
+        bool this_is_rapp_initialize = strcmp(fname, "rapp_initialize") == 0;
+
+        assert(this_is_rapp_initialize);
+        if (!this_is_rapp_initialize)
+            return;
+
+        if (logfilebase == NULL)
+            logfilebase = "rapp_log.txt";
+
+        if (logfilebase[0] == '/')
+           tmpdir = "";
+
+        if (tmpdir == NULL)
+           tmpdir = "/tmp";
+
+        tmpnamsiz = strlen(tmpdir) + 1 + strlen(logfilebase) + 1;
+        logfilenam = malloc(tmpnamsiz);
+        assert(logfilenam != NULL);
+        if (logfilenam == NULL)
+            return;
+
+        sprintf(logfilenam, "%s/%s", tmpdir, logfilebase);
+        logfile = fopen(logfilenam, "a");
+        free(logfilenam);
+        assert(logfile != NULL);
+        if (logfile == NULL)
+            return;
+
+        t0 = tv[0].tv_sec * 1000000ULL + tv[0].tv_usec;
+    }
+
+    tb = tv[0].tv_sec * 1000000ULL + tv[0].tv_usec;
+    td = tv[1].tv_sec * 1000000ULL + tv[1].tv_usec - tb;
+    tb -= t0;
+    ret = fprintf(logfile, "%lu.%06lu..%lu.%06lu %s(",
+                  (unsigned long)(tb / 1000000), (unsigned long)(tb % 1000000),
+                  (unsigned long)(td / 1000000), (unsigned long)(td % 1000000),
+                  fname);
+    assert(ret > 0);
+
+    va_start(ap, argformats);
+
+    if (*retformat == 0) {
+        /* A void function. Just use argformats as-is. */
+        logformat = argformats;
+    } else {
+        /**
+         *  A non-void function. Re-format argformats to reflect that the
+         *  last passed stdarg value is the return-value.
+         */
+        sprintf(modf_format, "%s) = %s\n", argformats, retformat);
+        logformat = modf_format;
+    }
+
+    ret = vfprintf(logfile, logformat, ap);
+    assert(ret >= 0);
+
+    if (*retformat == 0) {
+        /* A void function; terminate the presentation of the argument list. */
+        fprintf(logfile, ")\n");
+    }
+
+    va_end(ap);
+
+    if (strcmp(fname, "rapp_terminate") == 0) {
+        /* We shouldn't get any further calls. */
+       ret = fclose(logfile);
+       assert(ret == 0);
+       logfile = NULL;
+    }
+}
+
+#endif /* RAPP_LOGGING */
