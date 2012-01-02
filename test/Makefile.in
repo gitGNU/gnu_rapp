@@ -17,7 +17,7 @@
 
 #  Automake file for the RAPP library unit tests.
 
-#  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+#  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
 #
 #  This file is part of RAPP.
 #
@@ -62,8 +62,27 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-TESTS = rapptest$(EXEEXT)
-check_PROGRAMS = $(am__EXEEXT_1)
+TESTS = rapptest$(EXEEXT) $(am__EXEEXT_1)
+
+# If logging is on, we'll have some #warning directives; make
+# sure they're not promoted to errors. N.B., we need this at
+# *_CFLAGS and not *_CPPFLAGS, as the latter would be emitted
+# before the -Werror and thus not override it.
+
+# Unfortunately, the simplest way to get the logfile anywhere
+# else than the default in /tmp, we have to setenv in the C
+# source files. While it'd be preferable to pass it from
+# outside of the program, that's still reasonably remote from
+# the library.
+@RAPP_LOGGING_TRUE@am__append_1 = $(HASHWARN_CFLAGS) \
+@RAPP_LOGGING_TRUE@	-DRAPP_LOGFILE='"'`pwd`'/$(RAPP_LOGFILE)"'
+
+# N.B.: On a successful run, this also removes the logfile. It
+# has to run *after* the main test (each main test), but
+# thankfully automake currently (1.11) iterates on TESTS as a
+# list thus parallel-safe at the moment.
+@RAPP_LOGGING_TRUE@am__append_2 = verify_logfile
+check_PROGRAMS = $(am__EXEEXT_2)
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -79,7 +98,8 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am__EXEEXT_1 = rapptest$(EXEEXT)
+@RAPP_LOGGING_TRUE@am__EXEEXT_1 = verify_logfile$(EXEEXT)
+am__EXEEXT_2 = rapptest$(EXEEXT) $(am__EXEEXT_1)
 am__rapptest_SOURCES_DIST = rapp_test.c rapp_check.c rapp_tests.def \
 	rapp_test_util.h rapp_test_util.c rapp_test_pixel.c \
 	rapp_test_bitblt.c rapp_test_pixop.c rapp_test_type.c \
@@ -114,6 +134,9 @@ rapptest_DEPENDENCIES = reference/librappref.la
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
+am_verify_logfile_OBJECTS =
+verify_logfile_OBJECTS = $(am_verify_logfile_OBJECTS)
+verify_logfile_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
@@ -140,8 +163,8 @@ am__v_CCLD_0 = @echo "  CCLD  " $@;
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(rapptest_SOURCES)
-DIST_SOURCES = $(am__rapptest_SOURCES_DIST)
+SOURCES = $(rapptest_SOURCES) $(verify_logfile_SOURCES)
+DIST_SOURCES = $(am__rapptest_SOURCES_DIST) $(verify_logfile_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	html-recursive info-recursive install-data-recursive \
 	install-dvi-recursive install-exec-recursive \
@@ -187,7 +210,7 @@ am__relativize = \
   reldir="$$dir2"
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
-AM_CFLAGS = @AM_CFLAGS@
+AM_CFLAGS = @AM_CFLAGS@ $(am__append_1)
 
 # Include the needed headers
 AM_CPPFLAGS = @AM_CPPFLAGS@ @CHECK_CFLAGS@ -I../include \
@@ -223,6 +246,7 @@ EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
 GREP = @GREP@
+HASHWARN_CFLAGS = @HASHWARN_CFLAGS@
 HOMESITE = @HOMESITE@
 INKSCAPE = @INKSCAPE@
 INKSCAPE_OPTIONS = @INKSCAPE_OPTIONS@
@@ -337,6 +361,16 @@ SUBDIRS = reference
 
 # Enable tests if the Check library is present
 @HAVE_CHECK_TRUE@testapp_src = rapp_check.c
+@HAVE_CHECK_FALSE@HAVE_CHECK_YESNO = no
+@HAVE_CHECK_TRUE@HAVE_CHECK_YESNO = yes
+
+# Inside the conditional, to catch stray references left outside
+# (that aren't satisfied with the default empty contents).
+@RAPP_LOGGING_TRUE@RAPP_LOGFILE = rapp_log_results.txt
+
+# We're not inspecting this file, we just want to make sure it's
+# out of the way and will be automatically removed.
+@RAPP_LOGGING_TRUE@RAPP_INSTALLCHECK_ENVIRONMENT = env RAPP_LOGFILE=`pwd`/../$(RAPP_LOGFILE).tmp
 
 # The test sources
 rapptest_SOURCES = $(testapp_src)          \
@@ -371,12 +405,13 @@ rapptest_SOURCES = $(testapp_src)          \
                    rapp_test_scatter_bin.c \
                    rapp_test_integral.c
 
+verify_logfile_SOURCES = verify_logfile.in
 
 # Link with the RAPP library and the reference implementation
 rapptest_LDADD = @CHECK_LIBS@ reference/librappref.la
 
 # Additional files to clean
-CLEANFILES = rapptest.log
+CLEANFILES = $(RAPP_LOGFILE) *.tmp
 INSTALLCHECK_CONFIGURE_OPTIONS = @INSTALLCHECK_CONFIG_OPTIONS@
 all: all-recursive
 
@@ -424,6 +459,9 @@ clean-checkPROGRAMS:
 rapptest$(EXEEXT): $(rapptest_OBJECTS) $(rapptest_DEPENDENCIES) 
 	@rm -f rapptest$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(rapptest_OBJECTS) $(rapptest_LDADD) $(LIBS)
+@RAPP_LOGGING_FALSE@verify_logfile$(EXEEXT): $(verify_logfile_OBJECTS) $(verify_logfile_DEPENDENCIES) 
+@RAPP_LOGGING_FALSE@	@rm -f verify_logfile$(EXEEXT)
+@RAPP_LOGGING_FALSE@	$(AM_V_CCLD)$(LINK) $(verify_logfile_OBJECTS) $(verify_logfile_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -904,6 +942,13 @@ uninstall-am:
 	uninstall uninstall-am
 
 
+@RAPP_LOGGING_TRUE@verify_logfile: verify_logfile.in Makefile
+@RAPP_LOGGING_TRUE@	sed -e 's,@LOGFILE@,$(RAPP_LOGFILE),g' \
+@RAPP_LOGGING_TRUE@            -e 's,@HAVE_CHECK_YESNO@,$(HAVE_CHECK_YESNO),g' \
+@RAPP_LOGGING_TRUE@            < $< > $@.tmp
+@RAPP_LOGGING_TRUE@	chmod +x $@.tmp
+@RAPP_LOGGING_TRUE@	mv $@.tmp $@
+
 # Distribute the installcheck-directory. It can't be configured
 # until after RAPP has been installed, so we can't put it in
 # DIST_SUBDIRS.
@@ -919,7 +964,8 @@ installcheck-local:
 	 `test -n "$(target)" && echo '--target=$(target)'` \
 	 'CPPFLAGS=-I$(includedir)' 'LDFLAGS=-L$(libdir)' \
 	 $(INSTALLCHECK_CONFIGURE_OPTIONS)
-	cd installtest && $(MAKE) check \
+	cd installtest && $(RAPP_INSTALLCHECK_ENVIRONMENT) \
+	 $(MAKE) check \
 	 EXPECTED_MAJOR_VERSION=@RAPP_MAJOR_VERSION@ \
 	 EXPECTED_MINOR_VERSION=@RAPP_MINOR_VERSION@
 	cd installtest && $(MAKE) distclean

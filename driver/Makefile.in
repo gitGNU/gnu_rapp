@@ -17,7 +17,7 @@
 
 #  Automake file for the RAPP driver directory.
 
-#  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+#  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
 #
 #  This file is part of RAPP.
 #
@@ -166,6 +166,7 @@ EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
 GREP = @GREP@
+HASHWARN_CFLAGS = @HASHWARN_CFLAGS@
 HOMESITE = @HOMESITE@
 INKSCAPE = @INKSCAPE@
 INKSCAPE_OPTIONS = @INKSCAPE_OPTIONS@
@@ -274,13 +275,22 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 
+# There's a naked /usr/bin/perl in Doxyfile.in to also adjust,
+# if it ever needs autoconf'ing.
+PERL = /usr/bin/perl
+
 # The RAPP driver convenience library
 noinst_LTLIBRARIES = librappdriver.la
+
+# The script for extracting RAPP_API calls for logging.
+EXTRA_DIST = gen-rapp-logmacros.pl
+MOSTLYCLEANFILES = *.tmp
 librappdriver_la_LDFLAGS = -no-undefined
 
 # The RAPP driver source files
 librappdriver_la_SOURCES = rapp_api.h         \
                            rapp_util.h        \
+                           rapp_logdefs.h     \
                            rapp_main.c        \
                            rapp_version.c     \
                            rapp_info.c        \
@@ -531,6 +541,7 @@ install-strip:
 	  `test -z '$(STRIP)' || \
 	    echo "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'"` install
 mostlyclean-generic:
+	-test -z "$(MOSTLYCLEANFILES)" || rm -f $(MOSTLYCLEANFILES)
 
 clean-generic:
 
@@ -627,6 +638,12 @@ uninstall-am:
 	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
 	pdf pdf-am ps ps-am tags uninstall uninstall-am
 
+
+genlogmacros: $(srcdir)/rapp_logdefs.h
+
+$(srcdir)/rapp_logdefs.h: $(srcdir)/gen-rapp-logmacros.pl Makefile
+	cd $(srcdir) && $(PERL) gen-rapp-logmacros.pl > $@.tmp \
+	 $(librappdriver_la_SOURCES) && mv $@.tmp $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

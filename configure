@@ -803,6 +803,7 @@ RAPP_LIB_CUR
 RAPP_MINOR_VERSION
 RAPP_MAJOR_VERSION
 PLATFORM
+HASHWARN_CFLAGS
 AM_CFLAGS
 AM_CPPFLAGS
 RAPP_USE_TUNECACHE_FALSE
@@ -811,6 +812,8 @@ RAPP_TUNING_FALSE
 RAPP_TUNING_TRUE
 RC_TUNE_SED
 RC_BMARK_SED
+RAPP_LOGGING_FALSE
+RAPP_LOGGING_TRUE
 INSTALLALL_INCLUDES_HTML_FALSE
 INSTALLALL_INCLUDES_HTML_TRUE
 HAVE_DOXYGEN_FALSE
@@ -954,6 +957,7 @@ enable_debug
 enable_backend
 enable_tune_cache
 enable_werror
+enable_logging
 with_installcheck_config_options
 '
       ac_precious_vars='build_alias
@@ -1635,6 +1639,8 @@ Optional Features:
                           Use the pre-tuned cached configuration if it exists.
                              It has no effect if --enable-backend=none.
   --enable-werror         Treat compiler warnings as errors, with GCC
+  --enable-logging[=no]   Log calls to the RAPP API functions. See docs for
+                          details.
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -4576,13 +4582,13 @@ if test "${lt_cv_nm_interface+set}" = set; then
 else
   lt_cv_nm_interface="BSD nm"
   echo "int some_variable = 0;" > conftest.$ac_ext
-  (eval echo "\"\$as_me:4579: $ac_compile\"" >&5)
+  (eval echo "\"\$as_me:4585: $ac_compile\"" >&5)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:4582: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+  (eval echo "\"\$as_me:4588: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:4585: output\"" >&5)
+  (eval echo "\"\$as_me:4591: output\"" >&5)
   cat conftest.out >&5
   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
     lt_cv_nm_interface="MS dumpbin"
@@ -5788,7 +5794,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 5791 "configure"' > conftest.$ac_ext
+  echo '#line 5797 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -7643,11 +7649,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7646: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7652: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7650: \$? = $ac_status" >&5
+   echo "$as_me:7656: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -7982,11 +7988,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7985: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7991: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7989: \$? = $ac_status" >&5
+   echo "$as_me:7995: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8087,11 +8093,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8090: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8096: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8094: \$? = $ac_status" >&5
+   echo "$as_me:8100: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -8142,11 +8148,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8145: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8151: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8149: \$? = $ac_status" >&5
+   echo "$as_me:8155: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -10945,7 +10951,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 10948 "configure"
+#line 10954 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11041,7 +11047,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11044 "configure"
+#line 11050 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -15044,6 +15050,191 @@ case ".$var" in
  ;;
 esac
 
+    { $as_echo "$as_me:$LINENO: checking HASHWARN_CFLAGS for gcc -Wno-error=cpp" >&5
+$as_echo_n "checking HASHWARN_CFLAGS for gcc -Wno-error=cpp... " >&6; }
+if test "${ax_cv_cflags_gcc_option__Wno_error_cpp+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  ax_cv_cflags_gcc_option__Wno_error_cpp="no, unknown"
+
+ ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+ ac_save_CFLAGS="$CFLAGS"
+for ac_arg in "-pedantic -Werror % -Wno-error=cpp"     "-pedantic % -Wno-error=cpp %% no, obsolete"     #
+do CFLAGS="$ac_save_CFLAGS "`echo $ac_arg | sed -e 's,%%.*,,' -e 's,%,,'`
+   cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+return 0;
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ax_cv_cflags_gcc_option__Wno_error_cpp=`echo $ac_arg | sed -e 's,.*% *,,'`; break
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+done
+ CFLAGS="$ac_save_CFLAGS"
+ ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+
+fi
+{ $as_echo "$as_me:$LINENO: result: $ax_cv_cflags_gcc_option__Wno_error_cpp" >&5
+$as_echo "$ax_cv_cflags_gcc_option__Wno_error_cpp" >&6; }
+var=$ax_cv_cflags_gcc_option__Wno_error_cpp
+case ".$var" in
+     .ok|.ok,*)  ;;
+   .|.no|.no,*)  ;;
+   *)
+   if echo " $HASHWARN_CFLAGS " | grep " $var " 2>&1 >/dev/null
+   then { ($as_echo "$as_me:$LINENO: : HASHWARN_CFLAGS does contain \$var") >&5
+  (: HASHWARN_CFLAGS does contain $var) 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }
+   else { ($as_echo "$as_me:$LINENO: : HASHWARN_CFLAGS=\"\$HASHWARN_CFLAGS \$var\"") >&5
+  (: HASHWARN_CFLAGS="$HASHWARN_CFLAGS $var") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }
+                      HASHWARN_CFLAGS="$HASHWARN_CFLAGS $var"
+   fi
+ ;;
+esac
+
+    case " ${HASHWARN_CFLAGS} " in
+    *" -Wno-error=cpp "*) ;;
+    *) { $as_echo "$as_me:$LINENO: checking HASHWARN_CFLAGS for gcc -Wno-error" >&5
+$as_echo_n "checking HASHWARN_CFLAGS for gcc -Wno-error... " >&6; }
+if test "${ax_cv_cflags_gcc_option__Wno_error+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  ax_cv_cflags_gcc_option__Wno_error="no, unknown"
+
+ ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+ ac_save_CFLAGS="$CFLAGS"
+for ac_arg in "-pedantic -Werror % -Wno-error"     "-pedantic % -Wno-error %% no, obsolete"     #
+do CFLAGS="$ac_save_CFLAGS "`echo $ac_arg | sed -e 's,%%.*,,' -e 's,%,,'`
+   cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+return 0;
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ax_cv_cflags_gcc_option__Wno_error=`echo $ac_arg | sed -e 's,.*% *,,'`; break
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+done
+ CFLAGS="$ac_save_CFLAGS"
+ ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+
+fi
+{ $as_echo "$as_me:$LINENO: result: $ax_cv_cflags_gcc_option__Wno_error" >&5
+$as_echo "$ax_cv_cflags_gcc_option__Wno_error" >&6; }
+var=$ax_cv_cflags_gcc_option__Wno_error
+case ".$var" in
+     .ok|.ok,*)  ;;
+   .|.no|.no,*)  ;;
+   *)
+   if echo " $HASHWARN_CFLAGS " | grep " $var " 2>&1 >/dev/null
+   then { ($as_echo "$as_me:$LINENO: : HASHWARN_CFLAGS does contain \$var") >&5
+  (: HASHWARN_CFLAGS does contain $var) 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }
+   else { ($as_echo "$as_me:$LINENO: : HASHWARN_CFLAGS=\"\$HASHWARN_CFLAGS \$var\"") >&5
+  (: HASHWARN_CFLAGS="$HASHWARN_CFLAGS $var") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }
+                      HASHWARN_CFLAGS="$HASHWARN_CFLAGS $var"
+   fi
+ ;;
+esac
+ ;;
+    esac
 fi
 
 # Set the default compiler flags. See m4/ax_compiler_vendor.m4
@@ -15435,6 +15626,30 @@ fi
 test "x${rapp_gflag}" = x && test "$ac_cv_prog_cc_g" != no && rapp_gflag=-g
 test ${OPT_DEBUG} != no && AM_CFLAGS="${AM_CFLAGS} ${rapp_gflag}"
 
+rapp_enable_logging=no
+# Check whether --enable-logging was given.
+if test "${enable_logging+set}" = set; then
+  enableval=$enable_logging; rapp_enable_logging=${enableval}
+   case ${enableval} in
+   yes|no) ;;
+   *) { { $as_echo "$as_me:$LINENO: error: Bad parameter \"${enableval}\" for --enable-logging option" >&5
+$as_echo "$as_me: error: Bad parameter \"${enableval}\" for --enable-logging option" >&2;}
+   { (exit 1); exit 1; }; };;
+   esac
+fi
+
+if test ${rapp_enable_logging} = yes; then
+    AM_CPPFLAGS="${AM_CPPFLAGS} -DRAPP_LOGGING"
+fi
+ if test ${rapp_enable_logging} = yes; then
+  RAPP_LOGGING_TRUE=
+  RAPP_LOGGING_FALSE='#'
+else
+  RAPP_LOGGING_TRUE='#'
+  RAPP_LOGGING_FALSE=
+fi
+
+
 # Check if we will use a tune-cache
 TUNEFILE=${srcdir}/compute/tune/arch/rapptune-${PLATFORM}.h
 if test ${OPT_TUNECACHE} = yes && test ! -f "${TUNEFILE}"; then
@@ -15516,6 +15731,12 @@ else
 $as_echo "$as_me: error: No python found, required to create tune-files (try 2.4 - 2.7)" >&2;}
    { (exit 1); exit 1; }; }
    fi
+
+   if test ${rapp_enable_logging} = yes; then
+  { { $as_echo "$as_me:$LINENO: error: Tuning with --enable-logging refused: would fill ${TMPDIR-/tmp}" >&5
+$as_echo "$as_me: error: Tuning with --enable-logging refused: would fill ${TMPDIR-/tmp}" >&2;}
+   { (exit 1); exit 1; }; }
+fi
 
    # Besides the known working versions, accept future 2.x series
    if test ${PYTHON} = python; then
@@ -15629,6 +15850,7 @@ RB_XCANDIDATES=${rb_xcandidates}
 RB_NCANDIDATES=${rb_ncandidates}
 
 # Substitute variables in output files
+
 
 
 
@@ -15859,6 +16081,13 @@ if test -z "${INSTALLALL_INCLUDES_HTML_TRUE}" && test -z "${INSTALLALL_INCLUDES_
   { { $as_echo "$as_me:$LINENO: error: conditional \"INSTALLALL_INCLUDES_HTML\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
 $as_echo "$as_me: error: conditional \"INSTALLALL_INCLUDES_HTML\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
+if test -z "${RAPP_LOGGING_TRUE}" && test -z "${RAPP_LOGGING_FALSE}"; then
+  { { $as_echo "$as_me:$LINENO: error: conditional \"RAPP_LOGGING\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+$as_echo "$as_me: error: conditional \"RAPP_LOGGING\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
