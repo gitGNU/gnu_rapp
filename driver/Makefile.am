@@ -46,9 +46,8 @@ MOSTLYCLEANFILES = *.tmp
 librappdriver_la_LDFLAGS = -no-undefined
 
 # The RAPP driver source files
-librappdriver_la_SOURCES = rapp_api.h         \
+src_no_rapp_logdefs_h =    rapp_api.h         \
                            rapp_util.h        \
-                           rapp_logdefs.h     \
                            rapp_main.c        \
                            rapp_version.c     \
                            rapp_info.c        \
@@ -83,8 +82,10 @@ librappdriver_la_SOURCES = rapp_api.h         \
                            rapp_scatter_bin.c \
                            rapp_integral.c
 
+librappdriver_la_SOURCES = $(src_no_rapp_logdefs_h) rapp_logdefs.h
+
 genlogmacros: $(srcdir)/rapp_logdefs.h
 
-$(srcdir)/rapp_logdefs.h: $(srcdir)/gen-rapp-logmacros.pl Makefile
+$(srcdir)/rapp_logdefs.h: $(srcdir)/gen-rapp-logmacros.pl $(src_no_rapp_logdefs_h)
 	cd $(srcdir) && $(PERL) gen-rapp-logmacros.pl > $@.tmp \
-	 $(librappdriver_la_SOURCES) && mv $@.tmp $@
+	 $(src_no_rapp_logdefs_h) && mv $@.tmp $@
