@@ -1,4 +1,4 @@
-Copyright (C) 2010, Axis Communications AB, LUND, SWEDEN
+Copyright (C) 2010-2012, Axis Communications AB, LUND, SWEDEN
 See the end for copying conditions.
 
 Please try and keep the source consistent in style for easy
@@ -21,7 +21,7 @@ whitespace-only changes on any line.
 encouraged, and required for multiple sentences in a comment.
 
 - There's also inconsistency regarding spacing and operators in
-parentheses.  Use one spaces before and after any binary
+parentheses.  Use one space before and after any binary
 operator and none before parentheses: '((a + b * d) / c)'.
 
 - Regarding symbols, the exported API functions (and constants)
