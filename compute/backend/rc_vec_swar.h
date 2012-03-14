@@ -698,7 +698,7 @@ do {                                                    \
 
 /**
  *  Fold a vector to the right.
- *  Computes vec |= vec << bits. The shift amount should be a constant.
+ *  Computes vec |= vec >> bits. The shift amount should be a constant.
  */
 #define RC_VEC_RFOLD__(vec, bits) \
     ((vec) |= ((bits) < 8*RC_VEC_SIZE) ? (vec) >> (bits) : 0)
