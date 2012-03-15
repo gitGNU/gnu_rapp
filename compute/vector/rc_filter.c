@@ -758,6 +758,8 @@ do {                                                                     \
         /* Kill compiler warnings */                                     \
         (void)v21, (void)v22;                                            \
         (void)v31, (void)v32;                                            \
+        (void)v23, (void)v33;                                            \
+        (void)s2;                                                        \
                                                                          \
         /* Handle all full periods */                                    \
         for (x = 0; x < len; x++) {                                      \
@@ -813,6 +815,8 @@ do {                                                        \
     RC_VEC_LOAD(p3, &(src)[i3]);                            \
     vert(v13, v23, v33, p1, p2, p3);                        \
     horz(sum, v11, v12, v13, v21, v22, v23, v31, v32, v33); \
+    /* Kill compiler warnings. */                           \
+    (void)p2;                                               \
     RC_VEC_STORE(&(dst)[j], sum);                           \
     (i1) += RC_VEC_SIZE;                                    \
     (i2) += RC_VEC_SIZE;                                    \

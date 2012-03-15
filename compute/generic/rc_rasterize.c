@@ -70,7 +70,6 @@ rc_rasterize_4conn(char *line, int x0, int y0, int x1, int y1)
     int len = dx + dy;         /* Chain code length          */
 
     int pos   = 0;             /* Buffer position            */
-    int inc   = 1;             /* Buffer increment           */
     int err   = 0;             /* Accumulated error          */
     int step  = 1;             /* Step in x = (+/-)1         */
 
@@ -94,7 +93,6 @@ rc_rasterize_4conn(char *line, int x0, int y0, int x1, int y1)
         RC_RASTERIZE_SWAP(x0, x1); /* Swap x coordinates         */
         RC_RASTERIZE_SWAP(y0, y1); /* Swap y coordindats         */
         step  = -1;                /* Decreasing x coordinate    */
-        inc   = -1;                /* Decreasing buffer index    */
         pos   = len - 1;           /* Start at the buffer end    */
         ahead = (ahead + 2) & 3;   /* Rotate ahead direction     */
     }
@@ -150,7 +148,6 @@ rc_rasterize_8conn(char *line, int x0, int y0, int x1, int y1)
     int len = MAX(dx, dy);     /* Chain code length          */
 
     int pos   = 0;             /* Buffer position            */
-    int inc   = 1;             /* Buffer increment           */
     int err   = 0;             /* Accumulated error          */
     int step  = 1;             /* Step in x = (+/-)1         */
 
@@ -174,7 +171,6 @@ rc_rasterize_8conn(char *line, int x0, int y0, int x1, int y1)
         RC_RASTERIZE_SWAP(x0, x1); /* Swap x coordinates         */
         RC_RASTERIZE_SWAP(y0, y1); /* Swap y coordindats         */
         step  = -1;                /* Decreasing x coordinate    */
-        inc   = -1;                /* Decreasing buffer index    */
         pos   = len - 1;           /* Start at the buffer end    */
         ahead = (ahead + 4) & 7;   /* Rotate ahead direction     */
     }

@@ -83,6 +83,10 @@ do {                                                                          \
     RC_VEC_SPLAT(thr1_, low);                                                 \
     RC_VEC_SPLAT(thr2_, high);                                                \
                                                                               \
+    /* Kill compiler warnings. */                                             \
+    (void)thr1_;                                                              \
+    (void)thr2_;                                                              \
+                                                                              \
     if ((unroll) == 4 &&                       /* Constant */                 \
         (8*RC_WORD_SIZE) / RC_VEC_SIZE >= 4 && /* Constant */                 \
         (blk_ > 0 || end_ >= 4))               /* Variable */                 \
@@ -131,6 +135,10 @@ do {                                                                          \
     /* Vectorize the thresholds */                                            \
     RC_VEC_SPLAT(thr1_, low);                                                 \
     RC_VEC_SPLAT(thr2_, high);                                                \
+                                                                              \
+    /* Kill compiler warnings. */                                             \
+    (void)thr1_;                                                              \
+    (void)thr2_;                                                              \
                                                                               \
     if ((unroll) == 4 &&                       /* Constant */                 \
         (blk_ > 0 || end_ >= 4))               /* Variable */                 \
