@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -42,6 +42,7 @@
 #include <tmmintrin.h>   /* SSSE3 intrinsics       */
 #include "rc_vec_sse2.h" /* SSE2 vector operations */
 
+/* See the porting documentation for generic comments. */
 
 /*
  * -------------------------------------------------------------
@@ -49,28 +50,14 @@
  * -------------------------------------------------------------
  */
 
-/**
- *  Misaligned vector load from memory.
- *  Uses the adjusted data pointer uptr.
- */
 #undef  RC_VEC_LOADU
 #define RC_VEC_LOADU(dstv, vec1, vec2, vec3, uptr) \
     ((dstv) = _mm_lddqu_si128((const rc_vec_t*)(uptr)))
 
-/**
- *  Align srcv1 and srcv2 to dstv, starting at field @e bytes
- *  into concatenation of srcv1 and srcv2. The alignment
- *  value @e bytes must be a constant.
- */
 #undef  RC_VEC_ALIGNC
 #define RC_VEC_ALIGNC(dstv, srcv1, srcv2, bytes) \
     ((dstv) = _mm_alignr_epi8(srcv2, srcv1, bytes))
 
-/**
- *  Absolute value.
- *  Computes dstv = 2*abs(srcv - 0x80) for each 8-bit field.
- *  The result is saturated to [0,0xff].
- */
 #undef  RC_VEC_ABS
 #define RC_VEC_ABS(dstv, srcv)                   \
 do {                                             \
@@ -80,18 +67,10 @@ do {                                             \
     (dstv) = _mm_adds_epu8(sv__, sv__);          \
 } while (0)
 
-/**
- *  Generate the blend vector needed by RC_VEC_LERP().
- */
 #undef  RC_VEC_BLEND
 #define RC_VEC_BLEND(blendv, blend8) \
      ((blendv) = _mm_set1_epi16((blend8) << 7))
 
-/**
- *  Linear interpolation.
- *  Computes dstv = srcv1 + ((blend8*(srcv2 - srcv1) + 0x80) >> 8) for each
- *  8-bit field. The Q.8 blend factor @e blend8 must be in the range [0,0x7f].
- */
 #undef  RC_VEC_LERP
 #define RC_VEC_LERP(dstv, srcv1, srcv2, blend8, blendv) \
 do {                                                    \

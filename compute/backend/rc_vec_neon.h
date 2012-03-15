@@ -1,4 +1,4 @@
-/*  Copyright (C) 2011, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2011-2012, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -31,6 +31,13 @@
  *          using the ARM NEON instruction set.
  */
 
+#ifndef RC_VEC_NEON_H
+#define RC_VEC_NEON_H
+
+#ifndef RC_VECTOR_H
+#error "Do not include this file directly! Use rc_vector.h instead."
+#endif /* !RC_VECTOR_H */
+
 #include <arm_neon.h>
 
 /* Local support macros */
@@ -58,7 +65,7 @@
             [out0] "=w" (dstv1), [out1] "=w" (dstv2) :  \
             "0" (srcv1), "1" (srcv2))
 
-/* see the porting documentation for generic comments. */
+/* See the porting documentation for generic comments. */
 
 /**
  *  NEON has native instructions for all implemented hintable backend macros,
@@ -78,15 +85,11 @@ typedef uint8x8_t rc_vec_t;
 
 #define RC_VEC_CLEANUP()
 
-
-/* Memory access */
-
 #define RC_VEC_LOAD(vec, ptr) \
     ((vec) = vld1_u8((const uint8_t *)(ptr)))
 
 #define RC_VEC_STORE(ptr, vec) \
     vst1_u8((uint8_t *)(ptr), vec)
-
 
 #define RC_VEC_LDINIT(vec1, vec2, vec3, uptr, ptr) \
 do {                                               \
@@ -98,9 +101,6 @@ do {                                               \
 
 #define RC_VEC_LOADU(dstv, vec1, vec2, vec3, uptr) \
     ((dstv) = vld1_u8(uptr))
-
-
-/* Field relocation */
 
 #define RC_VEC_SHINIT(shv, bytes) \
     ((shv) = (rc_vec_t)(vdup_n_s64(8 * (bytes))))
@@ -125,7 +125,6 @@ do {                                        \
     ((dstv) = (bytes == 0) ? (srcv) :   \
      ((rc_vec_t)vshl_n_u64((uint64x1_t)(srcv), 8 * (bytes))))
 
-
 #define RC_VEC_ALIGNC(dstv, srcv1, srcv2, bytes)    \
 do {                                                \
     rc_vec_t v1_, v2_;                              \
@@ -134,15 +133,11 @@ do {                                                \
     RC_VEC_OR(dstv, v1_, v2_);                      \
 } while (0)
 
-
 #define RC_VEC_PACK(dstv, srcv1, srcv2)         \
 do {                                            \
     rc_vec_t dummy_;                            \
     RC_NEON_UNZIP(dstv, dummy_, srcv1, srcv2);  \
 } while (0)
-
-
-/* Bitwise logical operations */
 
 #define RC_VEC_ZERO(vec) \
     ((vec) = vdup_n_u8(0))
@@ -171,9 +166,6 @@ do {                                      \
     RC_VEC_NOT(not_, srcv2);              \
     RC_VEC_XOR(dstv, srcv1, not_);        \
 } while (0)
-
-
-/* Arithmetic operations on 8-bit fields */
 
 #define RC_VEC_SPLAT(vec, scal) \
     ((vec) = vdup_n_u8(scal))
@@ -230,9 +222,6 @@ do {                                        \
     RC_VEC_ADDS(dstv, abs1_, abs1_);        \
 } while (0)
 
-
-/* Comparisons */
-
 #define RC_VEC_CMPGT(dstv, srcv1, srcv2) \
     ((dstv) = vcgt_u8(srcv1, srcv2))
 
@@ -244,9 +233,6 @@ do {                                        \
 
 #define RC_VEC_MAX(dstv, srcv1, srcv2) \
     ((dstv) = vmax_u8(srcv1, srcv2))
-
-
-/* Linear interpolation */
 
 #define RC_VEC_LERP_(dstv, srcv1, srcv2, blendv, biaslo, biashi)    \
 do {                                                                \
@@ -274,7 +260,6 @@ do {                                                                \
     (dstv) = vadd_u8(rs_, sv1_);                                    \
 } while (0)
 
-
 #define RC_VEC_BLEND(blendv, blend8) \
     ((blendv) = (rc_vec_t)vdup_n_s16(blend8))
 
@@ -283,7 +268,6 @@ do {                                                        \
     int16x4_t bias_ = vdup_n_s16(0x80);                     \
     RC_VEC_LERP_(dstv, srcv1, srcv2, blendv, bias_, bias_); \
 } while (0)
-
 
 #define RC_VEC_BLENDZ(blendv, blend8) \
     RC_VEC_BLEND(blendv, blend8)
@@ -299,7 +283,6 @@ do {                                                        \
     RC_VEC_LERP_(dstv, srcv1_, srcv2_, blendv, blo_, bhi_); \
 } while (0)
 
-
 #define RC_VEC_BLENDN(blendv, blend8)   \
     RC_VEC_BLEND(blendv, blend8)
 
@@ -313,9 +296,6 @@ do {                                                        \
     RC_NEON_ZIP(blo_, bhi_, bias_, RC_ZERO_);               \
     RC_VEC_LERP_(dstv, srcv1_, srcv2_, blendv, blo_, bhi_); \
 } while (0)
-
-
-/* Binary mask operations */
 
 /**
  *  We hide this one as an internal macro, because for reasons to be
@@ -339,9 +319,6 @@ do {                                        \
     (maskw) = RC_TVEC_(rc_vec_t, maskv_);   \
 } while (0)
 
-
-/* Reductions */
-
 #define RC_VEC_SUMN 128 /* floor(UINT16_MAX/510) = 128 */
 
 #define RC_VEC_SUMV(accv, srcv)             \
@@ -362,7 +339,6 @@ do {                                        \
     (sum) = RC_TVEC_(uint64x1_t, sumr_);    \
 } while (0)
 
-
 /* floor(UINT16_MAX/16) - (floor(UINT16_MAX/16) % 4) = 4092 */
 #define RC_VEC_CNTN 4092
 
@@ -371,7 +347,6 @@ do {                                        \
 
 #define RC_VEC_CNTR(cnt, accv) \
     RC_VEC_SUMR(cnt, accv)
-
 
 #define RC_VEC_MACN 1024
 
@@ -396,3 +371,5 @@ do {                                        \
     uint64x1_t macr_ = vpaddl_u32(accv_);   \
     (mac) = RC_TVEC_(uint64x1_t, macr_);    \
 } while (0)
+
+#endif /* RC_VEC_NEON_H */

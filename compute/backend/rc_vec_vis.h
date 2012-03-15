@@ -1,4 +1,4 @@
-/*  Copyright (C) 2011, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2011-2012, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -37,6 +37,8 @@
 #ifndef RC_VECTOR_H
 #error "Do not include this file directly! Use rc_vector.h instead."
 #endif
+
+/* See the porting documentation for generic comments. */
 
 /**
  *  The code could probably be adjusted to handle both endiannesses, but
