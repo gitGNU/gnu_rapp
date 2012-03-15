@@ -85,7 +85,7 @@ RC_TEST_VEC_FUNC(loadu)(uint8_t *dst, const uint8_t *src1,
     RC_VEC_LOADU(vec2, u1, u2, u3, ptr);
     ptr += RC_VEC_SIZE;
     RC_VEC_LOADU(vec2, u1, u2, u3, ptr);
-    RC_VEC_STORE(dst, vec1);
+    RC_VEC_STORE(dst, vec2);
 
     /* Combine */
     for (k = 0; k < RC_VEC_SIZE; k++) {
