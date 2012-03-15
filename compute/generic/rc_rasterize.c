@@ -74,7 +74,6 @@ rc_rasterize_4conn(char *line, int x0, int y0, int x1, int y1)
     int err   = 0;             /* Accumulated error          */
     int step  = 1;             /* Step in x = (+/-)1         */
 
-    int code  = 0;             /* Current chain code         */
     int ahead = 0;             /* Ahead direction chain code */
     int side  = 0;             /* Side direction chain code  */
     int dir   = -1;
@@ -113,7 +112,7 @@ rc_rasterize_4conn(char *line, int x0, int y0, int x1, int y1)
     side  += '0';
 
     /* Rasterize the chain code */
-    for (x = x0, err = -dx, code = ahead; x < x1; x++) {
+    for (x = x0, err = -dx; x < x1; x++) {
 
         assert(pos >= 0 && pos < len);
 
@@ -155,7 +154,6 @@ rc_rasterize_8conn(char *line, int x0, int y0, int x1, int y1)
     int err   = 0;             /* Accumulated error          */
     int step  = 1;             /* Step in x = (+/-)1         */
 
-    int code  = 0;             /* Current chain code         */
     int ahead = 0;             /* Ahead direction chain code */
     int side  = 7;             /* Side direction chain code  */
     int dir   = -1;
@@ -194,7 +192,7 @@ rc_rasterize_8conn(char *line, int x0, int y0, int x1, int y1)
     side  += '0';
 
     /* Rasterize the chain code */
-    for (x = x0, err = -(dx + 1)/2, code = ahead; x < x1; x++) {
+    for (x = x0, err = -(dx + 1)/2; x < x1; x++) {
         assert(pos >= 0 && pos < len);
 
         /* Update the accumulated error */
