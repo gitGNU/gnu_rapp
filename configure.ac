@@ -358,6 +358,16 @@ AM_CONDITIONAL([INSTALLALL_INCLUDES_HTML],
 # Check for debug option
 OPT_DEBUG=default
 asserted_returns=0
+
+# Due to using AC_CONFIG_SUBDIRS, we get no warnings for
+# incorrect options (up-to-including-at-least autoconf-2.68).
+# Add your favorite gotchas here until there'a a better
+# solution.
+AC_ARG_ENABLE([debugging],
+  [AS_HELP_STRING([[--enable-debugging]],
+                  [Incorrect spelling of --enable-debug])],
+  [AC_MSG_ERROR([[Use --enable-debug, not --enable-debugging]])])
+
 AC_ARG_ENABLE([debug],
   [AS_HELP_STRING([[--enable-debug@<:@=no@:>@]], [Enable debugging:])
    AS_HELP_STRING(,[no:               Disable debugging])
