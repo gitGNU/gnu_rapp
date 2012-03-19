@@ -48,6 +48,28 @@
 #define RC_TYPE_U8_TO_BIN(dstv, srcv, arg1, arg2) \
     ((dstv) = (srcv))
 
+/**
+ *  Iteration part of converting a binary vector at src into u8 data at
+ *  dst.
+ */
+#if defined RC_VEC_SETMASKV && defined RC_VEC_SHLC
+#define RC_TYPE_BIN_TO_U8_ITER_MAX(max, dst, src, j, i, arg1, arg2)     \
+do {                                                                    \
+    rc_vec_t sv_;                                                       \
+    int k;                                                              \
+    RC_VEC_LOAD(sv_, &(src)[i]);                                        \
+    for (k = 0; k < max; k++, j += RC_VEC_SIZE) {                       \
+        rc_vec_t dv_, tv_;                                              \
+        RC_VEC_SETMASKV(dv_, sv_);                                      \
+        RC_VEC_STORE(&(dst)[j], dv_);                                   \
+        RC_VEC_SHLC(tv_, sv_, RC_VEC_SIZE / 8);                         \
+        sv_ = tv_;                                                      \
+    }                                                                   \
+    (i) += RC_VEC_SIZE;                                                 \
+} while (0)
+#define RC_TYPE_BIN_TO_U8_ITER(dst, src, j, i, arg1, arg2) \
+    RC_TYPE_BIN_TO_U8_ITER_MAX(8, dst, src, j, i, arg1, arg2)
+#endif
 
 /*
  * -------------------------------------------------------------
@@ -68,6 +90,73 @@ rc_type_u8_to_bin(uint8_t *restrict dst, int dst_dim,
     RC_THRESH_TEMPLATE(dst, dst_dim, src, src_dim, width,
                        height, 0, 0, RC_TYPE_U8_TO_BIN,
                        RC_UNROLL(rc_type_u8_to_bin));
+}
+#endif
+#endif
+
+
+/**
+ *  Conversion binary to u8.
+ */
+#if RC_IMPL(rc_type_bin_to_u8, 1)
+#ifdef RC_TYPE_BIN_TO_U8_ITER
+void
+rc_type_bin_to_u8(uint8_t *restrict dst, int dst_dim,
+                  const uint8_t *restrict src, int src_dim,
+                  int width, int height)
+{
+    /* We use the total number of destination vectors as the base. */
+    int tot = RC_DIV_CEIL(width, RC_VEC_SIZE * 8 / 8);
+
+    /* We count whole source vectors for unrolling. */
+    int len = tot / (8 * RC_UNROLL(rc_type_bin_to_u8));
+    int rem = tot % (8 * RC_UNROLL(rc_type_bin_to_u8));
+    int y;
+
+    RC_VEC_DECLARE();
+
+    /* Process all rows. */
+    for (y = 0; y < height; y++) {
+        int i = y * src_dim;
+        int j = y * dst_dim;
+        int x;
+
+        /* Perform unrolled operation. */
+        for (x = 0; x < len; x++) {
+            RC_TYPE_BIN_TO_U8_ITER(dst, src, j, i, arg1, arg2);
+
+            if (RC_UNROLL(rc_type_bin_to_u8) >= 2)
+                RC_TYPE_BIN_TO_U8_ITER(dst, src, j, i, arg1, arg2);
+
+            if (RC_UNROLL(rc_type_bin_to_u8) == 4) {
+                RC_TYPE_BIN_TO_U8_ITER(dst, src, j, i, arg1, arg2);
+                RC_TYPE_BIN_TO_U8_ITER(dst, src, j, i, arg1, arg2);
+            }
+        }
+
+        /* Handle the remaining vectors. */
+        if (rem) {
+            int r;
+
+            /**
+             *  For unroll factors > 1, we may still have some
+             *  whole one source-vector -> 8 dest-vectors expansions.
+             */
+            for (r = rem; RC_UNROLL(rc_type_bin_to_u8) > 1 && r > 8; r -= 8)
+                RC_TYPE_BIN_TO_U8_ITER(dst, src, j, i, arg1, arg2);
+
+            /**
+             *  The source image width is padded to the size of a whole
+             *  vector, but the destination image padding is not
+             *  required to scale to *eight* vector-sizes, thus we need
+             *  to allow for a partial final source-to-destination
+             *  iteration.
+             */
+            RC_TYPE_BIN_TO_U8_ITER_MAX(r, dst, src, j, i, arg1, arg2);
+        }
+    }
+
+    RC_VEC_CLEANUP();
 }
 #endif
 #endif
