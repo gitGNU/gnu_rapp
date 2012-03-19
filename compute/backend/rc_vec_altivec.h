@@ -311,6 +311,19 @@ do {                                                                    \
     (maskv) = vec_slo((rc_vec_t)mask__, RC_ALTIVEC_INIT16(8*14));       \
 } while (0)
 
+#define RC_VEC_SETMASKV(vec, maskv)                             \
+do {                                                            \
+    rc_vec_t perm_ = RC_ALTIVEC_INIT(0, 0, 0, 0, 0, 0, 0, 0,    \
+                                     1, 1, 1, 1, 1, 1, 1, 1);   \
+    rc_vec_t v_ = vec_perm(maskv, perm_, perm_);                \
+    rc_vec_t mask_ = RC_ALTIVEC_INIT(1<<7, 1<<6, 1<<5, 1<<4,    \
+                                     1<<3, 1<<2, 1<<1, 1<<0,    \
+                                     1<<7, 1<<6, 1<<5, 1<<4,    \
+                                     1<<3, 1<<2, 1<<1, 1<<0);   \
+    rc_vec_t andv_ = vec_and(v_, mask_);                        \
+    (vec) = (rc_vec_t)vec_cmpeq(andv_, mask_);                  \
+} while (0)
+
 #define RC_VEC_CNTN 1 /* 0xfffffff untestable */
 
 #define RC_VEC_CNTV(accv, srcv)                                          \

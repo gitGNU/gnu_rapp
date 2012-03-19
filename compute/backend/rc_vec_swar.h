@@ -364,6 +364,21 @@ do {                                                                       \
     (maskw) = w__ & ((1 << RC_VEC_SIZE) - 1);     /* Mask and store     */ \
 } while (0)
 
+/* A definition is useful only when RC_VEC_SIZE is divisible by 8. */
+#if RC_VEC_SIZE == 8
+#define RC_VEC_SETMASKV(vec, maskv)                     \
+do {                                                    \
+    rc_vec_t m_, v_, av_, nz_, b_;                      \
+    m_ = RC_WORD_EXTRACT(maskv, 0, 8);                  \
+    RC_VEC_SPLAT(v_, m_);                               \
+    RC_VEC_AND(av_, v_, RC_WORD_C64(8040201008040201)); \
+    RC_VEC_CMPGT(nz_, av_, 0);                          \
+    nz_ &= RC_WORD_C8(80);                              \
+    b_ = RC_VEC_MASK__(nz_);                            \
+    (vec) = b_;                                         \
+} while (0)
+#endif /* RC_VEC_SIZE == 8 */
+
 #define RC_VEC_CNTN 28  /* 31 not divisible by 4 */
 
 #define RC_VEC_CNTV(accv, srcv)                        \

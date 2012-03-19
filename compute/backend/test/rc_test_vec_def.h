@@ -876,6 +876,25 @@ RC_TEST_VEC_FUNC(getmaskv)(uint8_t *dst, const uint8_t *src1,
 #define rc_test_vec_getmaskv NULL
 #endif
 
+#ifdef RC_VEC_SETMASKV
+static int
+RC_TEST_VEC_FUNC(setmaskv)(uint8_t *dst, const uint8_t *src1,
+                           const uint8_t *src2, int val)
+{
+    rc_vec_t srcv, dstv;
+    RC_VEC_DECLARE();
+    (void)src2;
+    (void)val;
+    RC_VEC_LOAD(srcv, src1);
+    RC_VEC_SETMASKV(dstv, srcv);
+    RC_VEC_STORE(dst, dstv);
+    RC_VEC_CLEANUP();
+    return 0;
+}
+#else
+#define rc_test_vec_setmaskv NULL
+#endif
+
 
 /*
  * -------------------------------------------------------------

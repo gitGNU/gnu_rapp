@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -750,6 +750,19 @@ typedef arch_vector_t rc_vec_t;
  *  @param  vec    The input vector.
  */
 #define RC_VEC_GETMASKV(maskv, vec)
+
+/**
+ *  Set 8-bit vector fields from a binary mask vector.
+ *  Unpack each of the left-most bits from the binary mask vector into
+ *  the corresponding 8-bit field in the output vector, as the value
+ *  zero or 0xff, as many as fits into the output vector. Except for
+ *  producing the specific value 0xff for bits with the value one, this
+ *  is the inversion of RC_VEC_GETMASKV.
+ *
+ *  @param  vec    The output vector.
+ *  @param  maskv  The input mask vector.
+ */
+#define RC_VEC_SETMASKV(vec, maskv)
 
 /* @} */
 

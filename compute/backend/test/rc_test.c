@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -174,7 +174,8 @@ static const struct rc_test_entry_st {
     RC_TEST_ENTRY(sum,      true,  false, 0, 0),
     RC_TEST_ENTRY(mac,      true,  true,  0, 0),
     RC_TEST_ENTRY(getmaskw, true,  false, 0, 0),
-    RC_TEST_ENTRY(getmaskv, true,  false, 0, 0)
+    RC_TEST_ENTRY(getmaskv, true,  false, 0, 0),
+    RC_TEST_ENTRY(setmaskv, true,  false, 0, 0)
 };
 
 

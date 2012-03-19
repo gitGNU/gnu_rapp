@@ -244,6 +244,21 @@ do {                                                                      \
 #define RC_VEC_GETMASKW(maskw, vec) \
     ((maskw) = _mm_movemask_epi8(vec))
 
+#define RC_VEC_SETMASKV(vec, maskv)                                     \
+do {                                                                    \
+    rc_vec_t v_ = (maskv);                                              \
+    /* From {a, b, x, ...}, make {a, a, ..., [7] = a, b, b, ..., b} */  \
+    rc_vec_t vh16l16_ = _mm_unpacklo_epi8(v_, v_);                      \
+    rc_vec_t vh32l32_ = _mm_unpacklo_epi8(vh16l16_, vh16l16_);          \
+    rc_vec_t vh64l64_ = _mm_unpacklo_epi8(vh32l32_, vh32l32_);          \
+    rc_vec_t mask_ = _mm_setr_epi8(1<<0, 1<<1, 1<<2, 1<<3,              \
+                                   1<<4, 1<<5, 1<<6, 1<<7,              \
+                                   1<<0, 1<<1, 1<<2, 1<<3,              \
+                                   1<<4, 1<<5, 1<<6, 1<<7);             \
+    rc_vec_t andv_ = _mm_and_si128(vh64l64_, mask_);                    \
+    (vec) = _mm_cmpeq_epi8(andv_, mask_);                               \
+} while (0)
+
 #define RC_VEC_CNTN 1024 /* 8191 untestable */
 
 #define RC_VEC_CNTV(accv, srcv)                                  \

@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -449,6 +449,13 @@ do {                                               \
 #define RC_VEC_GETMASKV(maskv, srcv) \
     ((maskv) = rc_vec_getmaskv_ref(srcv))
 
+/**
+ *  Unpack a binary mask vector into an 8-bit vector.
+ */
+#undef  RC_VEC_SETMASKV
+#define RC_VEC_SETMASKV(maskv, srcv) \
+    ((maskv) = rc_vec_setmaskv_ref(srcv))
+
 
 /*
  * -------------------------------------------------------------
@@ -588,6 +595,9 @@ rc_vec_getmaskw_ref(rc_vec_ref_t srcv);
 
 rc_vec_ref_t
 rc_vec_getmaskv_ref(rc_vec_ref_t srcv);
+
+rc_vec_ref_t
+rc_vec_setmaskv_ref(rc_vec_ref_t srcv);
 
 rc_vec_ref_t
 rc_vec_cntv_ref(rc_vec_ref_t accv, rc_vec_ref_t srcv);

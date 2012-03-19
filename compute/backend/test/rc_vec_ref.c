@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -356,6 +356,20 @@ rc_vec_getmaskv_ref(rc_vec_ref_t srcv)
         }
         dstv.byte[k] = mask;
     }
+
+    return dstv;
+}
+
+rc_vec_ref_t
+rc_vec_setmaskv_ref(rc_vec_ref_t srcv)
+{
+    rc_vec_t dstv;
+    int      k;
+
+    memset(dstv.byte, 0, RC_VEC_SIZE);
+    for (k = 0; k < RC_VEC_SIZE; k++)
+        dstv.byte[k] = (RC_VEC_REF_BIT(8, 1, (k & 7)) & srcv.byte[k / 8] ?
+                        0xff : 0);
 
     return dstv;
 }
