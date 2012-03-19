@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -47,6 +47,25 @@
 #define RC_TYPE_U8_TO_BIN(op, arg1, arg2) \
     ((unsigned)(op) >> 7)
 
+/**
+ *  There's a loop inside the iteration macro, but for our manual unroll
+ *  chunks it has known small boundaries; between 0..8*RC_WORD_SIZE in
+ *  steps of 4, so the compiler is likely to unroll it independently
+ *  from our efforts and we should be able to consider it already
+ *  unrolled.
+ */
+#define RC_BIN_TO_U8_ITER(src, dst, max, srcidx, dstidx)        \
+do {                                                            \
+    rc_word_t word = RC_WORD_LOAD(&src[srcidx]);                \
+    int k;                                                      \
+                                                                \
+    for (k = 0; k < max; k += 4, dstidx += 4) {                 \
+        unsigned nibble = RC_WORD_EXTRACT(word, k, 4);          \
+        *(uint32_t*)&dst[dstidx] = rc_table_expand[nibble];     \
+    }                                                           \
+    srcidx += RC_WORD_SIZE;                                     \
+} while (0)
+
 
 /*
  * -------------------------------------------------------------
@@ -73,13 +92,14 @@ rc_type_u8_to_bin(uint8_t *restrict dst, int dst_dim,
 /**
  *  Convert binary to u8.
  */
+#if RC_IMPL(rc_type_bin_to_u8, 1)
 void
 rc_type_bin_to_u8(uint8_t *restrict dst, int dst_dim,
                   const uint8_t *restrict src, int src_dim,
                   int width, int height)
 {
-    int full = width / (8*RC_WORD_SIZE);
-    int rem  = width % (8*RC_WORD_SIZE);
+    int full = width / (8*RC_WORD_SIZE * RC_UNROLL(rc_type_bin_to_u8));
+    int rem  = width % (8*RC_WORD_SIZE * RC_UNROLL(rc_type_bin_to_u8));
     int y;
 
     for (y = 0; y < height; y++) {
@@ -87,26 +107,26 @@ rc_type_bin_to_u8(uint8_t *restrict dst, int dst_dim,
         int j = y*dst_dim;
         int x;
 
-        /* Handle all full src words */
-        for (x = 0; x < full; x++, i += RC_WORD_SIZE) {
-            rc_word_t word = RC_WORD_LOAD(&src[i]);
-            int       k;
+        /* Handle all full source words. */
+        for (x = 0; x < full; x++) {
+            RC_BIN_TO_U8_ITER(src, dst, 8*RC_WORD_SIZE, i, j);
 
-            for (k = 0; k < 8*RC_WORD_SIZE; k += 4, j += 4) {
-                unsigned nibble = RC_WORD_EXTRACT(word, k, 4);
-                *(uint32_t*)&dst[j] = rc_table_expand[nibble];
+            if (RC_UNROLL(rc_type_bin_to_u8) >= 2)
+                RC_BIN_TO_U8_ITER(src, dst, 8*RC_WORD_SIZE, i, j);
+
+            if (RC_UNROLL(rc_type_bin_to_u8) == 4) {
+                RC_BIN_TO_U8_ITER(src, dst, 8*RC_WORD_SIZE, i, j);
+                RC_BIN_TO_U8_ITER(src, dst, 8*RC_WORD_SIZE, i, j);
             }
         }
 
-        /* Handle all remaining partial src words */
+        /* Handle all remaining source words. */
         if (rem) {
-            rc_word_t word = RC_WORD_LOAD(&src[i]);
-            int       k;
-
-            for (k = 0; k < rem; k += 4, j += 4) {
-                unsigned nibble = RC_WORD_EXTRACT(word, k, 4);
-                *(uint32_t*)&dst[j] = rc_table_expand[nibble];
-            }
+            int r;
+            for (r = rem; r > 8*RC_WORD_SIZE; r -= 8*RC_WORD_SIZE)
+                RC_BIN_TO_U8_ITER(src, dst, 8*RC_WORD_SIZE, i, j);
+            RC_BIN_TO_U8_ITER(src, dst, r, i, j);
         }
     }
 }
+#endif

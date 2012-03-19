@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -166,6 +166,9 @@ static void
 rc_bmark_exec_bin_bin_m(int (*func)(), const int *args);
 
 static void
+rc_bmark_exec_bin_u8(int (*func)(), const int *args);
+
+static void
 rc_bmark_exec_u8_bin(int (*func)(), const int *args);
 
 static void
@@ -272,6 +275,7 @@ static const rc_bmark_table_t rc_bmark_suite[] = {
     RC_BMARK_ENTRY(rc_pixop_norm_u8,                      u8_u8,     0, 0),
     /* Type conversions */
     RC_BMARK_ENTRY(rc_type_u8_to_bin,                     u8_bin,    0, 0),
+    RC_BMARK_ENTRY(rc_type_bin_to_u8,                     bin_u8,    0, 0),
     /* Thresholding */
     RC_BMARK_ENTRY(rc_thresh_gt_u8,                       u8_bin,    0, 0),
     RC_BMARK_ENTRY(rc_thresh_lt_u8,                       u8_bin,    0, 0),
@@ -770,6 +774,15 @@ rc_bmark_exec_bin_bin_m(int (*func)(), const int *args)
             rc_bmark_data.src + 1, rc_bmark_data.dim_bin,
             rc_bmark_data.width,   rc_bmark_data.height,
             args[0]);
+}
+
+static void
+rc_bmark_exec_bin_u8(int (*func)(), const int *args)
+{
+    (void)args;
+    (*func)(rc_bmark_data.dst,   rc_bmark_data.dim_u8,
+            rc_bmark_data.src,   rc_bmark_data.dim_bin,
+            rc_bmark_data.width, rc_bmark_data.height);
 }
 
 static void
