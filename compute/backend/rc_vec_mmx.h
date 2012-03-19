@@ -205,6 +205,19 @@ do {                                                                         \
     (maskv) = _mm_or_si64(vec__, _mm_srli_si64(vec__, 28)); /* 3:rd fols  */ \
 } while (0)
 
+#define RC_VEC_SETMASKV(vec, maskv)                             \
+do {                                                            \
+    rc_vec_t v_ = (maskv);                                      \
+    /* From {a, x, ...}, make {a, a, a, a, a, a, a, a} */       \
+    rc_vec_t vh16l16_ = _mm_unpacklo_pi8(v_, v_);               \
+    rc_vec_t vh32l32_ = _mm_unpacklo_pi8(vh16l16_, vh16l16_);   \
+    rc_vec_t vh64l64_ = _mm_unpacklo_pi8(vh32l32_, vh32l32_);   \
+    rc_vec_t mask_ = _mm_setr_pi8(1<<0, 1<<1, 1<<2, 1<<3,       \
+                                  1<<4, 1<<5, 1<<6, 1<<7);      \
+    rc_vec_t andv_ = _mm_and_si64(vh64l64_, mask_);             \
+    (vec) = _mm_cmpeq_pi8(andv_, mask_);                        \
+} while (0)
+
 #define RC_VEC_CNTN 1024 /* 8191 untestable */
 
 #define RC_VEC_CNTV(accv, srcv)                                 \

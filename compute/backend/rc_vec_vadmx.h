@@ -227,6 +227,16 @@ do {                                                     \
 #define RC_VEC_GETMASKV(maskv, vec) \
     ((maskv) = __builtin_ax_rpack(vec))
 
+#define RC_VEC_SETMASKV(vec, maskv)                             \
+do {                                                            \
+    rc_vec_t zero_ = (rc_vec_t){0, 0, 0, 0, 0, 0, 0, 0};        \
+    rc_vec_t v_ = __builtin_ax_vaddx(zero_, maskv);             \
+    rc_vec_t mask_ = (rc_vec_t){1<<0, 1<<1, 1<<2, 1<<3,         \
+                                1<<4, 1<<5, 1<<6, 1<<7};        \
+    rc_vec_t andv_ = __builtin_ax_vand(v_, mask_);              \
+    (vec) = __builtin_ax_vcmpeq(andv_, mask_);                  \
+} while (0)
+
 #define RC_VEC_CNTN  28
 
 /**
