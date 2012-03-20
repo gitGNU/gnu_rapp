@@ -196,7 +196,7 @@ distcheck-tune-cache:
 	for f in $(srcdir)/compute/tune/arch/rapptune-*.h; do \
 	    sed -ne '$(RC_TUNE_SED)' < $$f > cachefuncs.tmp; \
 	    if test $$f = $(srcdir)/compute/tune/arch/rapptune-generic.h \
-		|| diff srcfuncs.tmp cachefuncs.tmp > result.tmp 2>&1; \
+		|| diff -u srcfuncs.tmp cachefuncs.tmp > result.tmp 2>&1; \
 	    then :; \
 	    else \
 		echo "*** outdated tune-file: `basename $$f`"; \
