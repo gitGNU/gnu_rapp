@@ -830,7 +830,7 @@ RC_TEST_VEC_FUNC(lerpn)(uint8_t *dst, const uint8_t *src1,
 
 /*
  * -------------------------------------------------------------
- *  Binary mask packing/unpacking
+ *  Binary mask operations
  * -------------------------------------------------------------
  */
 

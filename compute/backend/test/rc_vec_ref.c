@@ -108,7 +108,7 @@ rc_vec_pack_ref(rc_vec_ref_t srcv1, rc_vec_ref_t srcv2)
 
 /*
  * -------------------------------------------------------------
- *  Binary mask operations
+ *  Bitwise logical operations
  * -------------------------------------------------------------
  */
 
