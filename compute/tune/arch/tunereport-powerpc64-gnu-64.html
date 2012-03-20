@@ -1,0 +1,258 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+                      "http://w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <style>
+      body, h1, td, th {
+        font-family: georgia, verdana, geneva, arial, helvetica, sans-serif;
+      }
+      body {
+        margin: 2em;
+      }
+      h1 {
+        font-size: 18pt;
+        text-align: center;
+      }
+      div.footer {
+        font-style: italic;
+        font-size: 8pt;
+      }
+      table.legend {
+        font-size: 10pt;
+        float: right;
+        border: 1px solid black;
+        margin: 0 0 1em 1em;
+      }
+      table.legend tr td div {
+        width: 1em;
+        border: 1px solid black;
+      }
+      table.legend tr td + td {
+        width: auto;
+      }
+      table.plot {
+        clear: both;
+        margin: 2em 0 2em 0;
+      }
+      table.plot > tbody > tr > td {
+        font: 10pt monospace;
+      }
+      table.plot td + td + td {
+        text-align: right;
+      }
+      table.plot thead th {
+        font-size: 12pt;
+        font-weight: bolder;
+        text-align: left;
+      }
+      table.plot * table tr td {
+        font-size: 12pt;
+        font-weight: bolder;
+        text-align: center;
+      }
+      div.bg {
+        border: 1px solid black;
+      }
+      div.bar {
+        border-right: 1px solid black;
+      }
+    </style>
+    <title>RAPP Compute tuning report</title>
+  </head>
+  <body>
+  <h1>RAPP Compute Tuning Report</h1>
+<table class="legend"><tr><td><div style="background-color: silver"><br></div></td><td>Best generic</td></tr>
+<tr><td><div style="background-color: #a8d6e5"><br></div></td><td>Best SWAR</td></tr>
+<tr><td><div style="background-color: steelblue"><br></div></td><td>Best SIMD</td></tr>
+</table>
+<em>Linux gcc1-power7.osuosl.org 3.1.0-0.rc9.git0.2.fc16.kh.ppc64 #1 SMP Wed Oct 12 22:41:01 UTC 2011 ppc64 ppc64 ppc64 GNU/Linux</em>
+<table class="plot">
+<thead><th>Function</th><th><table><tr><td>0%</td><td style="width: 100%">Relative Execution Speed</td><td>100%</td></tr></table></th><th>Gain</th></thead><tbody><tr><td>rc_bitblt_wa_copy_bin</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 99.71%">
+<br></div></div></td><td>1.02</td></tr>
+<tr><td>rc_pixop_set_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: silver; width: 100%">
+<br></div></td><td>1.15</td></tr>
+<tr><td>rc_pixop_not_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 14.09%">
+<br></div></div></td><td>7.10</td></tr>
+<tr><td>rc_pixop_flip_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 14.01%">
+<br></div></div></td><td>7.14</td></tr>
+<tr><td>rc_pixop_abs_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 47.14%">
+<br></div></div></td><td>2.12</td></tr>
+<tr><td>rc_pixop_addc_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 33.61%">
+<br></div></div></td><td>2.98</td></tr>
+<tr><td>rc_pixop_lerpc_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 10.42%">
+<br></div></div></td><td>9.60</td></tr>
+<tr><td>rc_pixop_lerpnc_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 12.10%">
+<br></div></div></td><td>8.27</td></tr>
+<tr><td>rc_pixop_add_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 27.59%">
+<br></div></div></td><td>3.62</td></tr>
+<tr><td>rc_pixop_avg_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 21.38%">
+<br></div></div></td><td>4.68</td></tr>
+<tr><td>rc_pixop_sub_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 31.24%">
+<br></div></div></td><td>3.20</td></tr>
+<tr><td>rc_pixop_subh_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 21.25%">
+<br></div></div></td><td>4.71</td></tr>
+<tr><td>rc_pixop_suba_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 38.69%">
+<br></div></div></td><td>2.58</td></tr>
+<tr><td>rc_pixop_lerp_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 29.54%">
+<br></div></div></td><td>3.38</td></tr>
+<tr><td>rc_pixop_lerpn_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 24.34%">
+<br></div></div></td><td>4.11</td></tr>
+<tr><td>rc_pixop_lerpi_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 28.08%">
+<br></div></div></td><td>3.56</td></tr>
+<tr><td>rc_pixop_norm_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 66.21%">
+<br></div></div></td><td>1.51</td></tr>
+<tr><td>rc_type_u8_to_bin</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 31.49%">
+<br></div></div></td><td>3.18</td></tr>
+<tr><td>rc_type_bin_to_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: silver; width: 100%">
+<br></div></td><td>1.87</td></tr>
+<tr><td>rc_thresh_gt_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 30.16%">
+<br></div></div></td><td>3.32</td></tr>
+<tr><td>rc_thresh_lt_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 31.48%">
+<br></div></div></td><td>3.18</td></tr>
+<tr><td>rc_thresh_gtlt_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 26.77%">
+<br></div></div></td><td>3.74</td></tr>
+<tr><td>rc_thresh_ltgt_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 26.99%">
+<br></div></div></td><td>3.71</td></tr>
+<tr><td>rc_stat_sum_bin</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 68.06%">
+<br></div></div></td><td>1.47</td></tr>
+<tr><td>rc_stat_sum_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 31.73%">
+<br></div></div></td><td>3.15</td></tr>
+<tr><td>rc_stat_min_bin</td><td style="width: 100%">
+<div class="bg"style="background-color: silver; width: 100%">
+<br></div></td><td>1.11</td></tr>
+<tr><td>rc_stat_max_bin</td><td style="width: 100%">
+<div class="bg"style="background-color: silver; width: 100%">
+<br></div></td><td>1.22</td></tr>
+<tr><td>rc_stat_min_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 68.40%">
+<br></div></div></td><td>1.46</td></tr>
+<tr><td>rc_stat_max_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 74.28%">
+<br></div></div></td><td>1.35</td></tr>
+<tr><td>rc_reduce_1x2_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 82.51%">
+<br></div></div></td><td>1.21</td></tr>
+<tr><td>rc_reduce_2x1_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 19.25%">
+<br></div></div></td><td>5.19</td></tr>
+<tr><td>rc_reduce_2x2_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 72.18%">
+<br></div></div></td><td>1.39</td></tr>
+<tr><td>rc_filter_diff_1x2_horz_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 32.79%">
+<br></div></div></td><td>3.05</td></tr>
+<tr><td>rc_filter_diff_1x2_horz_abs_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 43.47%">
+<br></div></div></td><td>2.30</td></tr>
+<tr><td>rc_filter_diff_2x1_vert_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 22.53%">
+<br></div></div></td><td>4.44</td></tr>
+<tr><td>rc_filter_diff_2x1_vert_abs_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 43.06%">
+<br></div></div></td><td>2.32</td></tr>
+<tr><td>rc_filter_diff_2x2_magn_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 43.51%">
+<br></div></div></td><td>2.30</td></tr>
+<tr><td>rc_filter_sobel_3x3_horz_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 35.25%">
+<br></div></div></td><td>2.84</td></tr>
+<tr><td>rc_filter_sobel_3x3_horz_abs_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 38.16%">
+<br></div></div></td><td>2.62</td></tr>
+<tr><td>rc_filter_sobel_3x3_vert_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 39.66%">
+<br></div></div></td><td>2.52</td></tr>
+<tr><td>rc_filter_sobel_3x3_vert_abs_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 45.12%">
+<br></div></div></td><td>2.22</td></tr>
+<tr><td>rc_filter_sobel_3x3_magn_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 44.72%">
+<br></div></div></td><td>2.24</td></tr>
+<tr><td>rc_filter_gauss_3x3_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 35.32%">
+<br></div></div></td><td>2.83</td></tr>
+<tr><td>rc_filter_laplace_3x3_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 42.42%">
+<br></div></div></td><td>2.36</td></tr>
+<tr><td>rc_filter_laplace_3x3_abs_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 45.01%">
+<br></div></div></td><td>2.22</td></tr>
+<tr><td>rc_filter_highpass_3x3_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 47.30%">
+<br></div></div></td><td>2.11</td></tr>
+<tr><td>rc_filter_highpass_3x3_abs_u8</td><td style="width: 100%">
+<div class="bg"style="background-color: #a8d6e5; width: 100%">
+<div class="bar"style="background-color: silver; width: 48.40%">
+<br></div></div></td><td>2.07</td></tr>
+<tr><td>rc_margin_horz_bin</td><td style="width: 100%">
+<div class="bg"style="background-color: silver; width: 100%">
+<br></div></td><td>1.02</td></tr>
+</tbody></table><div class="footer">Auto-generated by RAPP Compute performance tuner on Mon Mar 19 18:39:11 2012</div></body></html>
