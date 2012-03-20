@@ -796,10 +796,18 @@ AC_CONFIG_HEADERS([config.h])
 
 # The directory test/installtest isn't configured until after
 # installation, but to make autoreconf update this directory we
-# have to mention it here
-if false; then
-    AC_CONFIG_SUBDIRS([test/installtest])
-fi
+# have to mention it in a AC_ CONFIG_SUBDIRS call here, one
+# which doesn't really have to execute; it can be in an "if
+# false" conditional. Unfortunately, calling that macro turns
+# off warnings for unknown configure options (just to be safe,
+# we also slightly obfuscate its spelling in this comment). Fool
+# autoreconf into thinking we called AC_ CONFIG_SUBDIRS here by
+# temporily suppressing its definition. If that stops working in
+# a future autoconf release, ignore the configure options issue
+# and use the "if false" construct.
+m4_pushdef([AC_CONFIG_SUBDIRS], [])
+AC_CONFIG_SUBDIRS([test/installtest])
+m4_popdef([AC_CONFIG_SUBDIRS])
 
 AM_COND_IF([RAPP_TUNING],
   [],
