@@ -263,7 +263,6 @@ do {                                               \
 
 /**
  *  Set a value to all fields.
- *  Sets the scalar value 'scal' in each 8-bit field.
  */
 #undef  RC_VEC_SPLAT
 #define RC_VEC_SPLAT(vec, scal) \
@@ -271,7 +270,6 @@ do {                                               \
 
 /**
  *  Saturating addition.
- *  Computes dstv = MIN(srcv1 + srcv2, 0xff) for each 8-bit field.
  */
 #undef  RC_VEC_ADDS
 #define RC_VEC_ADDS(dstv, srcv1, srcv2) \
@@ -279,7 +277,6 @@ do {                                               \
 
 /**
  *  Average value, truncated.
- *  Computes dstv = (srcv1 + srcv2) >> 1 for each 8-bit field.
  */
 #undef  RC_VEC_AVGT
 #define RC_VEC_AVGT(dstv, srcv1, srcv2) \
@@ -287,7 +284,6 @@ do {                                               \
 
 /**
  *  Average value, rounded.
- *  Computes dstv = (srcv1 + srcv2 + 1) >> 1 for each 8-bit field.
  */
 #undef  RC_VEC_AVGR
 #define RC_VEC_AVGR(dstv, srcv1, srcv2) \
@@ -295,8 +291,6 @@ do {                                               \
 
 /**
  *  Average value, rounded towards srcv1.
- *  Computes dstv = (srcv1 + srcv2 + (srcv2 > srcv1)) >> 1
- *  for each 8-bit field.
  */
 #undef  RC_VEC_AVGZ
 #define RC_VEC_AVGZ(dstv, srcv1, srcv2) \
@@ -304,7 +298,6 @@ do {                                               \
 
 /**
  *  Saturating subtraction.
- *  Computes dstv = MAX(srvc1 - srcv2, 0) for each 8-bit field.
  */
 #undef  RC_VEC_SUBS
 #define RC_VEC_SUBS(dstv, srcv1, srcv2) \
@@ -312,7 +305,6 @@ do {                                               \
 
 /**
  *  Absolute-value subtraction.
- *  Computes dstv = ABS(srcv1 - srcv2) for each 8-bit field.
  */
 #undef  RC_VEC_SUBA
 #define RC_VEC_SUBA(dstv, srcv1, srcv2) \
@@ -320,7 +312,6 @@ do {                                               \
 
 /**
  *  Half subtraction with bias, truncated.
- *  Computes dstv = (srcv1 - srcv2 + 0xff) >> 1 for each 8-bit field.
  */
 #undef  RC_VEC_SUBHT
 #define RC_VEC_SUBHT(dstv, srcv1, srcv2) \
@@ -328,7 +319,6 @@ do {                                               \
 
 /**
  *  Half subtraction with bias, rounded.
- *  Computes dstv = (srcv1 - srcv2 + 0x100) >> 1 for each 8-bit field.
  */
 #undef  RC_VEC_SUBHR
 #define RC_VEC_SUBHR(dstv, srcv1, srcv2) \
@@ -336,8 +326,6 @@ do {                                               \
 
 /**
  *  Absolute value.
- *  Computes dstv = 2*abs(srcv - 0x80) for each 8-bit field.
- *  The result is saturated to [0,0xff].
  */
 #undef  RC_VEC_ABS
 #define RC_VEC_ABS(dstv, srcv) \
@@ -345,7 +333,6 @@ do {                                               \
 
 /**
  *  Comparison.
- *  Computes dstv = srcv1 > srcv2 ? 0xff : 0 for each 8-bit field.
  */
 #undef  RC_VEC_CMPGT
 #define RC_VEC_CMPGT(dstv, srcv1, srcv2) \
@@ -353,7 +340,6 @@ do {                                               \
 
 /**
  *  Comparison.
- *  Computes dst = srcv1 >= srcv2 ? 0xff : 0 for each 8-bit field.
  */
 #undef  RC_VEC_CMPGE
 #define RC_VEC_CMPGE(dstv, srcv1, srcv2) \
@@ -361,7 +347,6 @@ do {                                               \
 
 /**
  *  Minimum value.
- *  Computes dstv = MIN(srcv1, srcv2) for each 8-bit field.
  */
 #undef  RC_VEC_MIN
 #define RC_VEC_MIN(dstv, srcv1, srcv2) \
@@ -369,7 +354,6 @@ do {                                               \
 
 /**
  *  Maximum value.
- *  Computes dstv = MAX(srcv1, srcv2) for each 8-bit field.
  */
 #undef  RC_VEC_MAX
 #define RC_VEC_MAX(dstv, srcv1, srcv2) \
@@ -377,7 +361,6 @@ do {                                               \
 
 /**
  *  Generate the blend vector needed by RC_VEC_LERP().
- *  No action.
  */
 #undef  RC_VEC_BLEND
 #define RC_VEC_BLEND(blendv, blend8) \
@@ -385,8 +368,6 @@ do {                                               \
 
 /**
  *  Linear interpolation.
- *  Computes dstv = srcv1 + ((blend8*(srcv2 - srcv1) + 0x80) >> 8) for each
- *  8-bit field. The Q.8 blend factor @e blend8 must b in the range [0,0x7f].
  */
 #undef  RC_VEC_LERP
 #define RC_VEC_LERP(dstv, srcv1, srcv2, blend8, blend8v) \
@@ -394,7 +375,6 @@ do {                                               \
 
 /**
  *  Generate the blend vector needed by RC_VEC_LERPZ().
- *  No action.
  */
 #undef  RC_VEC_BLENDZ
 #define RC_VEC_BLENDZ(blendv, blend8) \
@@ -402,9 +382,6 @@ do {                                               \
 
 /**
  *  Linear interpolation rounded towards srcv1.
- *  Computes dstv = srcv1 + (blend8*(srcv2 - srcv1)/256) for each 8-bit
- *  field, with the update term rounded towards zero. The Q.8 blend factor
- *  @e blend8 must b in the range [0,0x7f].
  */
 #undef  RC_VEC_LERPZ
 #define RC_VEC_LERPZ(dstv, srcv1, srcv2, blend8, blend8v) \
@@ -412,7 +389,6 @@ do {                                               \
 
 /**
  *  Generate the blend vector needed by RC_VEC_LERPN().
- *  No action.
  */
 #undef  RC_VEC_BLENDN
 #define RC_VEC_BLENDN(blendv, blend8) \
@@ -420,9 +396,6 @@ do {                                               \
 
 /**
  *  Linear interpolation rounded towards srcv2.
- *  Computes dstv = srcv1 + (blend8*(srcv2 - srcv1)/256) for each 8-bit
- *  field, with the update term rounded away from zero. The Q.8 blend factor
- *  @e blend8 must b in the range [0,0x7f].
  */
 #undef  RC_VEC_LERPN
 #define RC_VEC_LERPN(dstv, srcv1, srcv2, blend8, blend8v) \
