@@ -435,42 +435,6 @@ RC_TEST_VEC_FUNC(alignc)(uint8_t *dst, const uint8_t *src1,
 #define rc_test_vec_alignc NULL
 #endif
 
-#ifdef RC_VEC_SCATTER
-static int
-RC_TEST_VEC_FUNC(scatter)(uint8_t *dst, const uint8_t *src1,
-                          const uint8_t *src2, int mask)
-{
-    rc_vec_t dstv, srcv;
-    RC_VEC_DECLARE();
-    (void)src2;
-    RC_VEC_LOAD(srcv, src1);
-    RC_VEC_SCATTER(dstv, srcv, mask);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
-#else
-#define rc_test_vec_scatter NULL
-#endif
-
-#ifdef RC_VEC_GATHER
-static int
-RC_TEST_VEC_FUNC(gather)(uint8_t *dst, const uint8_t *src1,
-                         const uint8_t *src2, int mask)
-{
-    rc_vec_t dstv, srcv;
-    RC_VEC_DECLARE();
-    (void)src2;
-    RC_VEC_LOAD(srcv, src1);
-    RC_VEC_GATHER(dstv, srcv, mask);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
-#else
-#define rc_test_vec_gather NULL
-#endif
-
 #ifdef RC_VEC_PACK
 static int
 RC_TEST_VEC_FUNC(pack)(uint8_t *dst, const uint8_t *src1,
