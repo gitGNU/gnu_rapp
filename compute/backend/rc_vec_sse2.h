@@ -177,6 +177,18 @@ do {                                                    \
 #define RC_VEC_SUBHR(dstv, srcv1, srcv2) \
     RC_VEC_AVGR(dstv, srcv1, _mm_sub_epi8(_mm_set1_epi8(0xff), srcv2))
 
+#define RC_VEC_ADD16(dstv, srcv1, srcv2) \
+    ((dstv) = (rc_vec_t)_mm_add_epi16(srcv1, srcv2))
+
+#define RC_VEC_SUB16(dstv, srcv1, srcv2) \
+    ((dstv) = (rc_vec_t)_mm_sub_epi16(srcv1, srcv2))
+
+#define RC_VEC_ADD32(dstv, srcv1, srcv2) \
+    ((dstv) = (rc_vec_t)_mm_add_epi32(srcv1, srcv2))
+
+#define RC_VEC_SUB32(dstv, srcv1, srcv2) \
+    ((dstv) = (rc_vec_t)_mm_sub_epi32(srcv1, srcv2))
+
 #define RC_VEC_CMPGT(dstv, srcv1, srcv2)                                \
 do {                                                                    \
     rc_vec_t sv1__ = (srcv1);                                           \
@@ -257,6 +269,40 @@ do {                                                                    \
                                    1<<4, 1<<5, 1<<6, 1<<7);             \
     rc_vec_t andv_ = _mm_and_si128(vh64l64_, mask_);                    \
     (vec) = _mm_cmpeq_epi8(andv_, mask_);                               \
+} while (0)
+
+#define RC_VEC_8S16(dvecl, dvecr, srcv)                 \
+do {                                                    \
+    rc_vec_t s_ = (srcv);                               \
+    rc_vec_t zero_ = _mm_setzero_si128();               \
+    rc_vec_t signs_ = _mm_cmpgt_epi8(zero_, s_);        \
+    (dvecl) = (rc_vec_t)_mm_unpacklo_epi8(s_, signs_);  \
+    (dvecr) = (rc_vec_t)_mm_unpackhi_epi8(s_, signs_);  \
+} while (0)
+
+#define RC_VEC_8U16(dvecl, dvecr, srcv)                 \
+do {                                                    \
+    rc_vec_t s_ = (srcv);                               \
+    rc_vec_t zero_ = _mm_setzero_si128();               \
+    (dvecl) = (rc_vec_t)_mm_unpacklo_epi8(s_, zero_);   \
+    (dvecr) = (rc_vec_t)_mm_unpackhi_epi8(s_, zero_);   \
+} while (0)
+
+#define RC_VEC_16S32(dvecl, dvecr, srcv)                \
+do {                                                    \
+    rc_vec_t s_ = (srcv);                               \
+    rc_vec_t zero_ = _mm_setzero_si128();               \
+    rc_vec_t signs_ = _mm_cmpgt_epi16(zero_, s_);       \
+    (dvecl) = (rc_vec_t)_mm_unpacklo_epi16(s_, signs_); \
+    (dvecr) = (rc_vec_t)_mm_unpackhi_epi16(s_, signs_); \
+} while (0)
+
+#define RC_VEC_16U32(dvecl, dvecr, srcv)                \
+do {                                                    \
+    rc_vec_t s_ = (srcv);                               \
+    rc_vec_t zero_ = _mm_setzero_si128();               \
+    (dvecl) = (rc_vec_t)_mm_unpacklo_epi16(s_, zero_);  \
+    (dvecr) = (rc_vec_t)_mm_unpackhi_epi16(s_, zero_);  \
 } while (0)
 
 #define RC_VEC_CNTN 1024 /* 8191 untestable */

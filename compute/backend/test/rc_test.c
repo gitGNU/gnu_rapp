@@ -163,6 +163,10 @@ static const struct rc_test_entry_st {
     RC_TEST_ENTRY(suba,     true,  true,  0, 0),
     RC_TEST_ENTRY(subht,    true,  true,  0, 0),
     RC_TEST_ENTRY(subhr,    true,  true,  0, 0),
+    RC_TEST_ENTRY(add16,    true,  true,  0, 0),
+    RC_TEST_ENTRY(sub16,    true,  true,  0, 0),
+    RC_TEST_ENTRY(add32,    true,  true,  0, 0),
+    RC_TEST_ENTRY(sub32,    true,  true,  0, 0),
     RC_TEST_ENTRY(cmpgt,    true,  true,  0, 0),
     RC_TEST_ENTRY(cmpge,    true,  true,  0, 0),
     RC_TEST_ENTRY(min,      true,  true,  0, 0),
@@ -175,7 +179,15 @@ static const struct rc_test_entry_st {
     RC_TEST_ENTRY(mac,      true,  true,  0, 0),
     RC_TEST_ENTRY(getmaskw, true,  false, 0, 0),
     RC_TEST_ENTRY(getmaskv, true,  false, 0, 0),
-    RC_TEST_ENTRY(setmaskv, true,  false, 0, 0)
+    RC_TEST_ENTRY(setmaskv, true,  false, 0, 0),
+    RC_TEST_ENTRY(l_8S16,   true,  false, 0, 0),
+    RC_TEST_ENTRY(r_8S16,   true,  false, 0, 0),
+    RC_TEST_ENTRY(l_8U16,   true,  false, 0, 0),
+    RC_TEST_ENTRY(r_8U16,   true,  false, 0, 0),
+    RC_TEST_ENTRY(l_16S32,  true,  false, 0, 0),
+    RC_TEST_ENTRY(r_16S32,  true,  false, 0, 0),
+    RC_TEST_ENTRY(l_16U32,  true,  false, 0, 0),
+    RC_TEST_ENTRY(r_16U32,  true,  false, 0, 0)
 };
 
 

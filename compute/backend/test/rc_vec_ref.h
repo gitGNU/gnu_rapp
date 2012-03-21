@@ -58,10 +58,12 @@
  */
 typedef union {
     uint8_t  byte[RC_VEC_SIZE];
+    uint16_t u16[RC_VEC_SIZE / 2];
 #if RC_VEC_SIZE == 2
     uint16_t word;
 #else
     uint32_t word;
+    uint32_t u32[RC_VEC_SIZE / 4];
 #endif
 } rc_vec_ref_t;
 
@@ -257,7 +259,7 @@ do {                                               \
 
 /*
  * -------------------------------------------------------------
- *  Arithmetic operations on 8-bit fields
+ *  Arithmetic operations
  * -------------------------------------------------------------
  */
 
@@ -323,6 +325,34 @@ do {                                               \
 #undef  RC_VEC_SUBHR
 #define RC_VEC_SUBHR(dstv, srcv1, srcv2) \
     ((dstv) = rc_vec_subhr_ref(srcv1, srcv2))
+
+/**
+ *  Addition of 16-bit elements.
+ */
+#undef  RC_VEC_ADD16
+#define RC_VEC_ADD16(dstv, srcv1, srcv2) \
+    ((dstv) = rc_vec_add16_ref(srcv1, srcv2))
+
+/**
+ *  Subtraction of 16-bit elements.
+ */
+#undef  RC_VEC_SUB16
+#define RC_VEC_SUB16(dstv, srcv1, srcv2) \
+    ((dstv) = rc_vec_sub16_ref(srcv1, srcv2))
+
+/**
+ *  Addition of 32-bit elements.
+ */
+#undef  RC_VEC_ADD32
+#define RC_VEC_ADD32(dstv, srcv1, srcv2) \
+    ((dstv) = rc_vec_add32_ref(srcv1, srcv2))
+
+/**
+ *  Subtraction of 32-bit elements.
+ */
+#undef  RC_VEC_SUB32
+#define RC_VEC_SUB32(dstv, srcv1, srcv2) \
+    ((dstv) = rc_vec_sub32_ref(srcv1, srcv2))
 
 /**
  *  Absolute value.
@@ -428,6 +458,41 @@ do {                                               \
 #undef  RC_VEC_SETMASKV
 #define RC_VEC_SETMASKV(maskv, srcv) \
     ((maskv) = rc_vec_setmaskv_ref(srcv))
+
+
+/*
+ * -------------------------------------------------------------
+ *  Type conversions
+ * -------------------------------------------------------------
+ */
+
+/**
+ *  Sign-extend 8-bit vector fields into 16-bit vector fields.
+ */
+#undef RC_VEC_8S16
+#define RC_VEC_8S16(dstl, dstr, srcv) \
+    rc_vec_8S16_ref(&dstl, &dstr, srcv)
+
+/**
+ *  Zero-extend 8-bit vector fields into 16-bit vector fields.
+ */
+#undef RC_VEC_8U16
+#define RC_VEC_8U16(dstl, dstr, srcv) \
+    rc_vec_8U16_ref(&dstl, &dstr, srcv)
+
+/**
+ *  Sign-extend 16-bit vector fields into 32-bit vector fields.
+ */
+#undef RC_VEC_16S32
+#define RC_VEC_16S32(dstl, dstr, srcv) \
+    rc_vec_16S32_ref(&dstl, &dstr, srcv)
+
+/**
+ *  Zero-extend 16-bit vector fields into 32-bit vector fields.
+ */
+#undef RC_VEC_16U32
+#define RC_VEC_16U32(dstl, dstr, srcv) \
+    rc_vec_16U32_ref(&dstl, &dstr, srcv)
 
 
 /*
@@ -543,6 +608,18 @@ rc_vec_ref_t
 rc_vec_subhr_ref(rc_vec_ref_t srcv1, rc_vec_ref_t srcv2);
 
 rc_vec_ref_t
+rc_vec_add16_ref(rc_vec_ref_t srcv1, rc_vec_ref_t srcv2);
+
+rc_vec_ref_t
+rc_vec_sub16_ref(rc_vec_ref_t srcv1, rc_vec_ref_t srcv2);
+
+rc_vec_ref_t
+rc_vec_add32_ref(rc_vec_ref_t srcv1, rc_vec_ref_t srcv2);
+
+rc_vec_ref_t
+rc_vec_sub32_ref(rc_vec_ref_t srcv1, rc_vec_ref_t srcv2);
+
+rc_vec_ref_t
 rc_vec_abs_ref(rc_vec_ref_t srcv);
 
 rc_vec_ref_t
@@ -571,6 +648,18 @@ rc_vec_getmaskv_ref(rc_vec_ref_t srcv);
 
 rc_vec_ref_t
 rc_vec_setmaskv_ref(rc_vec_ref_t srcv);
+
+#define RC_TEST_DECLARE_LR_REF_FN(ext) \
+    rc_vec_ref_t rc_vec_l ## ext ## _ref(rc_vec_ref_t srcv);    \
+    rc_vec_ref_t rc_vec_r ## ext ## _ref(rc_vec_ref_t srcv);    \
+    void rc_vec ## ext ## _ref(rc_vec_ref_t *dstvl,             \
+                               rc_vec_ref_t *dstvr,             \
+                               rc_vec_ref_t srcv)
+
+RC_TEST_DECLARE_LR_REF_FN(_8S16);
+RC_TEST_DECLARE_LR_REF_FN(_8U16);
+RC_TEST_DECLARE_LR_REF_FN(_16S32);
+RC_TEST_DECLARE_LR_REF_FN(_16U32);
 
 rc_vec_ref_t
 rc_vec_cntv_ref(rc_vec_ref_t accv, rc_vec_ref_t srcv);

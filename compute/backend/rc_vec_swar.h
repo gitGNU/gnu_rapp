@@ -255,6 +255,46 @@ do {                                                                       \
 #define RC_VEC_SUBHR(dstv, srcv1, srcv2) \
     RC_VEC_AVGR(dstv, srcv1, ~(srcv2))
 
+#define RC_VEC_ADD16(dstv, srcv1, srcv2)                        \
+do {                                                            \
+    rc_vec_t sv1_  = (srcv1);                                   \
+    rc_vec_t sv2_  = (srcv2);                                   \
+    rc_vec_t masklo_ = RC_WORD_C16(7fff);                       \
+    rc_vec_t maskhi_ = RC_WORD_C16(8000);                       \
+    rc_vec_t sumlo_ = (sv1_ & masklo_) + (sv2_ & masklo_);      \
+    rc_vec_t sumhi_ = (sv1_ ^ sv2_) & maskhi_;                  \
+    (dstv)  = sumlo_ ^ sumhi_;                                  \
+} while (0)
+
+#define RC_VEC_SUB16(dstv, srcv1, srcv2)                \
+do {                                                    \
+    rc_vec_t not2_ = ~(srcv2);                          \
+    rc_vec_t neg2_;                                     \
+    RC_VEC_ADD16(neg2_, not2_, RC_WORD_C16(0001));      \
+    RC_VEC_ADD16(dstv, srcv1, neg2_);                   \
+} while (0)
+
+#if RC_VEC_SIZE >= 4
+#define RC_VEC_ADD32(dstv, srcv1, srcv2)                        \
+do {                                                            \
+    rc_vec_t sv1_  = (srcv1);                                   \
+    rc_vec_t sv2_  = (srcv2);                                   \
+    rc_vec_t masklo_ = RC_WORD_C32(7fffffff);                   \
+    rc_vec_t maskhi_ = RC_WORD_C32(80000000);                   \
+    rc_vec_t sumlo_ = (sv1_ & masklo_) + (sv2_ & masklo_);      \
+    rc_vec_t sumhi_ = (sv1_ ^ sv2_) & maskhi_;                  \
+    (dstv)  = sumlo_ ^ sumhi_;                                  \
+} while (0)
+
+#define RC_VEC_SUB32(dstv, srcv1, srcv2)                \
+do {                                                    \
+    rc_vec_t not2_ = ~(srcv2);                          \
+    rc_vec_t neg2_;                                     \
+    RC_VEC_ADD32(neg2_, not2_, RC_WORD_C32(00000001));  \
+    RC_VEC_ADD32(dstv, srcv1, neg2_);                   \
+} while (0)
+#endif /* RC_VEC_SIZE >= 4 */
+
 #define RC_VEC_ABS(dstv, srcv)                                          \
 do {                                                                    \
     rc_vec_t sv__   = (srcv);                                           \

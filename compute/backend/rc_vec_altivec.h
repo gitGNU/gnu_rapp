@@ -218,6 +218,22 @@ do {                                                                  \
 #define RC_VEC_SUBHR(dstv, srcv1, srcv2) \
     RC_VEC_AVGR(dstv, srcv1, vec_nor(srcv2, srcv2))
 
+#define RC_VEC_ADD16(dstv, srcv1, srcv2)                        \
+    ((dstv) = (rc_vec_t)vec_add((vector signed short)(srcv1),   \
+                                (vector signed short)(srcv2)))
+
+#define RC_VEC_SUB16(dstv, srcv1, srcv2)                        \
+    ((dstv) = (rc_vec_t)vec_sub((vector signed short)(srcv1),   \
+                                (vector signed short)(srcv2)))
+
+#define RC_VEC_ADD32(dstv, srcv1, srcv2)                        \
+    ((dstv) = (rc_vec_t)vec_add((vector signed int)(srcv1),     \
+                                (vector signed int)(srcv2)))
+
+#define RC_VEC_SUB32(dstv, srcv1, srcv2)                        \
+    ((dstv) = (rc_vec_t)vec_sub((vector signed int)(srcv1),     \
+                                (vector signed int)(srcv2)))
+
 #define RC_VEC_ABS(dstv, srcv)                \
 do {                                          \
     rc_vec_t vec__;                           \
@@ -322,6 +338,39 @@ do {                                                            \
                                      1<<3, 1<<2, 1<<1, 1<<0);   \
     rc_vec_t andv_ = vec_and(v_, mask_);                        \
     (vec) = (rc_vec_t)vec_cmpeq(andv_, mask_);                  \
+} while (0)
+
+#define RC_VEC_8S16(dvecl, dvecr, srcv)         \
+do {                                            \
+    vector signed char s_ =                     \
+        (vector signed char)(srcv);             \
+    (dvecl) = (rc_vec_t)vec_unpackl(s_);        \
+    (dvecr) = (rc_vec_t)vec_unpackh(s_);        \
+} while (0)
+
+#define RC_VEC_8U16(dvecl, dvecr, srcv)                 \
+do {                                                    \
+    rc_vec_t s_ = (srcv);                               \
+    (dvecl) = vec_mergel(RC_ALTIVEC_INIT16(0), s_);     \
+    (dvecr) = vec_mergeh(RC_ALTIVEC_INIT16(0), s_);     \
+} while (0)
+
+#define RC_VEC_16S32(dvecl, dvecr, srcv)        \
+do {                                            \
+    vector signed short s_ =                    \
+        (vector signed short)(srcv);            \
+    (dvecl) = (rc_vec_t)vec_unpackl(s_);        \
+    (dvecr) = (rc_vec_t)vec_unpackh(s_);        \
+} while (0)
+
+#define RC_VEC_16U32(dvecl, dvecr, srcv)                \
+do {                                                    \
+    vector unsigned short s_ =                          \
+        (vector unsigned short)(srcv);                  \
+    vector unsigned short z_ =                          \
+        RC_ALTIVEC_TINIT8(vector unsigned short, 0);    \
+    (dvecl) = (rc_vec_t)vec_mergel(z_, s_);             \
+    (dvecr) = (rc_vec_t)vec_mergeh(z_, s_);             \
 } while (0)
 
 #define RC_VEC_CNTN 1 /* 0xfffffff untestable */

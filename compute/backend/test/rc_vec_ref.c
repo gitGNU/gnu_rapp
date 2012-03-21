@@ -159,7 +159,7 @@ rc_vec_xor_ref(rc_vec_ref_t srcv1, rc_vec_ref_t srcv2)
 
 /*
  * -------------------------------------------------------------
- *  Arithmetic operations on 8-bit fields
+ *  Arithmetic operations
  * -------------------------------------------------------------
  */
 
@@ -174,6 +174,74 @@ rc_vec_adds_ref(rc_vec_ref_t srcv1, rc_vec_ref_t srcv2)
     }
     return dstv;
 }
+
+rc_vec_ref_t
+rc_vec_add16_ref(rc_vec_ref_t srcv1, rc_vec_ref_t srcv2)
+{
+    rc_vec_ref_t dstv;
+    int k;
+    for (k = 0; k < RC_VEC_SIZE / 2; k++)
+        dstv.u16[k] = srcv1.u16[k] + srcv2.u16[k];
+    return dstv;
+}
+
+rc_vec_ref_t
+rc_vec_sub16_ref(rc_vec_ref_t srcv1, rc_vec_ref_t srcv2)
+{
+    rc_vec_ref_t dstv;
+    int k;
+    for (k = 0; k < RC_VEC_SIZE / 2; k++)
+        dstv.u16[k] = srcv1.u16[k] - srcv2.u16[k];
+    return dstv;
+}
+
+#if RC_VEC_SIZE >= 4
+rc_vec_ref_t
+rc_vec_add32_ref(rc_vec_ref_t srcv1, rc_vec_ref_t srcv2)
+{
+    rc_vec_ref_t dstv;
+    int k;
+    for (k = 0; k < RC_VEC_SIZE / 4; k++)
+        dstv.u32[k] = srcv1.u32[k] + srcv2.u32[k];
+    return dstv;
+}
+
+rc_vec_ref_t
+rc_vec_sub32_ref(rc_vec_ref_t srcv1, rc_vec_ref_t srcv2)
+{
+    rc_vec_ref_t dstv;
+    int k;
+    for (k = 0; k < RC_VEC_SIZE / 4; k++)
+        dstv.u32[k] = srcv1.u32[k] - srcv2.u32[k];
+    return dstv;
+}
+
+#else /* RC_VEC_SIZE < 4 */
+
+/**
+ *  Then these must not be called; the caller is dead code existing as
+ *  as a placeholder in rc_test_table.
+ */
+
+rc_vec_ref_t
+rc_vec_add32_ref(rc_vec_ref_t srcv1, rc_vec_ref_t srcv2)
+{
+    (void)srcv1;
+    (void)srcv2;
+
+    abort();
+}
+
+rc_vec_ref_t
+rc_vec_sub32_ref(rc_vec_ref_t srcv1, rc_vec_ref_t srcv2)
+{
+    (void)srcv1;
+    (void)srcv2;
+
+    abort();
+}
+
+#endif /* RC_VEC_SIZE < 4 */
 
 rc_vec_ref_t
 rc_vec_avgt_ref(rc_vec_ref_t srcv1, rc_vec_ref_t srcv2)
@@ -373,6 +441,104 @@ rc_vec_setmaskv_ref(rc_vec_ref_t srcv)
 
     return dstv;
 }
+
+
+/*
+ * -------------------------------------------------------------
+ *  Type conversions
+ * -------------------------------------------------------------
+ */
+
+#ifdef RC_BIG_ENDIAN
+#define RC_TEST_REF_LOW(l,r) r
+#define RC_TEST_REF_HIGH(l,r) l
+#else
+#define RC_TEST_REF_LOW(l,r) l
+#define RC_TEST_REF_HIGH(l,r) r
+#endif
+
+#define RC_TEST_REF_TYPECONV_COMMON()           \
+    rc_vec_ref_t *dstlowp;                      \
+    rc_vec_ref_t *dsthighp;                     \
+    int k;                                      \
+    memset(dstvl->byte, 0, RC_VEC_SIZE);        \
+    memset(dstvr->byte, 0, RC_VEC_SIZE);        \
+    dstlowp = RC_TEST_REF_LOW(dstvl, dstvr);    \
+    dsthighp = RC_TEST_REF_HIGH(dstvl, dstvr)
+
+void
+rc_vec_8S16_ref(rc_vec_ref_t *dstvl, rc_vec_ref_t *dstvr, rc_vec_ref_t srcv)
+{
+    RC_TEST_REF_TYPECONV_COMMON();
+
+    for (k = 0; k < RC_VEC_SIZE / 2; k++) {
+        dstlowp->u16[k] = (uint16_t)(int8_t)srcv.byte[k];
+        dsthighp->u16[k] = (uint16_t)(int8_t)srcv.byte[k + RC_VEC_SIZE / 2];
+    }
+}
+
+void
+rc_vec_8U16_ref(rc_vec_ref_t *dstvl, rc_vec_ref_t *dstvr, rc_vec_ref_t srcv)
+{
+    RC_TEST_REF_TYPECONV_COMMON();
+
+    for (k = 0; k < RC_VEC_SIZE / 2; k++) {
+        dstlowp->u16[k] = srcv.byte[k];
+        dsthighp->u16[k] = srcv.byte[k + RC_VEC_SIZE / 2];
+    }
+}
+
+#if RC_VEC_SIZE >= 4
+void
+rc_vec_16S32_ref(rc_vec_ref_t *dstvl, rc_vec_ref_t *dstvr, rc_vec_ref_t srcv)
+{
+    RC_TEST_REF_TYPECONV_COMMON();
+
+    for (k = 0; k < RC_VEC_SIZE / 4; k++) {
+        dstlowp->u32[k] = (uint32_t)(int16_t)srcv.u16[k];
+        dsthighp->u32[k] = (uint32_t)(int16_t)srcv.u16[k + RC_VEC_SIZE / 4];
+    }
+}
+
+void
+rc_vec_16U32_ref(rc_vec_ref_t *dstvl, rc_vec_ref_t *dstvr, rc_vec_ref_t srcv)
+{
+    RC_TEST_REF_TYPECONV_COMMON();
+
+    for (k = 0; k < RC_VEC_SIZE / 4; k++) {
+        dstlowp->u32[k] = srcv.u16[k];
+        dsthighp->u32[k] = srcv.u16[k + RC_VEC_SIZE / 4];
+    }
+}
+
+#else /* RC_VEC_SIZE < 4 */
+
+/**
+ *  Then these must not be called; the caller is dead code existing as
+ *  as a placeholder in rc_test_table.
+ */
+
+void
+rc_vec_16S32_ref(rc_vec_ref_t *dstvl, rc_vec_ref_t *dstvr, rc_vec_ref_t srcv)
+{
+    (void)dstvl;
+    (void)dstvr;
+    (void)srcv;
+
+    abort();
+}
+
+void
+rc_vec_16U32_ref(rc_vec_ref_t *dstvl, rc_vec_ref_t *dstvr, rc_vec_ref_t srcv)
+{
+    (void)dstvl;
+    (void)dstvr;
+    (void)srcv;
+
+    abort();
+}
+
+#endif /* RC_VEC_SIZE < 4 */
 
 
 /*

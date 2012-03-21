@@ -501,7 +501,7 @@ typedef arch_vector_t rc_vec_t;
 
 /*
  * -------------------------------------------------------------
- *  Arithmetic operations on 8-bit fields
+ *  Arithmetic operations
  * -------------------------------------------------------------
  */
 
@@ -528,6 +528,54 @@ typedef arch_vector_t rc_vec_t;
  *  @param srcv2  The second input vector.
  */
 #define RC_VEC_ADDS(dstv, srcv1, srcv2)
+
+/**
+ *  Non-saturating addition, uint16_t elements.
+ *  Computes dstv = srcv1 + srcv2 for each 16-bit field in two's
+ *  complement truncating arithmetic (wrapping around at zero without
+ *  exceptions).
+ *
+ *  @param dstv   The output vector.
+ *  @param srcv1  The first input vector.
+ *  @param srcv2  The second input vector.
+ */
+#define RC_VEC_ADD16(dstv, srcv1, srcv2)
+
+/**
+ *  Non-saturating subtraction, uint16_t elements.
+ *  Computes dstv = srcv1 - srcv2 for each 16-bit field in two's
+ *  complement truncating arithmetic (wrapping around at zero without
+ *  exceptions).
+ *
+ *  @param dstv   The output vector.
+ *  @param srcv1  The first input vector.
+ *  @param srcv2  The second input vector.
+ */
+#define RC_VEC_SUB16(dstv, srcv1, srcv2)
+
+/**
+ *  Non-saturating addition, uint32_t elements.
+ *  Computes dstv = srcv1 + srcv2 for each 32-bit field in two's
+ *  complement truncating arithmetic (wrapping around at zero without
+ *  exceptions).
+ *
+ *  @param dstv   The output vector.
+ *  @param srcv1  The first input vector.
+ *  @param srcv2  The second input vector.
+ */
+#define RC_VEC_ADD32(dstv, srcv1, srcv2)
+
+/**
+ *  Non-saturating subtraction, uint32_t elements.
+ *  Computes dstv = srcv1 - srcv2 for each 32-bit field in two's
+ *  complement truncating arithmetic (wrapping around at zero without
+ *  exceptions).
+ *
+ *  @param dstv   The output vector.
+ *  @param srcv1  The first input vector.
+ *  @param srcv2  The second input vector.
+ */
+#define RC_VEC_SUB32(dstv, srcv1, srcv2)
 
 /**
  *  Average value, truncated.
@@ -763,6 +811,71 @@ typedef arch_vector_t rc_vec_t;
  *  @param  maskv  The input mask vector.
  */
 #define RC_VEC_SETMASKV(vec, maskv)
+
+/* @} */
+
+
+/*
+ * -------------------------------------------------------------
+ *  Type conversions
+ * -------------------------------------------------------------
+ */
+
+/**
+ *  @name Type conversions
+ *  @{
+ */
+
+/**
+ *  Sign-extend 8-bit vector fields into 16-bit vector fields.
+ *  The most significant bit of each 8-bit vector field is replicated
+ *  into eight more significant bits and the result is stored into the
+ *  corresponding 16-bit field in a vector pair ldstv and rdstv.
+ *  N.B. the type of the vectors are still rc_vec_t.
+ *
+ *  @param ldstv  The left-most part of the output vector.
+ *  @param rdstv  The right-most part of the output vector.
+ *  @param srcv   The input vector.
+ */
+#define RC_VEC_8S16(ldstv, rdstv, srcv)
+
+/**
+ *  Sign-extend 16-bit vector fields into 32-bit vector fields.
+ *  The most significant bit of each 16-bit vector field is replicated
+ *  into 16 more significant bits and the result is stored into the
+ *  corresponding 32-bit field in a vector pair ldstv and rdstv.
+ *  N.B. the type of the vectors are still rc_vec_t.
+ *
+ *  @param ldstv  The left-most part of the output vector.
+ *  @param rdstv  The right-most part of the output vector.
+ *  @param srcv   The input vector.
+ */
+#define RC_VEC_16S32(ldstv, rdstv, srcv)
+
+/**
+ *  Zero-extend 8-bit vector fields into 16-bit vector fields.
+ *  Each 8-bit vector field is extended by eight zero bits and the
+ *  result is stored into the corresponding 16-bit field in a vector
+ *  pair ldstv and rdstv. N.B. the data type of the vectors are still
+ *  rc_vec_t.
+ *
+ *  @param ldstv  The left-most part of the output vector.
+ *  @param rdstv  The right-most part of the output vector.
+ *  @param srcv   The input vector.
+ */
+#define RC_VEC_8U16(ldstv, rdstv, srcv)
+
+/**
+ *  Zero-extend 16-bit vector fields into 32-bit vector fields.
+ *  Each 16-bit vector field is extended by 16 zero bits and the result
+ *  is stored into the corresponding 32-bit field in a vector pair ldstv
+ *  and rdstv. N.B. the data type of the vectors are still rc_vec_t.
+ *
+ *  @param ldstv  The left-most part of the output vector.
+ *  @param rdstv  The right-most part of the output vector.
+ *  @param srcv  The input vector.
+ */
+#define RC_VEC_16U32(ldstv, rdstv, srcv)
 
 /* @} */
 

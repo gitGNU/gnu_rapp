@@ -84,6 +84,30 @@ RC_TEST_VEC_FUNC(oplo)(uint8_t *dst, const uint8_t *src1,       \
     return 0;                                                   \
 }
 
+/**
+ *  These functions have a two-vector result. We split up testing into
+ *  left and right destination part rather than adding test-framework
+ *  bits for testing two destination vectors.
+ *  Using macros to avoid copy-paste source as much as possible.
+ */
+
+#define RC_TEST_CONV_FUNCTION(lr, ext)                          \
+static int                                                      \
+RC_TEST_VEC_FUNC(lr ## ext)(uint8_t *dst, const uint8_t *src1,  \
+                            const uint8_t *src2, int val)       \
+{                                                               \
+    rc_vec_t srcv, ldstv, rdstv;                                \
+    RC_VEC_DECLARE();                                           \
+    (void)src2;                                                 \
+    (void)val;                                                  \
+    (void)ldstv; /* One of ldstv, rdstv is "unused-but-set". */ \
+    (void)rdstv;                                                \
+    RC_VEC_LOAD(srcv, src1);                                    \
+    RC_VEC ## ext(ldstv, rdstv, srcv);                          \
+    RC_VEC_STORE(dst, lr ## dstv);                              \
+    RC_VEC_CLEANUP();                                           \
+    return 0;                                                   \
+}
 
 /*
  * -------------------------------------------------------------
@@ -387,7 +411,7 @@ RC_TEST_BINOP_FUNCTION(PACK, pack)
 
 /*
  * -------------------------------------------------------------
- *  Arithmetic operations on 8-bit fields
+ *  Arithmetic operations
  * -------------------------------------------------------------
  */
 
@@ -419,6 +443,30 @@ RC_TEST_UNOP_FUNCTION(ABS, abs)
 RC_TEST_BINOP_FUNCTION(ADDS, adds)
 #else
 #define rc_test_vec_adds NULL
+#endif
+
+#ifdef RC_VEC_ADD16
+RC_TEST_BINOP_FUNCTION(ADD16, add16)
+#else
+#define rc_test_vec_add16 NULL
+#endif
+
+#ifdef RC_VEC_SUB16
+RC_TEST_BINOP_FUNCTION(SUB16, sub16)
+#else
+#define rc_test_vec_sub16 NULL
+#endif
+
+#ifdef RC_VEC_ADD32
+RC_TEST_BINOP_FUNCTION(ADD32, add32)
+#else
+#define rc_test_vec_add32 NULL
+#endif
+
+#ifdef RC_VEC_SUB32
+RC_TEST_BINOP_FUNCTION(SUB32, sub32)
+#else
+#define rc_test_vec_sub32 NULL
 #endif
 
 #ifdef RC_VEC_AVGT
@@ -631,6 +679,45 @@ RC_TEST_VEC_FUNC(getmaskv)(uint8_t *dst, const uint8_t *src1,
 RC_TEST_UNOP_FUNCTION(SETMASKV, setmaskv)
 #else
 #define rc_test_vec_setmaskv NULL
+#endif
+
+
+/*
+ * -------------------------------------------------------------
+ *  Type conversions
+ * -------------------------------------------------------------
+ */
+
+#ifdef RC_VEC_8S16
+RC_TEST_CONV_FUNCTION(l, _8S16)
+RC_TEST_CONV_FUNCTION(r, _8S16)
+#else
+#define rc_test_vec_l_8S16 NULL
+#define rc_test_vec_r_8S16 NULL
+#endif
+
+#ifdef RC_VEC_8U16
+RC_TEST_CONV_FUNCTION(l, _8U16)
+RC_TEST_CONV_FUNCTION(r, _8U16)
+#else
+#define rc_test_vec_l_8U16 NULL
+#define rc_test_vec_r_8U16 NULL
+#endif
+
+#ifdef RC_VEC_16S32
+RC_TEST_CONV_FUNCTION(l, _16S32)
+RC_TEST_CONV_FUNCTION(r, _16S32)
+#else
+#define rc_test_vec_l_16S32 NULL
+#define rc_test_vec_r_16S32 NULL
+#endif
+
+#ifdef RC_VEC_16U32
+RC_TEST_CONV_FUNCTION(l, _16U32)
+RC_TEST_CONV_FUNCTION(r, _16U32)
+#else
+#define rc_test_vec_l_16U32 NULL
+#define rc_test_vec_r_16U32 NULL
 #endif
 
 
