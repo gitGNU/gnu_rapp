@@ -50,6 +50,40 @@
     rc_test_vec_ ## name
 #endif
 
+/* Using macros to avoid copy-paste source as much as possible. */
+
+#define RC_TEST_BINOP_FUNCTION(opup, oplo)                      \
+static int                                                      \
+RC_TEST_VEC_FUNC(oplo)(uint8_t *dst, const uint8_t *src1,       \
+                       const uint8_t *src2, int val)            \
+{                                                               \
+    rc_vec_t dstv, srcv1, srcv2;                                \
+    RC_VEC_DECLARE();                                           \
+    (void)val;                                                  \
+    RC_VEC_LOAD(srcv1, src1);                                   \
+    RC_VEC_LOAD(srcv2, src2);                                   \
+    RC_VEC_ ## opup(dstv, srcv1, srcv2);                        \
+    RC_VEC_STORE(dst, dstv);                                    \
+    RC_VEC_CLEANUP();                                           \
+    return 0;                                                   \
+}
+
+#define RC_TEST_UNOP_FUNCTION(opup, oplo)                       \
+static int                                                      \
+RC_TEST_VEC_FUNC(oplo)(uint8_t *dst, const uint8_t *src1,       \
+                       const uint8_t *src2, int val)            \
+{                                                               \
+    rc_vec_t dstv, srcv1;                                       \
+    RC_VEC_DECLARE();                                           \
+    (void)val;                                                  \
+    (void)src2;                                                 \
+    RC_VEC_LOAD(srcv1, src1);                                   \
+    RC_VEC_ ## opup(dstv, srcv1);                               \
+    RC_VEC_STORE(dst, dstv);                                    \
+    RC_VEC_CLEANUP();                                           \
+    return 0;                                                   \
+}
+
 
 /*
  * -------------------------------------------------------------
@@ -127,134 +161,43 @@ RC_TEST_VEC_FUNC(zero)(uint8_t *dst, const uint8_t *src1,
 #endif
 
 #ifdef RC_VEC_NOT
-static int
-RC_TEST_VEC_FUNC(not)(uint8_t *dst, const uint8_t *src1,
-                      const uint8_t *src2, int val)
-{
-    rc_vec_t dstv, srcv;
-    RC_VEC_DECLARE();
-    (void)src2;
-    (void)val;
-    RC_VEC_LOAD(srcv, src1);
-    RC_VEC_NOT(dstv, srcv);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_UNOP_FUNCTION(NOT, not)
 #else
 #define rc_test_vec_not NULL
 #endif
 
 #ifdef RC_VEC_AND
-static int
-RC_TEST_VEC_FUNC(and)(uint8_t *dst, const uint8_t *src1,
-                      const uint8_t *src2, int val)
-{
-    rc_vec_t dstv, srcv1, srcv2;
-    RC_VEC_DECLARE();
-    (void)val;
-    RC_VEC_LOAD(srcv1, src1);
-    RC_VEC_LOAD(srcv2, src2);
-    RC_VEC_AND(dstv, srcv1, srcv2);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_BINOP_FUNCTION(AND, and)
 #else
 #define rc_test_vec_and NULL
 #endif
 
 #ifdef RC_VEC_OR
-static int
-RC_TEST_VEC_FUNC(or)(uint8_t *dst, const uint8_t *src1,
-                     const uint8_t *src2, int val)
-{
-    rc_vec_t dstv, srcv1, srcv2;
-    RC_VEC_DECLARE();
-    (void)val;
-    RC_VEC_LOAD(srcv1, src1);
-    RC_VEC_LOAD(srcv2, src2);
-    RC_VEC_OR(dstv, srcv1, srcv2);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_BINOP_FUNCTION(OR, or)
 #else
 #define rc_test_vec_or NULL
 #endif
 
 #ifdef RC_VEC_XOR
-static int
-RC_TEST_VEC_FUNC(xor)(uint8_t *dst, const uint8_t *src1,
-                      const uint8_t *src2, int val)
-{
-    rc_vec_t dstv, srcv1, srcv2;
-    RC_VEC_DECLARE();
-    (void)val;
-    RC_VEC_LOAD(srcv1, src1);
-    RC_VEC_LOAD(srcv2, src2);
-    RC_VEC_XOR(dstv, srcv1, srcv2);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_BINOP_FUNCTION(XOR, xor)
 #else
 #define rc_test_vec_xor NULL
 #endif
 
 #ifdef RC_VEC_ANDNOT
-static int
-RC_TEST_VEC_FUNC(andnot)(uint8_t *dst, const uint8_t *src1,
-                         const uint8_t *src2, int val)
-{
-    rc_vec_t dstv, srcv1, srcv2;
-    RC_VEC_DECLARE();
-    (void)val;
-    RC_VEC_LOAD(srcv1, src1);
-    RC_VEC_LOAD(srcv2, src2);
-    RC_VEC_ANDNOT(dstv, srcv1, srcv2);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_BINOP_FUNCTION(ANDNOT, andnot)
 #else
 #define rc_test_vec_andnot NULL
 #endif
 
 #ifdef RC_VEC_ORNOT
-static int
-RC_TEST_VEC_FUNC(ornot)(uint8_t *dst, const uint8_t *src1,
-                        const uint8_t *src2, int val)
-{
-    rc_vec_t dstv, srcv1, srcv2;
-    RC_VEC_DECLARE();
-    (void)val;
-    RC_VEC_LOAD(srcv1, src1);
-    RC_VEC_LOAD(srcv2, src2);
-    RC_VEC_ORNOT(dstv, srcv1, srcv2);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_BINOP_FUNCTION(ORNOT, ornot)
 #else
 #define rc_test_vec_ornot NULL
 #endif
 
 #ifdef RC_VEC_XORNOT
-static int
-RC_TEST_VEC_FUNC(xornot)(uint8_t *dst, const uint8_t *src1,
-                         const uint8_t *src2, int val)
-{
-    rc_vec_t dstv, srcv1, srcv2;
-    RC_VEC_DECLARE();
-    (void)val;
-    RC_VEC_LOAD(srcv1, src1);
-    RC_VEC_LOAD(srcv2, src2);
-    RC_VEC_XORNOT(dstv, srcv1, srcv2);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_BINOP_FUNCTION(XORNOT, xornot)
 #else
 #define rc_test_vec_xornot NULL
 #endif
@@ -436,20 +379,7 @@ RC_TEST_VEC_FUNC(alignc)(uint8_t *dst, const uint8_t *src1,
 #endif
 
 #ifdef RC_VEC_PACK
-static int
-RC_TEST_VEC_FUNC(pack)(uint8_t *dst, const uint8_t *src1,
-                       const uint8_t *src2, int val)
-{
-    rc_vec_t dstv, srcv1, srcv2;
-    RC_VEC_DECLARE();
-    (void)val;
-    RC_VEC_LOAD(srcv1, src1);
-    RC_VEC_LOAD(srcv2, src2);
-    RC_VEC_PACK(dstv, srcv1, srcv2);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_BINOP_FUNCTION(PACK, pack)
 #else
 #define rc_test_vec_pack NULL
 #endif
@@ -480,173 +410,56 @@ RC_TEST_VEC_FUNC(splat)(uint8_t *dst, const uint8_t *src1,
 #endif
 
 #ifdef RC_VEC_ABS
-static int
-RC_TEST_VEC_FUNC(abs)(uint8_t *dst, const uint8_t *src1,
-                      const uint8_t *src2, int val)
-{
-    rc_vec_t dstv, srcv;
-    RC_VEC_DECLARE();
-    (void)src2;
-    (void)val;
-    RC_VEC_LOAD(srcv, src1);
-    RC_VEC_ABS(dstv, srcv);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_UNOP_FUNCTION(ABS, abs)
 #else
 #define rc_test_vec_abs NULL
 #endif
 
 #ifdef RC_VEC_ADDS
-static int
-RC_TEST_VEC_FUNC(adds)(uint8_t *dst, const uint8_t *src1,
-                       const uint8_t *src2, int val)
-{
-    rc_vec_t dstv, srcv1, srcv2;
-    RC_VEC_DECLARE();
-    (void)val;
-    RC_VEC_LOAD(srcv1, src1);
-    RC_VEC_LOAD(srcv2, src2);
-    RC_VEC_ADDS(dstv, srcv1, srcv2);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_BINOP_FUNCTION(ADDS, adds)
 #else
 #define rc_test_vec_adds NULL
 #endif
 
 #ifdef RC_VEC_AVGT
-static int
-RC_TEST_VEC_FUNC(avgt)(uint8_t *dst, const uint8_t *src1,
-                       const uint8_t *src2, int val)
-{
-    rc_vec_t dstv, srcv1, srcv2;
-    RC_VEC_DECLARE();
-    (void)val;
-    RC_VEC_LOAD(srcv1, src1);
-    RC_VEC_LOAD(srcv2, src2);
-    RC_VEC_AVGT(dstv, srcv1, srcv2);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_BINOP_FUNCTION(AVGT, avgt)
 #else
 #define rc_test_vec_avgt NULL
 #endif
 
 #ifdef RC_VEC_AVGR
-static int
-RC_TEST_VEC_FUNC(avgr)(uint8_t *dst, const uint8_t *src1,
-                       const uint8_t *src2, int val)
-{
-    rc_vec_t dstv, srcv1, srcv2;
-    RC_VEC_DECLARE();
-    (void)val;
-    RC_VEC_LOAD(srcv1, src1);
-    RC_VEC_LOAD(srcv2, src2);
-    RC_VEC_AVGR(dstv, srcv1, srcv2);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_BINOP_FUNCTION(AVGR, avgr)
 #else
 #define rc_test_vec_avgr NULL
 #endif
 
 #ifdef RC_VEC_AVGZ
-static int
-RC_TEST_VEC_FUNC(avgz)(uint8_t *dst, const uint8_t *src1,
-                       const uint8_t *src2, int val)
-{
-    rc_vec_t dstv, srcv1, srcv2;
-    RC_VEC_DECLARE();
-    (void)val;
-    RC_VEC_LOAD(srcv1, src1);
-    RC_VEC_LOAD(srcv2, src2);
-    RC_VEC_AVGZ(dstv, srcv1, srcv2);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_BINOP_FUNCTION(AVGZ, avgz)
 #else
 #define rc_test_vec_avgz NULL
 #endif
 
 
 #ifdef RC_VEC_SUBS
-static int
-RC_TEST_VEC_FUNC(subs)(uint8_t *dst, const uint8_t *src1,
-                       const uint8_t *src2, int val)
-{
-    rc_vec_t dstv, srcv1, srcv2;
-    RC_VEC_DECLARE();
-    (void)val;
-    RC_VEC_LOAD(srcv1, src1);
-    RC_VEC_LOAD(srcv2, src2);
-    RC_VEC_SUBS(dstv, srcv1, srcv2);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_BINOP_FUNCTION(SUBS, subs)
 #else
 #define rc_test_vec_subs NULL
 #endif
 
 #ifdef RC_VEC_SUBA
-static int
-RC_TEST_VEC_FUNC(suba)(uint8_t *dst, const uint8_t *src1,
-                       const uint8_t *src2, int val)
-{
-    rc_vec_t dstv, srcv1, srcv2;
-    RC_VEC_DECLARE();
-    (void)val;
-    RC_VEC_LOAD(srcv1, src1);
-    RC_VEC_LOAD(srcv2, src2);
-    RC_VEC_SUBA(dstv, srcv1, srcv2);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_BINOP_FUNCTION(SUBA, suba)
 #else
 #define rc_test_vec_suba NULL
 #endif
 
 #ifdef RC_VEC_SUBHT
-static int
-RC_TEST_VEC_FUNC(subht)(uint8_t *dst, const uint8_t *src1,
-                        const uint8_t *src2, int val)
-{
-    rc_vec_t dstv, srcv1, srcv2;
-    RC_VEC_DECLARE();
-    (void)val;
-    RC_VEC_LOAD(srcv1, src1);
-    RC_VEC_LOAD(srcv2, src2);
-    RC_VEC_SUBHT(dstv, srcv1, srcv2);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_BINOP_FUNCTION(SUBHT, subht)
 #else
 #define rc_test_vec_subht NULL
 #endif
 
 #ifdef RC_VEC_SUBHR
-static int
-RC_TEST_VEC_FUNC(subhr)(uint8_t *dst, const uint8_t *src1,
-                        const uint8_t *src2, int val)
-{
-    rc_vec_t dstv, srcv1, srcv2;
-    RC_VEC_DECLARE();
-    (void)val;
-    RC_VEC_LOAD(srcv1, src1);
-    RC_VEC_LOAD(srcv2, src2);
-    RC_VEC_SUBHR(dstv, srcv1, srcv2);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_BINOP_FUNCTION(SUBHR, subhr)
 #else
 #define rc_test_vec_subhr NULL
 #endif
@@ -694,39 +507,13 @@ RC_TEST_VEC_FUNC(cmpge)(uint8_t *dst, const uint8_t *src1,
 #endif
 
 #ifdef RC_VEC_MIN
-static int
-RC_TEST_VEC_FUNC(min)(uint8_t *dst, const uint8_t *src1,
-                      const uint8_t *src2, int val)
-{
-    rc_vec_t dstv, srcv1, srcv2;
-    RC_VEC_DECLARE();
-    (void)val;
-    RC_VEC_LOAD(srcv1, src1);
-    RC_VEC_LOAD(srcv2, src2);
-    RC_VEC_MIN(dstv, srcv1, srcv2);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_BINOP_FUNCTION(MIN, min)
 #else
 #define rc_test_vec_min NULL
 #endif
 
 #ifdef RC_VEC_MAX
-static int
-RC_TEST_VEC_FUNC(max)(uint8_t *dst, const uint8_t *src1,
-                      const uint8_t *src2, int val)
-{
-    rc_vec_t dstv, srcv1, srcv2;
-    RC_VEC_DECLARE();
-    (void)val;
-    RC_VEC_LOAD(srcv1, src1);
-    RC_VEC_LOAD(srcv2, src2);
-    RC_VEC_MAX(dstv, srcv1, srcv2);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_BINOP_FUNCTION(MAX, max)
 #else
 #define rc_test_vec_max NULL
 #endif
@@ -841,20 +628,7 @@ RC_TEST_VEC_FUNC(getmaskv)(uint8_t *dst, const uint8_t *src1,
 #endif
 
 #ifdef RC_VEC_SETMASKV
-static int
-RC_TEST_VEC_FUNC(setmaskv)(uint8_t *dst, const uint8_t *src1,
-                           const uint8_t *src2, int val)
-{
-    rc_vec_t srcv, dstv;
-    RC_VEC_DECLARE();
-    (void)src2;
-    (void)val;
-    RC_VEC_LOAD(srcv, src1);
-    RC_VEC_SETMASKV(dstv, srcv);
-    RC_VEC_STORE(dst, dstv);
-    RC_VEC_CLEANUP();
-    return 0;
-}
+RC_TEST_UNOP_FUNCTION(SETMASKV, setmaskv)
 #else
 #define rc_test_vec_setmaskv NULL
 #endif
