@@ -542,18 +542,19 @@ AC_DEFINE_UNQUOTED([RAPP_INFO_SIMD], ["${backend_info_name}"],
 # Add the BUILD flag
 AM_CPPFLAGS="${AM_CPPFLAGS} -DRAPP_BUILD"
 
-# Default to -Werror iff this is not a final release
-enable_werror=no
-test ${rapp_finalized_release} = no && enable_werror=yes
+# Default to -Werror iff this is not a final release. Don't set
+# the variable "enable_werror" here, as that will force the setting.
+rapp_enable_werror=no
+test ${rapp_finalized_release} = no && rapp_enable_werror=yes
 AC_ARG_ENABLE([werror],
   [AS_HELP_STRING([[--enable-werror]],
                   [Treat compiler warnings as errors, with GCC])],
-  [enable_werror=${enableval}
+  [rapp_enable_werror=${enableval}
    case ${enableval} in
    yes|no) ;;
    *) AC_MSG_ERROR([[Bad value "${enableval}" for --enable-werror option]]);;
    esac])
-if test ${enable_werror} = yes; then
+if test ${rapp_enable_werror} = yes; then
     AX_CFLAGS_GCC_OPTION([-Werror], [AM_CFLAGS])
     AX_CFLAGS_GCC_OPTION([-Wno-error=cpp], [HASHWARN_CFLAGS])
     case " ${HASHWARN_CFLAGS} " in

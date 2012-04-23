@@ -14957,12 +14957,13 @@ _ACEOF
 # Add the BUILD flag
 AM_CPPFLAGS="${AM_CPPFLAGS} -DRAPP_BUILD"
 
-# Default to -Werror iff this is not a final release
-enable_werror=no
-test ${rapp_finalized_release} = no && enable_werror=yes
+# Default to -Werror iff this is not a final release. Don't set
+# the variable "enable_werror" here, as that will force the setting.
+rapp_enable_werror=no
+test ${rapp_finalized_release} = no && rapp_enable_werror=yes
 # Check whether --enable-werror was given.
 if test "${enable_werror+set}" = set; then
-  enableval=$enable_werror; enable_werror=${enableval}
+  enableval=$enable_werror; rapp_enable_werror=${enableval}
    case ${enableval} in
    yes|no) ;;
    *) { { $as_echo "$as_me:$LINENO: error: Bad value \"${enableval}\" for --enable-werror option" >&5
@@ -14971,7 +14972,7 @@ $as_echo "$as_me: error: Bad value \"${enableval}\" for --enable-werror option" 
    esac
 fi
 
-if test ${enable_werror} = yes; then
+if test ${rapp_enable_werror} = yes; then
     { $as_echo "$as_me:$LINENO: checking AM_CFLAGS for gcc -Werror" >&5
 $as_echo_n "checking AM_CFLAGS for gcc -Werror... " >&6; }
 if test "${ax_cv_cflags_gcc_option__Werror+set}" = set; then
