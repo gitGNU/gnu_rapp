@@ -352,7 +352,7 @@ rapp_test_driver(int (*test)(), void (*ref)())
     int  k;
 
     /* Run all tests for all patterns */
-    for (k = 7; k < (int)(sizeof rapp_test_data /
+    for (k = 0; k < (int)(sizeof rapp_test_data /
                           sizeof rapp_test_data[0]); k++)
     {
         const rapp_test_data_t *data = &rapp_test_data[k];
@@ -424,7 +424,7 @@ rapp_test_pattern(const uint8_t *map, int dim,
       }
 
     for (y = 0; y < height; y++) {
-        for (x = 36; x < width; x++) {
+        for (x = 0; x < width; x++) {
             if (rapp_pixel_get_bin(map, dim, 0, x, y)) {
 
                 /* Run the test function */
