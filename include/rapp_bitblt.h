@@ -251,7 +251,7 @@ rapp_bitblt_andn_bin(uint8_t *restrict dst, int dst_dim, int dst_off,
 
 /**
  *  Bitblt ORN operation.
- *  Computes dst = dst & ~src for all binary pixels.
+ *  Computes dst = dst | ~src for all binary pixels.
  *
  *  @param[in,out] dst      Destination pixel buffer.
  *  @param         dst_dim  Row dimension of the destination buffer.
