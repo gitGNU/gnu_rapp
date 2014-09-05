@@ -32,15 +32,15 @@
 
 /**
  *  @defgroup grp_margin Logical Margins
- *  @brief Horizontal and vertial logical margins.
+ *  @brief Horizontal and vertical logical margins.
  *
  *  Computes the logical @e margins of a binary image. The margin is
- *  defined as the logical AND between all pixels in the rows (vertical)
- *  or in the columns (horizontal). The result is a binary image that
- *  consist only of one row or one column. The main use case is to compute
- *  the vertical margin and divide the image into horizontal blocks
- *  containing non-zero pixels that can be processed efficiently,
- *  while skipping the parts in between.
+ *  defined as the logical inclusive-OR between all pixels in the rows
+ *  (vertical) or in the columns (horizontal). The result is a binary
+ *  image that consist only of one row or one column. The main use case
+ *  is to compute the vertical margin and divide the image into
+ *  horizontal blocks containing non-zero pixels that can be processed
+ *  efficiently, while skipping the parts in between.
  *
  *  All images must be aligned.
  *
