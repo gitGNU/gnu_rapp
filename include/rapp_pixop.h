@@ -118,7 +118,7 @@ rapp_pixop_lut_u8(uint8_t *restrict buf, int dim,
 
 /**
  *  Absolute value.
- *  Computes abs(buf[i] - 0x80). The result is saturated.
+ *  Computes 2*abs(buf[i] - 0x80). The result is saturated.
  *
  *  @param[in,out] buf     Pixel buffer pointer.
  *  @param         dim     Pixel buffer row dimension in bytes.
