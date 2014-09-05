@@ -78,6 +78,7 @@ extern void RAPP_LOG_DOIT(const char[], const struct timeval[],
                 RAPP_LOG_ARGLIST_ ## id                                 \
                 RAPP_LOG_IDENTITY_IF_RETURN_ ## id(RAPP_COMMA val_));   \
   RAPP_LOG_IDENTITY_IF_RETURN_ ## id(return val_;)                      \
+  (void)ret_; /* Avoid set-but-unused warnings. */                      \
 }                                                                       \
 static t id ## __logged args
 

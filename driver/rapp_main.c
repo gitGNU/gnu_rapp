@@ -158,6 +158,13 @@ void rapp_log_rappcall(const char fname[], const struct timeval tv[],
 
     va_end(ap);
 
+    /**
+     * This is needed to pacify set-but-unused warnings, as we happen to
+     * use "ret" only in asserts, and assert(x) isn't required to
+     * evaluate x.
+     */
+    (void)ret;
+
     if (strcmp(fname, "rapp_terminate") == 0) {
         /* We shouldn't get any further calls. */
        ret = fclose(logfile);
