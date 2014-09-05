@@ -36,7 +36,7 @@
  *
  *  The input of these functions is a binary map image, and a seed pixel
  *  position. The functions set pixels in the destination image that
- *  are connected to the seed pixel in the map image. All other pixel
+ *  are connected to the seed pixel in the map image. All other pixels
  *  in the destination image are set to zero. The alignment pixels must
  *  be cleared before calling any of these functions, or the result may
  *  be invalid. The images must be aligned.
