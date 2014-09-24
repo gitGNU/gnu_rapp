@@ -14747,7 +14747,166 @@ if test "${enable_backend+set}" = set; then
        ;;
    neon)
        OPT_BACKEND=${enableval}
-       AM_CFLAGS="${AM_CFLAGS} -mfloat-abi=softfp -mfpu=neon"
+
+       { $as_echo "$as_me:$LINENO: checking for compiler options to enable NEON" >&5
+$as_echo_n "checking for compiler options to enable NEON... " >&6; }
+if test "${ac_cv_neon_opts+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  neon_ok=no
+          # If we already have __ARM_NEON__ defined, do nothing.
+          # Otherwise, try adding the obvious option to enable it.
+          (unset ac_cv_defined___ARM_NEON__) >/dev/null 2>&1 && unset ac_cv_defined___ARM_NEON__
+
+{ $as_echo "$as_me:$LINENO: checking for __ARM_NEON__ defined" >&5
+$as_echo_n "checking for __ARM_NEON__ defined... " >&6; }
+if test "${ac_cv_defined___ARM_NEON__+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  #ifdef __ARM_NEON__
+  int ok;
+  #else
+  choke me
+  #endif
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_cv_defined___ARM_NEON__=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_defined___ARM_NEON__=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_defined___ARM_NEON__" >&5
+$as_echo "$ac_cv_defined___ARM_NEON__" >&6; }
+if test $ac_cv_defined___ARM_NEON__ != "no"; then
+  neon_ok=yes
+fi
+
+          if test ${neon_ok} = yes; then
+              ac_cv_neon_opts=""
+          else
+              neonsaved_CFLAGS=${CFLAGS}
+              neon_opt="-mfpu=neon"
+              { $as_echo "$as_me:$LINENO: Trying to trivially enable NEON by adding ${neon_opt}" >&5
+$as_echo "$as_me: Trying to trivially enable NEON by adding ${neon_opt}" >&6;}
+              CFLAGS="${neonsaved_CFLAGS} ${neon_opt}"
+
+              # GCC may ignore the -mfpu=neon if there's an ABI mismatch, so
+              # if it *still* isn't defined, add -mfloat-abi=softfp, but
+              # before the enable-neon option.
+              # Also, we have to uncache the saved value for the test; we
+              # want to re-evaluate it after updating CFLAGS, and
+              # AC_CHECK_DEFINED doesn't conditionalize the caching on
+              # unchanged CFLAGS as it should.
+              (unset ac_cv_defined___ARM_NEON__) >/dev/null 2>&1 && unset ac_cv_defined___ARM_NEON__
+
+{ $as_echo "$as_me:$LINENO: checking for __ARM_NEON__ defined" >&5
+$as_echo_n "checking for __ARM_NEON__ defined... " >&6; }
+if test "${ac_cv_defined___ARM_NEON__+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  #ifdef __ARM_NEON__
+  int ok;
+  #else
+  choke me
+  #endif
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_cv_defined___ARM_NEON__=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_defined___ARM_NEON__=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_defined___ARM_NEON__" >&5
+$as_echo "$ac_cv_defined___ARM_NEON__" >&6; }
+if test $ac_cv_defined___ARM_NEON__ != "no"; then
+  ac_cv_neon_opts="${neon_opt}"
+else
+  neon_abiadd="-mfloat-abi=softfp"
+                 { $as_echo "$as_me:$LINENO: Also adding ${neon_abiadd} to enable NEON" >&5
+$as_echo "$as_me: Also adding ${neon_abiadd} to enable NEON" >&6;}
+                 ac_cv_neon_opts="${neon_abiadd} ${neon_opt}"
+fi
+
+              CFLAGS=${neonsaved_CFLAGS}
+          fi
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_neon_opts" >&5
+$as_echo "$ac_cv_neon_opts" >&6; }
+       AM_CFLAGS="${AM_CFLAGS} ${ac_cv_neon_opts}"
        ;;
    *)
        { { $as_echo "$as_me:$LINENO: error: Bad value \"${enableval}\" for --enable-backend option" >&5

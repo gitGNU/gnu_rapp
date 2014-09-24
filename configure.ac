@@ -1,6 +1,6 @@
 #  Autoconf file for the RAPP library.
 
-#  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
+#  Copyright (C) 2005-2014, Axis Communications AB, LUND, SWEDEN
 #
 #  This file is part of RAPP.
 #
@@ -430,7 +430,37 @@ AC_ARG_ENABLE([backend],
        ;;
    neon)
        OPT_BACKEND=${enableval}
-       AM_CFLAGS="${AM_CFLAGS} -mfloat-abi=softfp -mfpu=neon"
+
+       AC_CACHE_CHECK([for compiler options to enable NEON], [ac_cv_neon_opts],
+         [neon_ok=no
+          # If we already have __ARM_NEON__ defined, do nothing.
+          # Otherwise, try adding the obvious option to enable it.
+          (unset ac_cv_defined___ARM_NEON__) >/dev/null 2>&1 && unset ac_cv_defined___ARM_NEON__
+          AC_CHECK_DEFINED([__ARM_NEON__], [neon_ok=yes])
+          if test ${neon_ok} = yes; then
+              ac_cv_neon_opts=""
+          else
+              neonsaved_CFLAGS=${CFLAGS}
+              neon_opt="-mfpu=neon"
+              AC_MSG_NOTICE([[Trying to trivially enable NEON by adding ${neon_opt}]])
+              CFLAGS="${neonsaved_CFLAGS} ${neon_opt}"
+
+              # GCC may ignore the -mfpu=neon if there's an ABI mismatch, so
+              # if it *still* isn't defined, add -mfloat-abi=softfp, but
+              # before the enable-neon option.
+              # Also, we have to uncache the saved value for the test; we
+              # want to re-evaluate it after updating CFLAGS, and
+              # AC_CHECK_DEFINED doesn't conditionalize the caching on
+              # unchanged CFLAGS as it should.
+              (unset ac_cv_defined___ARM_NEON__) >/dev/null 2>&1 && unset ac_cv_defined___ARM_NEON__
+              AC_CHECK_DEFINED([__ARM_NEON__],
+                [ac_cv_neon_opts="${neon_opt}"],
+                [neon_abiadd="-mfloat-abi=softfp"
+                 AC_MSG_NOTICE([[Also adding ${neon_abiadd} to enable NEON]])
+                 ac_cv_neon_opts="${neon_abiadd} ${neon_opt}"])
+              CFLAGS=${neonsaved_CFLAGS}
+          fi])
+       AM_CFLAGS="${AM_CFLAGS} ${ac_cv_neon_opts}"
        ;;
    *)
        AC_MSG_ERROR([[Bad value "${enableval}" for --enable-backend option]])
