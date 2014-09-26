@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2014, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -81,7 +81,8 @@
  *  vector memory access and the vector size: the latter can be bigger
  *  than the former.
  */
-#if defined __SSE2__ || defined __VEC__ || defined __ALTIVEC__
+#if defined __SSE2__ || defined __VEC__ || defined __ALTIVEC__ || \
+    defined __SSSE3__
 #define RC_ALIGNMENT 16
 
 #elif defined __MMX__ || defined __SSE__ || defined __VADMX__ || \
