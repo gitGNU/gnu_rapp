@@ -111,6 +111,7 @@ rapptest_SOURCES = $(testapp_src)          \
                    rapp_test_gather_bin.c  \
                    rapp_test_scatter.c     \
                    rapp_test_scatter_bin.c \
+                   rapp_test_framework.c   \
                    rapp_test_integral.c
 
 verify_logfile_SOURCES = verify_logfile.in

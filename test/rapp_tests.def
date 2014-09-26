@@ -1,3 +1,6 @@
+/* Minor tests for basic framework bits; few images. */
+RAPP_TESTH(framework, "rapp framework")
+
 /* Test cases for rapp_pixel functions */
 RAPP_TESTH(pixel_set_u8, "rapp_pixel - pixel access operations")
 RAPP_TEST(pixel_set_bin)
