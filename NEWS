@@ -2,6 +2,8 @@ rapp-0.8dev: Prerelease for a future 0.8 release.
 News and visible changes in this version, since the previous version:
 
 Fixed bugs:
+Bug #40264, rapp_main.h misses the closing } for extern "C".
+
 Bug #39396, incorrect overlap check for rapp_thresh_gt_u8,
 rapp_thresh_lt_u8, rapp_thresh_gtlt_u8, and rapp_thresh_ltgt_u8.
 
