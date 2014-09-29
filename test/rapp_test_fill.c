@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2010, 2014 Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
