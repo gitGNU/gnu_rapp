@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2011, 2014 Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -56,8 +56,11 @@ RAPP_API(int, rapp_thresh_gt_u8,
         return RAPP_ERR_UNINITIALIZED;
     }
 
-    /* Validate arguments */
-    if (!RAPP_VALIDATE_RESTRICT(dst, dst_dim, src, src_dim, height, width)) {
+    /* Validate arguments. Remember these are different-typed objects. */
+    if (!RAPP_VALIDATE_RESTRICT_PLUS(dst, dst_dim, src, src_dim, height,
+                                     rc_align((width + 7) / 8),
+                                     rc_align(width)))
+    {
         RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
@@ -112,8 +115,11 @@ RAPP_API(int, rapp_thresh_lt_u8,
         return RAPP_ERR_UNINITIALIZED;
     }
 
-    /* Validate arguments */
-    if (!RAPP_VALIDATE_RESTRICT(dst, dst_dim, src, src_dim, height, width)) {
+    /* Validate arguments. Remember these are different-typed objects. */
+    if (!RAPP_VALIDATE_RESTRICT_PLUS(dst, dst_dim, src, src_dim, height,
+                                     rc_align((width + 7) / 8),
+                                     rc_align(width)))
+    {
         RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
@@ -169,8 +175,11 @@ RAPP_API(int, rapp_thresh_gtlt_u8,
         return RAPP_ERR_UNINITIALIZED;
     }
 
-    /* Validate arguments */
-    if (!RAPP_VALIDATE_RESTRICT(dst, dst_dim, src, src_dim, height, width)) {
+    /* Validate arguments. Remember these are different-typed objects. */
+    if (!RAPP_VALIDATE_RESTRICT_PLUS(dst, dst_dim, src, src_dim, height,
+                                     rc_align((width + 7) / 8),
+                                     rc_align(width)))
+    {
         RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
@@ -243,8 +252,11 @@ RAPP_API(int, rapp_thresh_ltgt_u8,
         return RAPP_ERR_UNINITIALIZED;
     }
 
-    /* Validate arguments */
-    if (!RAPP_VALIDATE_RESTRICT(dst, dst_dim, src, src_dim, height, width)) {
+    /* Validate arguments. Remember these are different-typed objects. */
+    if (!RAPP_VALIDATE_RESTRICT_PLUS(dst, dst_dim, src, src_dim, height,
+                                     rc_align((width + 7) / 8),
+                                     rc_align(width)))
+    {
         RAPP_ABORT_FOR_ASSERTED_RETURNS();
         return RAPP_ERR_OVERLAP;
     }
