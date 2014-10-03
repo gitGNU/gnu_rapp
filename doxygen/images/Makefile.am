@@ -1,6 +1,6 @@
 #  Automake file for RAPP documentation images.
 
-#  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+#  Copyright (C) 2005-2010, 2014, Axis Communications AB, LUND, SWEDEN
 #
 #  This file is part of RAPP.
 #
@@ -45,7 +45,7 @@ MAYBE_LOCAL_PNG = png-local.stamp
 
 # Copy the unmodified ones in srcdir too; we need them all
 # locally for the toplevel doxygen rule.
-png-local.stamp: $(PNGS)
+png-local.stamp: @MAINTAINER_MODE_TRUE@ $(PNGS)
 	ff="$(PNGS)"; \
 	for f in $$ff; do \
 	    test -f $$f || cp -p $(srcdir)/$$f . || exit; \

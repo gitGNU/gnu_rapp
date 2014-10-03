@@ -56,6 +56,12 @@ AC_CANONICAL_TARGET
 # See conditional AM_SILENT_RULES call below
 AM_INIT_AUTOMAKE([1.11 -Wall -Werror foreign check-news filename-length-max=99])
 
+# Allow (downstream) users to use --disable-maintainer-mode to avoid
+# autotools-version-related breakages when timestamps differ (almost
+# always with sources imported into a VC system).  This line by itself
+# only means that --disable-maintainer-mode *can* be used.
+AM_MAINTAINER_MODE([enable])
+
 HOMESITE=`sed -ne 's,^<\(http@<:@^>@:>@*\)>.*,\1,p' < ${srcdir}/README`
 homewc=`wc -w << EOF
 ${HOMESITE}

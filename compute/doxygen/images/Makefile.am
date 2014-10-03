@@ -1,6 +1,6 @@
 #  Automake file for RAPP internals documentation images.
 
-#  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+#  Copyright (C) 2005-2010, 2014, Axis Communications AB, LUND, SWEDEN
 #
 #  This file is part of RAPP.
 #
@@ -45,7 +45,7 @@ INKSCAPE_OPTIONS = @INKSCAPE_OPTIONS@
 if HAVE_DOXYGEN
 MAYBE_LOCAL_PNG = png-local.stamp
 
-png-local.stamp: $(PNGS)
+png-local.stamp: @MAINTAINER_MODE_TRUE@ $(PNGS)
 	ff="$(PNGS)"; \
 	for f in $$ff; do \
 	    test -f $$f || cp -p $(srcdir)/$$f . || exit; \
