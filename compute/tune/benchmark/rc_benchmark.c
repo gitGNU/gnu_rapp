@@ -114,7 +114,7 @@
 typedef struct rc_bmark_data_st {
     uint8_t *dst;     /* Destination buffer large enough for all images */
     uint8_t *src;     /* Source buffer large enough for all images      */
-    uint8_t *aux;     /* Auxilliary buffer large enough for all images  */
+    uint8_t *aux;     /* Auxiliary buffer large enough for all images  */
     int      dim_bin; /* Binary row dimension, with padding             */
     int      dim_u8;  /* 8-bit row dimension, with padding              */
     int      rot_u8;  /* 8-bit rotatated row dimension, no padding      */

@@ -181,7 +181,7 @@ rc_rotate_ccw_bin(uint8_t *restrict dst, int dst_dim,
  *  i.e. the upper-left corner. The src buffer points to the
  *  start of the block. Partial blocks are handled via the
  *  height and mask parameters for the y and x dimensions,
- *  respectivly.
+ *  respectively.
  */
 static void
 rc_rotate_block_cw(uint8_t *restrict dst, int dst_dim,
@@ -219,7 +219,7 @@ rc_rotate_block_cw(uint8_t *restrict dst, int dst_dim,
  *  i.e. the lower-left corner. The src buffer points to the
  *  start of the block. Partial blocks are handled via the
  *  height and mask parameters for the y and x dimensions,
- *  respectivly.
+ *  respectively.
  */
 static void
 rc_rotate_block_ccw(uint8_t *restrict dst, int dst_dim,

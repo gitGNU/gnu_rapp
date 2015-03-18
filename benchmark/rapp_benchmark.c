@@ -113,7 +113,7 @@ typedef struct rapp_bmark_data_st {
     uint8_t *pad;     /**< Source buffer, set and padded with zeros  */
     uint8_t *clear;   /**< Source buffer with all bits cleared       */
     uint8_t *checker; /**< Source buffer with checker bit pattern    */
-    uint8_t *aux;     /**< Auxillary buffer, for LUTs etc            */
+    uint8_t *aux;     /**< Auxiliary buffer, for LUTs etc            */
     uint8_t *src[5];  /**< A table of pointers to the 5 src buffers  */
     int      dim_u8;  /**< 8-bit image buffer dimension              */
     int      dim_bin; /**< Binary image buffer dimension             */

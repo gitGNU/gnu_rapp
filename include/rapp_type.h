@@ -37,7 +37,7 @@
  *  These functions convert images between different pixel depths,
  *  e.g. between binary and 8-bit images. The binary pixel values
  *  0 and 1 values will be converted to the 8-bit values 0 and 255,
- *  respectivly. An 8-bit value of 128 or greater will be converted
+ *  respectively. An 8-bit value of 128 or greater will be converted
  *  to binary 1, and to binary 0 below that value. This is equivalent
  *  of calling rapp_thresh_gt_u8() with the threshold value 127.
  *

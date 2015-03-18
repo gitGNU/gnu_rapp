@@ -320,7 +320,7 @@ do {                                              \
  *  Horizontal Sobel operator, vertical component.
  *  Partly separable. We store the result of column-wise
  *  gaussian filter, computed using AVGT + AVGT and AVGR + AVGT
- *  in the first and second output values, respectivly.
+ *  in the first and second output values, respectively.
  */
 #if defined RC_VEC_AVGT && defined RC_VEC_AVGR
 #define RC_FILTER_SOBEL_HORZ_V(v1x, v2x, v3x, p1, p2, p3) \
@@ -351,7 +351,7 @@ do {                                                    \
  *  Vertical Sobel operator, vertical component.
  *  Partly separable. We store the result of column-wise
  *  difference filter, computed using SUBHT and SUBHR in
- *  the first and second output values, respectivly.
+ *  the first and second output values, respectively.
  */
 #if defined RC_VEC_SUBHT && defined RC_VEC_SUBHR
 #define RC_FILTER_SOBEL_VERT_V(v1x, v2x, v3x, p1, p2, p3) \
@@ -416,7 +416,7 @@ do {                                                        \
 /**
  *  Vertical absolute-value Sobel operator, vertical component.
  *  Partly separable. We store the vertical difference result from
- *  SUBHT and SUBHR in the first and second variables, respectivly.
+ *  SUBHT and SUBHR in the first and second variables, respectively.
  */
 #if defined RC_VEC_SUBHT && defined RC_VEC_SUBHR
 #define RC_FILTER_SOBEL_VERT_ABS_V(v1x, v2x, v3x, p1, p2, p3) \
