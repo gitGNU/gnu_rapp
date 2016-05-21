@@ -44,7 +44,7 @@
 /**
  *  Threshold-to-binary template.
  */
-#define RC_TEMPLATE_THRESH(dst, dst_dim, src, src_dim,              \
+#define RC_THRESH_TEMPLATE(dst, dst_dim, src, src_dim,              \
                            width, height, low, high, cmp, unroll)   \
 do {                                                                \
     int blk_ = (width) / (8*RC_WORD_SIZE); /* Full dst blocks    */ \

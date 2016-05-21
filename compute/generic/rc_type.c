@@ -82,7 +82,7 @@ rc_type_u8_to_bin(uint8_t *restrict dst, int dst_dim,
                   const uint8_t *restrict src, int src_dim,
                   int width, int height)
 {
-    RC_TEMPLATE_THRESH(dst, dst_dim, src, src_dim,
+    RC_THRESH_TEMPLATE(dst, dst_dim, src, src_dim,
                        width, height, 0, 0, RC_TYPE_U8_TO_BIN,
                        RC_UNROLL(rc_type_u8_to_bin));
 }

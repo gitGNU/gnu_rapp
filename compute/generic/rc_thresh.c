@@ -82,7 +82,7 @@ rc_thresh_gt_u8(uint8_t *restrict dst, int dst_dim,
                 const uint8_t *restrict src, int src_dim,
                 int width, int height, int thresh)
 {
-    RC_TEMPLATE_THRESH(dst, dst_dim, src, src_dim, width, height,
+    RC_THRESH_TEMPLATE(dst, dst_dim, src, src_dim, width, height,
                        thresh, 0, RC_THRESH_CMPGT,
                        RC_UNROLL(rc_thresh_gt_u8));
 }
@@ -98,7 +98,7 @@ rc_thresh_lt_u8(uint8_t *restrict dst, int dst_dim,
                 const uint8_t *restrict src, int src_dim,
                 int width, int height, int thresh)
 {
-    RC_TEMPLATE_THRESH(dst, dst_dim, src, src_dim, width, height,
+    RC_THRESH_TEMPLATE(dst, dst_dim, src, src_dim, width, height,
                        thresh, 0, RC_THRESH_CMPLT,
                        RC_UNROLL(rc_thresh_lt_u8));
 }
@@ -114,7 +114,7 @@ rc_thresh_gtlt_u8(uint8_t *restrict dst, int dst_dim,
                   const uint8_t *restrict src, int src_dim,
                   int width, int height, int low, int high)
 {
-    RC_TEMPLATE_THRESH(dst, dst_dim, src, src_dim, width, height,
+    RC_THRESH_TEMPLATE(dst, dst_dim, src, src_dim, width, height,
                        low, high, RC_THRESH_CMPGTLT,
                        RC_UNROLL(rc_thresh_gtlt_u8));
 }
@@ -130,7 +130,7 @@ rc_thresh_ltgt_u8(uint8_t *restrict dst, int dst_dim,
                   const uint8_t *restrict src, int src_dim,
                   int width, int height, int low, int high)
 {
-    RC_TEMPLATE_THRESH(dst, dst_dim, src, src_dim, width, height,
+    RC_THRESH_TEMPLATE(dst, dst_dim, src, src_dim, width, height,
                        low, high, RC_THRESH_CMPLTGT,
                        RC_UNROLL(rc_thresh_ltgt_u8));
 }
