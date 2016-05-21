@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -26,12 +26,12 @@
  */
 
 /**
- *  @file   rc_template.h
- *  @brief  RAPP Compute layer common templates, generic implementation.
+ *  @file   rc_thresh_tpl.h
+ *  @brief  RAPP Compute layer thresholding templates, generic implementation.
  */
 
-#ifndef RC_TEMPLATE_H
-#define RC_TEMPLATE_H
+#ifndef RC_THRESH_TPL_H
+#define RC_THRESH_TPL_H
 
 #include "rc_word.h" /* Word operations */
 
@@ -211,4 +211,4 @@ do {                                                                  \
     (pos)++;                                                          \
 } while (0)
 
-#endif /* RC_TEMPLATE_H */
+#endif /* RC_THRESH_TPL_H */

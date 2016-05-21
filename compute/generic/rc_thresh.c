@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -31,7 +31,7 @@
  */
 
 #include "rc_impl_cfg.h" /* Implementation cfg     */
-#include "rc_template.h" /* Thresholding templates */
+#include "rc_thresh_tpl.h" /* Thresholding templates */
 #include "rc_thresh.h"   /* Thresholding API       */
 
 /*
