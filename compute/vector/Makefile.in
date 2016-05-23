@@ -294,19 +294,20 @@ librappcompute_swar_la_LDFLAGS = -no-undefined
 librappcompute_simd_la_LDFLAGS = -no-undefined
 
 # The source files are the same for both vector implementations
-librappcompute_swar_la_SOURCES = rc_impl_cfg.h   \
-                                 rc_bitblt_rop.h \
-                                 rc_bitblt_va.c  \
-                                 rc_bitblt_vm.c  \
-                                 rc_pixop.c      \
-                                 rc_type.c       \
-                                 rc_thresh.c     \
-                                 rc_thresh_tpl.h \
-                                 rc_thresh_pixel_tpl.h \
-                                 rc_reduce.c     \
-                                 rc_stat.c       \
-                                 rc_filter.c     \
-                                 rc_margin.c
+librappcompute_swar_la_SOURCES = \
+ rc_impl_cfg.h \
+ rc_bitblt_rop.h \
+ rc_bitblt_va.c \
+ rc_bitblt_vm.c \
+ rc_pixop.c \
+ rc_type.c \
+ rc_thresh.c \
+ rc_thresh_tpl.h \
+ rc_thresh_pixel_tpl.h \
+ rc_reduce.c \
+ rc_stat.c \
+ rc_filter.c \
+ rc_margin.c
 
 librappcompute_simd_la_SOURCES = $(librappcompute_swar_la_SOURCES)
 

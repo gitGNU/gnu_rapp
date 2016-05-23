@@ -51,39 +51,40 @@ pkgconfig_DATA = rapp.pc
 dist_noinst_DATA = rapp.spec
 
 # The RAPP API headers to install
-rapp_include_HEADERS = include/rapp.h             \
-                       include/rapp_export.h      \
-                       include/rapp_main.h        \
-                       include/rapp_info.h        \
-                       include/rapp_error.h       \
-                       include/rapp_malloc.h      \
-                       include/rapp_pixel.h       \
-                       include/rapp_bitblt.h      \
-                       include/rapp_pixop.h       \
-                       include/rapp_type.h        \
-                       include/rapp_thresh.h      \
-                       include/rapp_stat.h        \
-                       include/rapp_moment_bin.h  \
-                       include/rapp_reduce.h      \
-                       include/rapp_reduce_bin.h  \
-                       include/rapp_expand_bin.h  \
-                       include/rapp_rotate.h      \
-                       include/rapp_rotate_bin.h  \
-                       include/rapp_filter.h      \
-                       include/rapp_fill.h        \
-                       include/rapp_pad.h         \
-                       include/rapp_pad_bin.h     \
-                       include/rapp_morph_bin.h   \
-                       include/rapp_margin.h      \
-                       include/rapp_crop.h        \
-                       include/rapp_contour.h     \
-                       include/rapp_rasterize.h   \
-                       include/rapp_cond.h        \
-                       include/rapp_gather.h      \
-                       include/rapp_gather_bin.h  \
-                       include/rapp_scatter.h     \
-                       include/rapp_scatter_bin.h \
-                       include/rapp_integral.h
+rapp_include_HEADERS = \
+ include/rapp.h \
+ include/rapp_export.h \
+ include/rapp_main.h \
+ include/rapp_info.h \
+ include/rapp_error.h \
+ include/rapp_malloc.h \
+ include/rapp_pixel.h \
+ include/rapp_bitblt.h \
+ include/rapp_pixop.h \
+ include/rapp_type.h \
+ include/rapp_thresh.h \
+ include/rapp_stat.h \
+ include/rapp_moment_bin.h \
+ include/rapp_reduce.h \
+ include/rapp_reduce_bin.h \
+ include/rapp_expand_bin.h \
+ include/rapp_rotate.h \
+ include/rapp_rotate_bin.h \
+ include/rapp_filter.h \
+ include/rapp_fill.h \
+ include/rapp_pad.h \
+ include/rapp_pad_bin.h \
+ include/rapp_morph_bin.h \
+ include/rapp_margin.h \
+ include/rapp_crop.h \
+ include/rapp_contour.h \
+ include/rapp_rasterize.h \
+ include/rapp_cond.h \
+ include/rapp_gather.h \
+ include/rapp_gather_bin.h \
+ include/rapp_scatter.h \
+ include/rapp_scatter_bin.h \
+ include/rapp_integral.h
 
 # This one is generated at configure-time, not distributed
 nodist_rapp_include_HEADERS = include/rapp_version.h

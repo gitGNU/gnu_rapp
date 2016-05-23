@@ -27,7 +27,8 @@
 #  with RAPP. If not, see <http://www.gnu.org/licenses/>.
 
 # Add all scripts to the dist
-EXTRA_DIST = autogen_morph_bin.py \
-             config_morph_bin.py  \
-             selfextract.sh       \
-             selfheader.sh
+EXTRA_DIST = \
+ autogen_morph_bin.py \
+ config_morph_bin.py \
+ selfextract.sh \
+ selfheader.sh

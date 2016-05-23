@@ -270,11 +270,12 @@ noinst_LTLIBRARIES = librappcompute_com.la
 librappcompute_com_la_LDFLAGS = -no-undefined
 
 # The source files to use
-librappcompute_com_la_SOURCES = rc_word.h   \
-                                rc_malloc.c \
-                                rc_util.h   \
-                                rc_table.h  \
-                                rc_table.c
+librappcompute_com_la_SOURCES = \
+ rc_word.h \
+ rc_malloc.c \
+ rc_util.h \
+ rc_table.h \
+ rc_table.c
 
 all: all-am
 

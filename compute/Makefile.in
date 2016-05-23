@@ -309,50 +309,52 @@ SUBDIRS = $(MAYBE_TUNE) include common backend generic vector tools
 noinst_LTLIBRARIES = librappcompute.la
 
 # List the RAPP Compute API headers so they are included in the dist
-librappcompute_la_SOURCES = include/rappcompute.h    \
-                            include/rc_export.h      \
-                            include/rc_platform.h    \
-                            include/rc_impl.h        \
-                            include/rc_stdbool.h     \
-                            include/rc_malloc.h      \
-                            include/rc_pixel.h       \
-                            include/rc_bitblt_wm.h   \
-                            include/rc_bitblt_wa.h   \
-                            include/rc_bitblt_vm.h   \
-                            include/rc_bitblt_va.h   \
-                            include/rc_pixop.h       \
-                            include/rc_type.h        \
-                            include/rc_thresh.h      \
-                            include/rc_stat.h        \
-                            include/rc_moment_bin.h  \
-                            include/rc_reduce.h      \
-                            include/rc_reduce_bin.h  \
-                            include/rc_expand_bin.h  \
-                            include/rc_rotate.h      \
-                            include/rc_rotate_bin.h  \
-                            include/rc_filter.h      \
-                            include/rc_morph_bin.h   \
-                            include/rc_fill.h        \
-                            include/rc_pad.h         \
-                            include/rc_pad_bin.h     \
-                            include/rc_margin.h      \
-                            include/rc_crop.h        \
-                            include/rc_contour.h     \
-                            include/rc_rasterize.h   \
-                            include/rc_cond.h        \
-                            include/rc_gather.h      \
-                            include/rc_gather_bin.h  \
-                            include/rc_scatter.h     \
-                            include/rc_scatter_bin.h \
-                            include/rc_integral.h    \
-                            include/rc_integral_bin.h
+librappcompute_la_SOURCES = \
+ include/rappcompute.h \
+ include/rc_export.h \
+ include/rc_platform.h \
+ include/rc_impl.h \
+ include/rc_stdbool.h \
+ include/rc_malloc.h \
+ include/rc_pixel.h \
+ include/rc_bitblt_wm.h \
+ include/rc_bitblt_wa.h \
+ include/rc_bitblt_vm.h \
+ include/rc_bitblt_va.h \
+ include/rc_pixop.h \
+ include/rc_type.h \
+ include/rc_thresh.h \
+ include/rc_stat.h \
+ include/rc_moment_bin.h \
+ include/rc_reduce.h \
+ include/rc_reduce_bin.h \
+ include/rc_expand_bin.h \
+ include/rc_rotate.h \
+ include/rc_rotate_bin.h \
+ include/rc_filter.h \
+ include/rc_morph_bin.h \
+ include/rc_fill.h \
+ include/rc_pad.h \
+ include/rc_pad_bin.h \
+ include/rc_margin.h \
+ include/rc_crop.h \
+ include/rc_contour.h \
+ include/rc_rasterize.h \
+ include/rc_cond.h \
+ include/rc_gather.h \
+ include/rc_gather_bin.h \
+ include/rc_scatter.h \
+ include/rc_scatter_bin.h \
+ include/rc_integral.h \
+ include/rc_integral_bin.h
 
 
 # Add convenience sub-libraries
-librappcompute_la_LIBADD = common/librappcompute_com.la   \
-                           generic/librappcompute_gen.la  \
-                           vector/librappcompute_swar.la  \
-                           vector/librappcompute_simd.la
+librappcompute_la_LIBADD = \
+ common/librappcompute_com.la \
+ generic/librappcompute_gen.la \
+ vector/librappcompute_swar.la \
+ vector/librappcompute_simd.la
 
 librappcompute_la_LDFLAGS = -no-undefined
 

@@ -46,41 +46,42 @@ MOSTLYCLEANFILES = *.tmp
 librappdriver_la_LDFLAGS = -no-undefined
 
 # The RAPP driver source files
-src_no_rapp_logdefs_h =    rapp_api.h         \
-                           rapp_util.h        \
-                           rapp_main.c        \
-                           rapp_version.c     \
-                           rapp_info.c        \
-                           rapp_error_int.h   \
-                           rapp_error.c       \
-                           rapp_malloc.c      \
-                           rapp_pixel.c       \
-                           rapp_bitblt.c      \
-                           rapp_pixop.c       \
-                           rapp_type.c        \
-                           rapp_thresh.c      \
-                           rapp_reduce.c      \
-                           rapp_reduce_bin.c  \
-                           rapp_expand_bin.c  \
-                           rapp_rotate.c      \
-                           rapp_rotate_bin.c  \
-                           rapp_filter.c      \
-                           rapp_stat.c        \
-                           rapp_moment_bin.c  \
-                           rapp_fill.c        \
-                           rapp_pad.c         \
-                           rapp_pad_bin.c     \
-                           rapp_morph_bin.c   \
-                           rapp_margin.c      \
-                           rapp_crop.c        \
-                           rapp_contour.c     \
-                           rapp_rasterize.c   \
-                           rapp_cond.c        \
-                           rapp_gather.c      \
-                           rapp_gather_bin.c  \
-                           rapp_scatter.c     \
-                           rapp_scatter_bin.c \
-                           rapp_integral.c
+src_no_rapp_logdefs_h = \
+ rapp_api.h \
+ rapp_util.h \
+ rapp_main.c \
+ rapp_version.c \
+ rapp_info.c \
+ rapp_error_int.h \
+ rapp_error.c \
+ rapp_malloc.c \
+ rapp_pixel.c \
+ rapp_bitblt.c \
+ rapp_pixop.c \
+ rapp_type.c \
+ rapp_thresh.c \
+ rapp_reduce.c \
+ rapp_reduce_bin.c \
+ rapp_expand_bin.c \
+ rapp_rotate.c \
+ rapp_rotate_bin.c \
+ rapp_filter.c \
+ rapp_stat.c \
+ rapp_moment_bin.c \
+ rapp_fill.c \
+ rapp_pad.c \
+ rapp_pad_bin.c \
+ rapp_morph_bin.c \
+ rapp_margin.c \
+ rapp_crop.c \
+ rapp_contour.c \
+ rapp_rasterize.c \
+ rapp_cond.c \
+ rapp_gather.c \
+ rapp_gather_bin.c \
+ rapp_scatter.c \
+ rapp_scatter_bin.c \
+ rapp_integral.c
 
 librappdriver_la_SOURCES = $(src_no_rapp_logdefs_h) rapp_logdefs.h
 

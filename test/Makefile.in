@@ -373,38 +373,39 @@ SUBDIRS = reference
 @RAPP_LOGGING_TRUE@RAPP_INSTALLCHECK_ENVIRONMENT = env RAPP_LOGFILE=`pwd`/../$(RAPP_LOGFILE).tmp
 
 # The test sources
-rapptest_SOURCES = $(testapp_src)          \
-                   rapp_tests.def          \
-                   rapp_test_util.h        \
-                   rapp_test_util.c        \
-                   rapp_test_pixel.c       \
-                   rapp_test_bitblt.c      \
-                   rapp_test_pixop.c       \
-                   rapp_test_type.c        \
-                   rapp_test_thresh.c      \
-                   rapp_test_reduce.c      \
-                   rapp_test_reduce_bin.c  \
-                   rapp_test_expand_bin.c  \
-                   rapp_test_rotate.c      \
-                   rapp_test_rotate_bin.c  \
-                   rapp_test_stat.c        \
-                   rapp_test_moment_bin.c  \
-                   rapp_test_filter.c      \
-                   rapp_test_morph_bin.c   \
-                   rapp_test_fill.c        \
-                   rapp_test_pad.c         \
-                   rapp_test_pad_bin.c     \
-                   rapp_test_margin.c      \
-                   rapp_test_crop.c        \
-                   rapp_test_contour.c     \
-                   rapp_test_rasterize.c   \
-                   rapp_test_cond.c        \
-                   rapp_test_gather.c      \
-                   rapp_test_gather_bin.c  \
-                   rapp_test_scatter.c     \
-                   rapp_test_scatter_bin.c \
-                   rapp_test_framework.c   \
-                   rapp_test_integral.c
+rapptest_SOURCES = \
+ $(testapp_src) \
+ rapp_tests.def \
+ rapp_test_util.h \
+ rapp_test_util.c \
+ rapp_test_pixel.c \
+ rapp_test_bitblt.c \
+ rapp_test_pixop.c \
+ rapp_test_type.c \
+ rapp_test_thresh.c \
+ rapp_test_reduce.c \
+ rapp_test_reduce_bin.c \
+ rapp_test_expand_bin.c \
+ rapp_test_rotate.c \
+ rapp_test_rotate_bin.c \
+ rapp_test_stat.c \
+ rapp_test_moment_bin.c \
+ rapp_test_filter.c \
+ rapp_test_morph_bin.c \
+ rapp_test_fill.c \
+ rapp_test_pad.c \
+ rapp_test_pad_bin.c \
+ rapp_test_margin.c \
+ rapp_test_crop.c \
+ rapp_test_contour.c \
+ rapp_test_rasterize.c \
+ rapp_test_cond.c \
+ rapp_test_gather.c \
+ rapp_test_gather_bin.c \
+ rapp_test_scatter.c \
+ rapp_test_scatter_bin.c \
+ rapp_test_framework.c \
+ rapp_test_integral.c
 
 verify_logfile_SOURCES = verify_logfile.in
 
