@@ -86,6 +86,6 @@ librappdriver_la_SOURCES = $(src_no_rapp_logdefs_h) rapp_logdefs.h
 
 genlogmacros: $(srcdir)/rapp_logdefs.h
 
-$(srcdir)/rapp_logdefs.h: $(srcdir)/gen-rapp-logmacros.pl $(src_no_rapp_logdefs_h)
+$(srcdir)/rapp_logdefs.h: @MAINTAINER_MODE_TRUE@ $(srcdir)/gen-rapp-logmacros.pl $(src_no_rapp_logdefs_h)
 	cd $(srcdir) && $(PERL) gen-rapp-logmacros.pl > $@.tmp \
 	 $(src_no_rapp_logdefs_h) && mv $@.tmp $@
