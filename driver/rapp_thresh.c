@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2011, 2014 Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -311,6 +311,208 @@ RAPP_API(int, rapp_thresh_ltgt_u8,
                     }
             }
     }
+
+    return RAPP_OK;
+}
+
+/**
+ *  Pixelwise single thresholding greater-than.
+ */
+RAPP_API(int, rapp_thresh_gt_pixel_u8,
+        (uint8_t *restrict dst, int dst_dim,
+         const uint8_t *restrict src, int src_dim,
+         const uint8_t *restrict thresh, int thresh_dim,
+         int width, int height))
+{
+    if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
+        return RAPP_ERR_UNINITIALIZED;
+    }
+
+    /* Validate arguments. */
+    if (!RAPP_VALIDATE_RESTRICT_PLUS(dst, dst_dim, src, src_dim, height,
+                                     rc_align((width + 7) / 8),
+                                     rc_align(width)) ||
+        !RAPP_VALIDATE_RESTRICT_PLUS(dst, dst_dim, thresh, thresh_dim, height,
+                                     rc_align((width + 7) / 8),
+                                     rc_align(width)) ||
+        !RAPP_VALIDATE_RESTRICT(src, src_dim, thresh, thresh_dim, height, width))
+    {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
+        return RAPP_ERR_OVERLAP;
+    }
+
+    if (!RAPP_VALIDATE_BIN(dst, dst_dim, width, height) ||
+        !RAPP_VALIDATE_U8(src, src_dim, width, height)) {
+        /* Return the error code. */
+        return rapp_error_bin_u8(dst, dst_dim, src, src_dim, width, height);
+    }
+
+    if (!RAPP_VALIDATE_U8(thresh, thresh_dim, width, height)) {
+        /* Return the error code. */
+        return rapp_error_u8(thresh, thresh_dim, width, height);
+    }
+
+    /* Perform thresholding. */
+    rc_thresh_gt_pixel_u8(dst, dst_dim, src, src_dim,
+                          thresh, thresh_dim, width, height);
+
+    return RAPP_OK;
+}
+
+/**
+ *  Pixelwise single thresholding less-than.
+ */
+RAPP_API(int, rapp_thresh_lt_pixel_u8,
+        (uint8_t *restrict dst, int dst_dim,
+         const uint8_t *restrict src, int src_dim,
+         const uint8_t *restrict thresh, int thresh_dim,
+         int width, int height))
+{
+    if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
+        return RAPP_ERR_UNINITIALIZED;
+    }
+
+    /* Validate arguments. */
+    if (!RAPP_VALIDATE_RESTRICT_PLUS(dst, dst_dim, src, src_dim, height,
+                                     rc_align((width + 7) / 8),
+                                     rc_align(width)) ||
+        !RAPP_VALIDATE_RESTRICT_PLUS(dst, dst_dim, thresh, thresh_dim, height,
+                                     rc_align((width + 7) / 8),
+                                     rc_align(width)) ||
+        !RAPP_VALIDATE_RESTRICT(src, src_dim, thresh, thresh_dim, height, width))
+    {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
+        return RAPP_ERR_OVERLAP;
+    }
+
+    if (!RAPP_VALIDATE_BIN(dst, dst_dim, width, height) ||
+        !RAPP_VALIDATE_U8(src, src_dim, width, height)) {
+        /* Return the error code. */
+        return rapp_error_bin_u8(dst, dst_dim, src, src_dim, width, height);
+    }
+
+    if (!RAPP_VALIDATE_U8(thresh, thresh_dim, width, height)) {
+        /* Return the error code. */
+        return rapp_error_u8(thresh, thresh_dim, width, height);
+    }
+
+    /* Perform thresholding. */
+    rc_thresh_lt_pixel_u8(dst, dst_dim, src, src_dim,
+                          thresh, thresh_dim, width, height);
+
+    return RAPP_OK;
+}
+
+/**
+ *  Pixelwise double thresholding greater-than AND less-than.
+ */
+RAPP_API(int, rapp_thresh_gtlt_pixel_u8,
+        (uint8_t *restrict dst, int dst_dim,
+         const uint8_t *restrict src, int src_dim,
+         const uint8_t *restrict low, int low_dim,
+         const uint8_t *restrict high, int high_dim,
+         int width, int height))
+{
+    if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
+        return RAPP_ERR_UNINITIALIZED;
+    }
+
+    /* Validate arguments. */
+    if (!RAPP_VALIDATE_RESTRICT_PLUS(dst, dst_dim, src, src_dim, height,
+                                     rc_align((width + 7) / 8),
+                                     rc_align(width)) ||
+        !RAPP_VALIDATE_RESTRICT_PLUS(dst, dst_dim, low, low_dim, height,
+                                     rc_align((width + 7) / 8),
+                                     rc_align(width)) ||
+        !RAPP_VALIDATE_RESTRICT_PLUS(dst, dst_dim, high, high_dim, height,
+                                     rc_align((width + 7) / 8),
+                                     rc_align(width)) ||
+        !RAPP_VALIDATE_RESTRICT(src, src_dim, low, low_dim, height, width) ||
+        !RAPP_VALIDATE_RESTRICT(src, src_dim, high, high_dim, height, width))
+    {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
+        return RAPP_ERR_OVERLAP;
+    }
+
+    if (!RAPP_VALIDATE_BIN(dst, dst_dim, width, height) ||
+        !RAPP_VALIDATE_U8(src, src_dim, width, height)) {
+        /* Return the error code. */
+        return rapp_error_bin_u8(dst, dst_dim, src, src_dim, width, height);
+    }
+
+    if (!RAPP_VALIDATE_U8(low, low_dim, width, height)) {
+        /* Return the error code. */
+        return rapp_error_u8(low, low_dim, width, height);
+    }
+
+    if (!RAPP_VALIDATE_U8(high, high_dim, width, height)) {
+        /* Return the error code. */
+        return rapp_error_u8(high, high_dim, width, height);
+    }
+
+    /* Perform thresholding. */
+    rc_thresh_gtlt_pixel_u8(dst, dst_dim, src, src_dim,
+                            low, low_dim, high, high_dim,
+                            width, height);
+
+    return RAPP_OK;
+}
+
+/**
+ *  Pixelwise double thresholding less-than OR greater-than.
+ */
+RAPP_API(int, rapp_thresh_ltgt_pixel_u8,
+        (uint8_t *restrict dst, int dst_dim,
+         const uint8_t *restrict src, int src_dim,
+         const uint8_t *restrict low, int low_dim,
+         const uint8_t *restrict high, int high_dim,
+         int width, int height))
+{
+    if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
+        return RAPP_ERR_UNINITIALIZED;
+    }
+
+    /* Validate arguments. */
+    if (!RAPP_VALIDATE_RESTRICT_PLUS(dst, dst_dim, src, src_dim, height,
+                                     rc_align((width + 7) / 8),
+                                     rc_align(width)) ||
+        !RAPP_VALIDATE_RESTRICT_PLUS(dst, dst_dim, low, low_dim, height,
+                                     rc_align((width + 7) / 8),
+                                     rc_align(width)) ||
+        !RAPP_VALIDATE_RESTRICT_PLUS(dst, dst_dim, high, high_dim, height,
+                                     rc_align((width + 7) / 8),
+                                     rc_align(width)) ||
+        !RAPP_VALIDATE_RESTRICT(src, src_dim, low, low_dim, height, width) ||
+        !RAPP_VALIDATE_RESTRICT(src, src_dim, high, high_dim, height, width))
+    {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
+        return RAPP_ERR_OVERLAP;
+    }
+
+    if (!RAPP_VALIDATE_BIN(dst, dst_dim, width, height) ||
+        !RAPP_VALIDATE_U8(src, src_dim, width, height)) {
+        /* Return the error code. */
+        return rapp_error_bin_u8(dst, dst_dim, src, src_dim, width, height);
+    }
+
+    if (!RAPP_VALIDATE_U8(low, low_dim, width, height)) {
+        /* Return the error code. */
+        return rapp_error_u8(low, low_dim, width, height);
+    }
+
+    if (!RAPP_VALIDATE_U8(high, high_dim, width, height)) {
+        /* Return the error code. */
+        return rapp_error_u8(high, high_dim, width, height);
+    }
+
+    /* Perform thresholding. */
+    rc_thresh_ltgt_pixel_u8(dst, dst_dim, src, src_dim,
+                            low, low_dim, high, high_dim,
+                            width, height);
 
     return RAPP_OK;
 }

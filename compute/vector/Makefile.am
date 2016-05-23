@@ -48,6 +48,7 @@ librappcompute_swar_la_SOURCES = rc_impl_cfg.h   \
                                  rc_type.c       \
                                  rc_thresh.c     \
                                  rc_thresh_tpl.h \
+                                 rc_thresh_pixel_tpl.h \
                                  rc_reduce.c     \
                                  rc_stat.c       \
                                  rc_filter.c     \

@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -115,6 +115,7 @@ typedef struct rc_bmark_data_st {
     uint8_t *dst;     /* Destination buffer large enough for all images */
     uint8_t *src;     /* Source buffer large enough for all images      */
     uint8_t *aux;     /* Auxiliary buffer large enough for all images  */
+    uint8_t *aux2;    /* Second similar auxiliary buffer */
     int      dim_bin; /* Binary row dimension, with padding             */
     int      dim_u8;  /* 8-bit row dimension, with padding              */
     int      rot_u8;  /* 8-bit rotatated row dimension, no padding      */
@@ -185,6 +186,9 @@ rc_bmark_exec_u8_u8_p(int (*func)(), const int *args);
 
 static void
 rc_bmark_exec_rotate(int (*func)(), const int *args);
+
+static void
+rc_bmark_exec_thresh_pixel(int (*func)(), const int *args);
 
 
 /*
@@ -281,6 +285,10 @@ static const rc_bmark_table_t rc_bmark_suite[] = {
     RC_BMARK_ENTRY(rc_thresh_lt_u8,                       u8_bin,    0, 0),
     RC_BMARK_ENTRY(rc_thresh_gtlt_u8,                     u8_bin,    0, 0),
     RC_BMARK_ENTRY(rc_thresh_ltgt_u8,                     u8_bin,    0, 0),
+    RC_BMARK_ENTRY(rc_thresh_gt_pixel_u8,                 thresh_pixel, 1, 0),
+    RC_BMARK_ENTRY(rc_thresh_lt_pixel_u8,                 thresh_pixel, 1, 0),
+    RC_BMARK_ENTRY(rc_thresh_gtlt_pixel_u8,               thresh_pixel, 2, 0),
+    RC_BMARK_ENTRY(rc_thresh_ltgt_pixel_u8,               thresh_pixel, 2, 0),
     /* Statistics */
     RC_BMARK_ENTRY(rc_stat_sum_bin,                       bin,       0, 0),
     RC_BMARK_ENTRY(rc_stat_sum_u8,                        u8,        0, 0),
@@ -679,6 +687,7 @@ rc_bmark_setup(void *lib, int width, int height)
     rc_bmark_data.dst     = (*alloc)(size);
     rc_bmark_data.src     = (*alloc)(size);
     rc_bmark_data.aux     = (*alloc)(size);
+    rc_bmark_data.aux2    = (*alloc)(size);
     rc_bmark_data.dim_bin = dim_bin;
     rc_bmark_data.dim_u8  = dim_u8;
     rc_bmark_data.rot_u8  = rot_u8;
@@ -691,10 +700,12 @@ rc_bmark_setup(void *lib, int width, int height)
     memset(rc_bmark_data.dst, 0, size);
     memset(rc_bmark_data.src, 0, size);
     memset(rc_bmark_data.aux, 0, size);
+    memset(rc_bmark_data.aux2, 0, size);
 
     rc_bmark_data.dst += offset;
     rc_bmark_data.src += offset;
     rc_bmark_data.aux += offset;
+    rc_bmark_data.aux2 += offset;
 }
 
 static void
@@ -703,6 +714,7 @@ rc_bmark_cleanup(void)
     (*rc_bmark_data.release)(&rc_bmark_data.src[-rc_bmark_data.offset]);
     (*rc_bmark_data.release)(&rc_bmark_data.dst[-rc_bmark_data.offset]);
     (*rc_bmark_data.release)(&rc_bmark_data.aux[-rc_bmark_data.offset]);
+    (*rc_bmark_data.release)(&rc_bmark_data.aux2[-rc_bmark_data.offset]);
 }
 
 static void
@@ -837,4 +849,23 @@ rc_bmark_exec_rotate(int (*func)(), const int *args)
     (*func)(rc_bmark_data.dst, rc_bmark_data.rot_u8,
             rc_bmark_data.src, rc_bmark_data.dim_u8,
             rc_bmark_data.width, rc_bmark_data.height);
+}
+
+static void
+rc_bmark_exec_thresh_pixel(int (*func)(), const int *args)
+{
+    const int num_thresholds = args[0];
+    if (num_thresholds == 2) {
+        (*func)(rc_bmark_data.dst,   rc_bmark_data.dim_bin,
+                rc_bmark_data.src,   rc_bmark_data.dim_u8,
+                rc_bmark_data.aux,   rc_bmark_data.dim_u8,
+                rc_bmark_data.aux2,  rc_bmark_data.dim_u8,
+                rc_bmark_data.width, rc_bmark_data.height);
+    }
+    else {
+        (*func)(rc_bmark_data.dst,   rc_bmark_data.dim_bin,
+                rc_bmark_data.src,   rc_bmark_data.dim_u8,
+                rc_bmark_data.aux,   rc_bmark_data.dim_u8,
+                rc_bmark_data.width, rc_bmark_data.height);
+    }
 }

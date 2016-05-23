@@ -280,6 +280,7 @@ librappcompute_gen_la_LDFLAGS = -no-undefined
 # The source files to use
 librappcompute_gen_la_SOURCES = rc_impl_cfg.h   \
                                 rc_thresh_tpl.h \
+                                rc_thresh_pixel_tpl.h \
                                 rc_bitblt_rop.h \
                                 rc_bitblt_wa.c  \
                                 rc_bitblt_wm.c  \

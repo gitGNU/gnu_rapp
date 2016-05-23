@@ -1,6 +1,10 @@
 rapp-0.8dev: Prerelease for a future 0.8 release.
 News and visible changes in this version, since the previous version:
 
+- Pixelwise conditional thresholding: the threshold arguments
+can now be not just scalars, but images, holding threshold
+values for individual pixels.
+
 Fixed bugs:
 Bug #40264, rapp_main.h misses the closing } for extern "C".
 

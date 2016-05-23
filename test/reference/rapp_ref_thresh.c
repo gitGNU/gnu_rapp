@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -58,6 +58,14 @@ rapp_ref_thresh_driver(uint8_t *dst, int dst_dim,
                        int width, int height, int low, int high,
                        int (*cmp)(int, int, int));
 
+static void
+rapp_ref_thresh_pixel_driver(uint8_t *dst, int dst_dim,
+                             const uint8_t *src, int src_dim,
+                             const uint8_t *low, int low_dim,
+                             const uint8_t *high, int high_dim,
+                             int width, int height,
+                             int (*cmp)(int, int, int));
+
 /*
  * -------------------------------------------------------------
  *  Exported functions
@@ -100,6 +108,49 @@ rapp_ref_thresh_ltgt_u8(uint8_t *dst, int dst_dim,
                            low, high, &rapp_ref_thresh_ltgt);
 }
 
+void
+rapp_ref_thresh_gt_pixel_u8(uint8_t *dst, int dst_dim,
+                            const uint8_t *src, int src_dim,
+                            const uint8_t *thresh, int thresh_dim,
+                            int width, int height)
+{
+    rapp_ref_thresh_pixel_driver(dst, dst_dim, src, src_dim, thresh, thresh_dim,
+                                 NULL, 0, width, height, &rapp_ref_thresh_gt);
+}
+
+void
+rapp_ref_thresh_lt_pixel_u8(uint8_t *dst, int dst_dim,
+                            const uint8_t *src, int src_dim,
+                            const uint8_t *thresh, int thresh_dim,
+                            int width, int height)
+{
+    rapp_ref_thresh_pixel_driver(dst, dst_dim, src, src_dim, thresh, thresh_dim,
+                                 NULL, 0, width, height, &rapp_ref_thresh_lt);
+}
+
+void
+rapp_ref_thresh_gtlt_pixel_u8(uint8_t *dst, int dst_dim,
+                              const uint8_t *src, int src_dim,
+                              const uint8_t *low, int low_dim,
+                              const uint8_t *high, int high_dim,
+                              int width, int height)
+{
+    rapp_ref_thresh_pixel_driver(dst, dst_dim, src, src_dim,
+                                 low, low_dim, high, high_dim,
+                                 width, height, &rapp_ref_thresh_gtlt);
+}
+
+void
+rapp_ref_thresh_ltgt_pixel_u8(uint8_t *dst, int dst_dim,
+                              const uint8_t *src, int src_dim,
+                              const uint8_t *low, int low_dim,
+                              const uint8_t *high, int high_dim,
+                              int width, int height)
+{
+    rapp_ref_thresh_pixel_driver(dst, dst_dim, src, src_dim,
+                                 low, low_dim, high, high_dim,
+                                 width, height, &rapp_ref_thresh_ltgt);
+}
 
 /*
  * -------------------------------------------------------------
@@ -145,6 +196,34 @@ rapp_ref_thresh_driver(uint8_t *dst, int dst_dim,
         for (x = 0; x < width; x++) {
             int val = rapp_pixel_get_u8(src, src_dim, x, y);
             int bit = (*cmp)(val, low, high);
+
+            rapp_pixel_set_bin(dst, dst_dim, 0, x, y, bit);
+        }
+    }
+}
+
+static void
+rapp_ref_thresh_pixel_driver(uint8_t *dst, int dst_dim,
+                             const uint8_t *src, int src_dim,
+                             const uint8_t *low, int low_dim,
+                             const uint8_t *high, int high_dim,
+                             int width, int height,
+                             int (*cmp)(int, int, int))
+{
+    int x, y;
+
+    for (y = 0; y < height; y++) {
+        for (x = 0; x < width; x++) {
+            int val = rapp_pixel_get_u8(src, src_dim, x, y);
+
+            int thresh_low = rapp_pixel_get_u8(low, low_dim, x, y);
+
+            int thresh_high = 0;
+            if (high != NULL) {
+                thresh_high = rapp_pixel_get_u8(high, high_dim, x, y);
+            }
+
+            int bit = (*cmp)(val, thresh_low, thresh_high);
 
             rapp_pixel_set_bin(dst, dst_dim, 0, x, y, bit);
         }

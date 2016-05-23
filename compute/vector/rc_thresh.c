@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -34,8 +34,7 @@
 #include "rc_vector.h"     /* Vector operations      */
 #include "rc_thresh.h"     /* Thresholding API       */
 #include "rc_thresh_tpl.h" /* Thresholding templates */
-
-#ifdef RC_THRESH_TEMPLATE
+#include "rc_thresh_pixel_tpl.h" /* Thresholding pixelwise templates */
 
 /*
  * -------------------------------------------------------------
@@ -129,6 +128,8 @@ do {                                                \
  *  Exported functions
  * -------------------------------------------------------------
  */
+
+#ifdef RC_THRESH_TEMPLATE
 
 /**
  *  Single thresholding greater-than.
@@ -236,3 +237,93 @@ rc_thresh_ltgt_u8(uint8_t *restrict dst, int dst_dim,
 #endif
 
 #endif /* RC_THRESH_TEMPLATE */
+
+
+#ifdef RC_THRESH_PIXEL_TEMPLATE_SINGLE
+
+/**
+ *  Single pixelwise thresholding greater-than.
+ */
+#if RC_IMPL(rc_thresh_gt_pixel_u8, 1)
+#ifdef RC_THRESH_CMPGT
+void
+rc_thresh_gt_pixel_u8(uint8_t *restrict dst, int dst_dim,
+                      const uint8_t *restrict src, int src_dim,
+                      const uint8_t *restrict thresh, int thresh_dim,
+                      int width, int height)
+{
+    RC_THRESH_PIXEL_TEMPLATE_SINGLE(dst, dst_dim, src, src_dim,
+                                    thresh, thresh_dim,
+                                    width, height, RC_THRESH_CMPGT,
+                                    RC_UNROLL(rc_thresh_gt_pixel_u8));
+}
+#endif
+#endif
+
+
+/**
+ *  Single pixelwise thresholding less-than.
+ */
+#if RC_IMPL(rc_thresh_lt_pixel_u8, 1)
+#ifdef RC_THRESH_CMPLT
+void
+rc_thresh_lt_pixel_u8(uint8_t *restrict dst, int dst_dim,
+                      const uint8_t *restrict src, int src_dim,
+                      const uint8_t *restrict thresh, int thresh_dim,
+                      int width, int height)
+{
+    RC_THRESH_PIXEL_TEMPLATE_SINGLE(dst, dst_dim, src, src_dim,
+                                    thresh, thresh_dim,
+                                    width, height, RC_THRESH_CMPLT,
+                                    RC_UNROLL(rc_thresh_lt_pixel_u8));
+}
+#endif
+#endif
+
+#endif /* RC_THRESH_TEMPLATE_SINGLE */
+
+
+#ifdef RC_THRESH_PIXEL_TEMPLATE_DOUBLE
+
+/**
+ *  Pixelwise double thresholding greater-than AND less-than.
+ */
+#if RC_IMPL(rc_thresh_gtlt_pixel_u8, 1)
+#ifdef RC_THRESH_CMPGTLT
+void
+rc_thresh_gtlt_pixel_u8(uint8_t *restrict dst, int dst_dim,
+                        const uint8_t *restrict src, int src_dim,
+                        const uint8_t *restrict low, int low_dim,
+                        const uint8_t *restrict high, int high_dim,
+                        int width, int height)
+{
+    RC_THRESH_PIXEL_TEMPLATE_DOUBLE(dst, dst_dim, src, src_dim,
+                                    low, low_dim, high, high_dim,
+                                    width, height, RC_THRESH_CMPGTLT,
+                                    RC_UNROLL(rc_thresh_gtlt_pixel_u8));
+}
+#endif
+#endif
+
+
+/**
+ *  Pixelwise double thresholding less-than OR greater-than.
+ */
+#if RC_IMPL(rc_thresh_ltgt_pixel_u8, 1)
+#ifdef RC_THRESH_CMPLTGT
+void
+rc_thresh_ltgt_pixel_u8(uint8_t *restrict dst, int dst_dim,
+                        const uint8_t *restrict src, int src_dim,
+                        const uint8_t *restrict low, int low_dim,
+                        const uint8_t *restrict high, int high_dim,
+                        int width, int height)
+{
+    RC_THRESH_PIXEL_TEMPLATE_DOUBLE(dst, dst_dim, src, src_dim,
+                                    low, low_dim, high, high_dim,
+                                    width, height, RC_THRESH_CMPLTGT,
+                                    RC_UNROLL(rc_thresh_ltgt_pixel_u8));
+}
+#endif
+#endif
+
+#endif /* RC_THRESH_TEMPLATE_DOUBLE */

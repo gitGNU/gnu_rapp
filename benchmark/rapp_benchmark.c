@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -193,6 +193,9 @@ static void
 rapp_bmark_exec_u8_u8_p(int (*func)(), const int *args);
 
 static void
+rapp_bmark_exec_thresh_pixel(int (*func)(), const int *args);
+
+static void
 rapp_bmark_exec_expand(int (*func)(), const int *args);
 
 static void
@@ -272,6 +275,10 @@ static const rapp_bmark_table_t rapp_bmark_suite[] = {
     RAPP_BMARK_ENTRY(thresh_lt_u8,   NULL, u8_bin, 7, 0),
     RAPP_BMARK_ENTRY(thresh_gtlt_u8, NULL, u8_bin, 7, 9),
     RAPP_BMARK_ENTRY(thresh_ltgt_u8, NULL, u8_bin, 7, 9),
+    RAPP_BMARK_ENTRY(thresh_gt_pixel_u8,   NULL, thresh_pixel, 1, 0),
+    RAPP_BMARK_ENTRY(thresh_lt_pixel_u8,   NULL, thresh_pixel, 1, 0),
+    RAPP_BMARK_ENTRY(thresh_gtlt_pixel_u8, NULL, thresh_pixel, 2, 0),
+    RAPP_BMARK_ENTRY(thresh_ltgt_pixel_u8, NULL, thresh_pixel, 2, 0),
     /* rapp_reduce functions */
     RAPP_BMARK_ENTRY(reduce_1x2_u8, NULL, u8_u8, 0, 0),
     RAPP_BMARK_ENTRY(reduce_2x1_u8, NULL, u8_u8, 0, 0),
@@ -750,6 +757,31 @@ rapp_bmark_exec_u8_u8_p(int (*func)(), const int *args)
             data->set, data->dim_u8,
             data->width, data->height,
             data->aux);
+}
+
+static void
+rapp_bmark_exec_thresh_pixel(int (*func)(), const int *args)
+{
+    const rapp_bmark_data_t *data = &rapp_bmark_data;
+
+    const int num_thresholds = args[0];
+    if (num_thresholds == 2) {
+        /* The speed is not dependent of the content or calculation results
+         * so the aux buffer is reused for both high and low thresholds.
+         * This minimize changes of the entire benchmark test,
+           i.e. only require a single aux buffer. */
+        (*func)(data->dst, data->dim_bin,
+                data->set, data->dim_u8,
+                data->aux, data->dim_u8,
+                data->aux, data->dim_u8,
+                data->width, data->height);
+    }
+    else {
+        (*func)(data->dst, data->dim_bin,
+                data->set, data->dim_u8,
+                data->aux, data->dim_u8,
+                data->width, data->height);
+    }
 }
 
 static void

@@ -32,6 +32,7 @@
 
 #include "rc_impl_cfg.h" /* Implementation cfg     */
 #include "rc_thresh_tpl.h" /* Thresholding templates */
+#include "rc_thresh_pixel_tpl.h" /* Pixelwise thresholding templates */
 #include "rc_thresh.h"   /* Thresholding API       */
 
 /*
@@ -133,5 +134,79 @@ rc_thresh_ltgt_u8(uint8_t *restrict dst, int dst_dim,
     RC_THRESH_TEMPLATE(dst, dst_dim, src, src_dim, width, height,
                        low, high, RC_THRESH_CMPLTGT,
                        RC_UNROLL(rc_thresh_ltgt_u8));
+}
+#endif
+
+
+/**
+ *  Pixelwise single thresholding greater-than.
+ */
+#if RC_IMPL(rc_thresh_gt_pixel_u8, 1)
+void
+rc_thresh_gt_pixel_u8(uint8_t *restrict dst, int dst_dim,
+                      const uint8_t *restrict src, int src_dim,
+                      const uint8_t *restrict thresh, int thresh_dim,
+                      int width, int height)
+{
+    RC_THRESH_PIXEL_TEMPLATE_SINGLE(dst, dst_dim, src, src_dim,
+                                    thresh, thresh_dim,
+                                    width, height, RC_THRESH_CMPGT,
+                                    RC_UNROLL(rc_thresh_gt_pixel_u8));
+}
+#endif
+
+
+/**
+ *  Pixelwise single thresholding less-than.
+ */
+#if RC_IMPL(rc_thresh_lt_pixel_u8, 1)
+void
+rc_thresh_lt_pixel_u8(uint8_t *restrict dst, int dst_dim,
+                      const uint8_t *restrict src, int src_dim,
+                      const uint8_t *restrict thresh, int thresh_dim,
+                      int width, int height)
+{
+    RC_THRESH_PIXEL_TEMPLATE_SINGLE(dst, dst_dim, src, src_dim,
+                                    thresh, thresh_dim,
+                                    width, height, RC_THRESH_CMPLT,
+                                    RC_UNROLL(rc_thresh_lt_pixel_u8));
+}
+#endif
+
+
+/**
+ *  Pixelwise double thresholding greater-than AND less-than.
+ */
+#if RC_IMPL(rc_thresh_gtlt_pixel_u8, 1)
+void
+rc_thresh_gtlt_pixel_u8(uint8_t *restrict dst, int dst_dim,
+                        const uint8_t *restrict src, int src_dim,
+                        const uint8_t *restrict low, int low_dim,
+                        const uint8_t *restrict high, int high_dim,
+                        int width, int height)
+{
+    RC_THRESH_PIXEL_TEMPLATE_DOUBLE(dst, dst_dim, src, src_dim,
+                                    low, low_dim, high, high_dim,
+                                    width, height, RC_THRESH_CMPGTLT,
+                                    RC_UNROLL(rc_thresh_gtlt_pixel_u8));
+}
+#endif
+
+
+/**
+ *  Pixelwise double thresholding less-than OR greater-than.
+ */
+#if RC_IMPL(rc_thresh_ltgt_pixel_u8, 1)
+void
+rc_thresh_ltgt_pixel_u8(uint8_t *restrict dst, int dst_dim,
+                        const uint8_t *restrict src, int src_dim,
+                        const uint8_t *restrict low, int low_dim,
+                        const uint8_t *restrict high, int high_dim,
+                        int width, int height)
+{
+    RC_THRESH_PIXEL_TEMPLATE_DOUBLE(dst, dst_dim, src, src_dim,
+                                    low, low_dim, high, high_dim,
+                                    width, height, RC_THRESH_CMPLTGT,
+                                    RC_UNROLL(rc_thresh_ltgt_pixel_u8));
 }
 #endif

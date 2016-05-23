@@ -305,6 +305,30 @@
 #define RAPP_LOG_ARGSFORMAT_rapp_thresh_ltgt_u8 "%p, %d, %p, %d, %d, %d, %d, %d"
 #define RAPP_LOG_RETFORMAT_rapp_thresh_ltgt_u8 "%d"
 
+#define RAPP_LOG_IDENTITY_IF_RETURN_rapp_thresh_gt_pixel_u8(x) x
+#define RAPP_LOG_IDENTITY_IF_ARGS_rapp_thresh_gt_pixel_u8(x) x
+#define RAPP_LOG_ARGLIST_rapp_thresh_gt_pixel_u8 dst, dst_dim, src, src_dim, thresh, thresh_dim, width, height
+#define RAPP_LOG_ARGSFORMAT_rapp_thresh_gt_pixel_u8 "%p, %d, %p, %d, %p, %d, %d, %d"
+#define RAPP_LOG_RETFORMAT_rapp_thresh_gt_pixel_u8 "%d"
+
+#define RAPP_LOG_IDENTITY_IF_RETURN_rapp_thresh_lt_pixel_u8(x) x
+#define RAPP_LOG_IDENTITY_IF_ARGS_rapp_thresh_lt_pixel_u8(x) x
+#define RAPP_LOG_ARGLIST_rapp_thresh_lt_pixel_u8 dst, dst_dim, src, src_dim, thresh, thresh_dim, width, height
+#define RAPP_LOG_ARGSFORMAT_rapp_thresh_lt_pixel_u8 "%p, %d, %p, %d, %p, %d, %d, %d"
+#define RAPP_LOG_RETFORMAT_rapp_thresh_lt_pixel_u8 "%d"
+
+#define RAPP_LOG_IDENTITY_IF_RETURN_rapp_thresh_gtlt_pixel_u8(x) x
+#define RAPP_LOG_IDENTITY_IF_ARGS_rapp_thresh_gtlt_pixel_u8(x) x
+#define RAPP_LOG_ARGLIST_rapp_thresh_gtlt_pixel_u8 dst, dst_dim, src, src_dim, low, low_dim, high, high_dim, width, height
+#define RAPP_LOG_ARGSFORMAT_rapp_thresh_gtlt_pixel_u8 "%p, %d, %p, %d, %p, %d, %p, %d, %d, %d"
+#define RAPP_LOG_RETFORMAT_rapp_thresh_gtlt_pixel_u8 "%d"
+
+#define RAPP_LOG_IDENTITY_IF_RETURN_rapp_thresh_ltgt_pixel_u8(x) x
+#define RAPP_LOG_IDENTITY_IF_ARGS_rapp_thresh_ltgt_pixel_u8(x) x
+#define RAPP_LOG_ARGLIST_rapp_thresh_ltgt_pixel_u8 dst, dst_dim, src, src_dim, low, low_dim, high, high_dim, width, height
+#define RAPP_LOG_ARGSFORMAT_rapp_thresh_ltgt_pixel_u8 "%p, %d, %p, %d, %p, %d, %p, %d, %d, %d"
+#define RAPP_LOG_RETFORMAT_rapp_thresh_ltgt_pixel_u8 "%d"
+
 #define RAPP_LOG_IDENTITY_IF_RETURN_rapp_reduce_1x2_u8(x) x
 #define RAPP_LOG_IDENTITY_IF_ARGS_rapp_reduce_1x2_u8(x) x
 #define RAPP_LOG_ARGLIST_rapp_reduce_1x2_u8 dst, dst_dim, src, src_dim, width, height
@@ -780,4 +804,4 @@
 #define RAPP_LOG_RETFORMAT_rapp_integral_sum_u8_u32 "%d"
 
 #define RAPP_LOG_MAX_RETURN_FORMAT_LENGTH 3
-#define RAPP_LOG_MAX_ARGS_FORMAT_LENGTH 34
+#define RAPP_LOG_MAX_ARGS_FORMAT_LENGTH 38

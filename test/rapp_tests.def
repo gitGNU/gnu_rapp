@@ -52,6 +52,10 @@ RAPP_TESTH(thresh_gt_u8, "rapp_thresh - thresholding to binary")
 RAPP_TEST(thresh_lt_u8)
 RAPP_TEST(thresh_gtlt_u8)
 RAPP_TEST(thresh_ltgt_u8)
+RAPP_TEST(thresh_gt_pixel_u8)
+RAPP_TEST(thresh_lt_pixel_u8)
+RAPP_TEST(thresh_gtlt_pixel_u8)
+RAPP_TEST(thresh_ltgt_pixel_u8)
 
 /* Test cases for rapp_stat functions */
 RAPP_TESTH(stat_sum_bin, "rapp_stat - statistical operations")

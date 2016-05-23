@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -64,6 +64,31 @@ void
 rapp_ref_thresh_ltgt_u8(uint8_t *dst, int dst_dim,
                         const uint8_t *src, int src_dim,
                         int width, int height, int low, int high);
+
+void
+rapp_ref_thresh_gt_pixel_u8(uint8_t *dst, int dst_dim,
+                            const uint8_t *src, int src_dim,
+                            const uint8_t *thresh, int thresh_dim,
+                            int width, int height);
+void
+rapp_ref_thresh_lt_pixel_u8(uint8_t *dst, int dst_dim,
+                            const uint8_t *src, int src_dim,
+                            const uint8_t *thresh, int thresh_dim,
+                            int width, int height);
+
+void
+rapp_ref_thresh_gtlt_pixel_u8(uint8_t *dst, int dst_dim,
+                              const uint8_t *src, int src_dim,
+                              const uint8_t *low, int low_dim,
+                              const uint8_t *high, int high_dim,
+                              int width, int height);
+
+void
+rapp_ref_thresh_ltgt_pixel_u8(uint8_t *dst, int dst_dim,
+                              const uint8_t *src, int src_dim,
+                              const uint8_t *low, int low_dim,
+                              const uint8_t *high, int high_dim,
+                              int width, int height);
 
 #ifdef __cplusplus
 };

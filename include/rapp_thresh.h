@@ -132,6 +132,92 @@ rapp_thresh_ltgt_u8(uint8_t *restrict dst, int dst_dim,
                     const uint8_t *restrict src, int src_dim,
                     int width, int height, int low, int high);
 
+/**
+ *  Pixelwise single thresholding greater-than.
+ *  Computes dst[i] = src[i] > thresh[i].
+ *
+ *  @param[out] dst        Destination pixel buffer.
+ *  @param      dst_dim    Row dimension in bytes of the destination buffer.
+ *  @param[in]  src        Source pixel buffer.
+ *  @param      src_dim    Row dimension in bytes of the source buffer.
+ *  @param[in]  thresh     Threshold pixel buffer.
+ *  @param      thresh_dim Row dimension in bytes of the threshold buffer.
+ *  @param      width      Image width in pixels.
+ *  @param      height     Image height in pixels.
+ *  @return                A negative error code on error, zero otherwise.
+ */
+RAPP_EXPORT int
+rapp_thresh_gt_pixel_u8(uint8_t *restrict dst, int dst_dim,
+                        const uint8_t *restrict src, int src_dim,
+                        const uint8_t *restrict thresh, int thresh_dim,
+                        int width, int height);
+
+/**
+ *  Pixelwise single thresholding less-than.
+ *  Computes dst[i] = src[i] < thresh[i].
+ *
+ *  @param[out] dst        Destination pixel buffer.
+ *  @param      dst_dim    Row dimension in bytes of the destination buffer.
+ *  @param[in]  src        Source pixel buffer.
+ *  @param      src_dim    Row dimension in bytes of the source buffer.
+ *  @param[in]  thresh     Threshold pixel buffer.
+ *  @param      thresh_dim Row dimension in bytes of the threshold buffer.
+ *  @param      width      Image width in pixels.
+ *  @param      height     Image height in pixels.
+ *  @return                A negative error code on error, zero otherwise.
+ */
+RAPP_EXPORT int
+rapp_thresh_lt_pixel_u8(uint8_t *restrict dst, int dst_dim,
+                        const uint8_t *restrict src, int src_dim,
+                        const uint8_t *restrict thresh, int thresh_dim,
+                        int width, int height);
+
+/**
+ *  Pixelwise double thresholding greater-than AND less-than.
+ *  Computes dst[i] = src[i] > low[i] && src[i] < high[i].
+ *
+ *  @param[out] dst        Destination pixel buffer.
+ *  @param      dst_dim    Row dimension in bytes of the destination buffer.
+ *  @param[in]  src        Source pixel buffer.
+ *  @param      src_dim    Row dimension in bytes of the source buffer.
+ *  @param[in]  low        Lower threshold pixel buffer.
+ *  @param      low_dim    Row dimension in bytes of the lower threshold buffer.
+ *  @param[in]  high       Higher threshold pixel buffer.
+ *  @param      high_dim   Row dimension in bytes of the higher threshold buffer.
+ *  @param      width      Image width in pixels.
+ *  @param      height     Image height in pixels.
+ *  @return                A negative error code on error, zero otherwise.
+ */
+RAPP_EXPORT int
+rapp_thresh_gtlt_pixel_u8(uint8_t *restrict dst, int dst_dim,
+                          const uint8_t *restrict src, int src_dim,
+                          const uint8_t *restrict low, int low_dim,
+                          const uint8_t *restrict high, int high_dim,
+                          int width, int height);
+
+/**
+ *  Pixelwise double thresholding less-than OR greater-than.
+ *  Computes dst[i] = src[i] < low[i] || src[i] > high[i].
+ *
+ *  @param[out] dst        Destination pixel buffer.
+ *  @param      dst_dim    Row dimension in bytes of the destination buffer.
+ *  @param[in]  src        Source pixel buffer.
+ *  @param      src_dim    Row dimension in bytes of the source buffer.
+ *  @param[in]  low        Lower threshold pixel buffer.
+ *  @param      low_dim    Row dimension in bytes of the lower threshold buffer.
+ *  @param[in]  high       Higher threshold pixel buffer.
+ *  @param      high_dim   Row dimension in bytes of the higher threshold buffer.
+ *  @param      width      Image width in pixels.
+ *  @param      height     Image height in pixels.
+ *  @return                A negative error code on error, zero otherwise.
+ */
+RAPP_EXPORT int
+rapp_thresh_ltgt_pixel_u8(uint8_t *restrict dst, int dst_dim,
+                          const uint8_t *restrict src, int src_dim,
+                          const uint8_t *restrict low, int low_dim,
+                          const uint8_t *restrict high, int high_dim,
+                          int width, int height);
+
 /** @} */
 
 #ifdef __cplusplus

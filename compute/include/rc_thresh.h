@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -112,7 +112,82 @@ rc_thresh_ltgt_u8(uint8_t *restrict dst, int dst_dim,
                   const uint8_t *restrict src, int src_dim,
                   int width, int height, int low, int high);
 
+/**
+ *  Pixelwise single thresholding greater-than.
+ *
+ *  @param[out] dst        Destination pixel buffer.
+ *  @param      dst_dim    Row dimension of the destination buffer.
+ *  @param[in]  src        Source pixel buffer.
+ *  @param      src_dim    Row dimension of the source buffer.
+ *  @param[in]  thresh     Threshold pixel buffer.
+ *  @param      thresh_dim Row dimension of the threshold buffer.
+ *  @param      width      Image width in pixels.
+ *  @param      height     Image height in pixels.
+ */
+RC_EXPORT void
+rc_thresh_gt_pixel_u8(uint8_t *restrict dst, int dst_dim,
+                      const uint8_t *restrict src, int src_dim,
+                      const uint8_t *restrict thresh, int thresh_dim,
+                      int width, int height);
 
+/**
+ *  Pixelwise single thresholding less-than.
+ *
+ *  @param[out] dst        Destination pixel buffer.
+ *  @param      dst_dim    Row dimension of the destination buffer.
+ *  @param[in]  src        Source pixel buffer.
+ *  @param      src_dim    Row dimension of the source buffer.
+ *  @param[in]  thresh     Threshold pixel buffer.
+ *  @param      thresh_dim Row dimension of the threshold buffer.
+ *  @param      width      Image width in pixels.
+ *  @param      height     Image height in pixels.
+ */
+RC_EXPORT void
+rc_thresh_lt_pixel_u8(uint8_t *restrict dst, int dst_dim,
+                      const uint8_t *restrict src, int src_dim,
+                      const uint8_t *restrict thresh, int thresh_dim,
+                      int width, int height);
+/**
+ *  Pixelwise double thresholding greater-than AND less-than.
+ *
+ *  @param[out] dst        Destination pixel buffer.
+ *  @param      dst_dim    Row dimension in bytes of the destination buffer.
+ *  @param[in]  src        Source pixel buffer.
+ *  @param      src_dim    Row dimension in bytes of the source buffer.
+ *  @param[in]  low        Lower threshold pixel buffer.
+ *  @param      low_dim    Row dimension in bytes of the lower threshold buffer.
+ *  @param[in]  high       Higher threshold pixel buffer.
+ *  @param      high_dim   Row dimension in bytes of the higher threshold buffer.
+ *  @param      width      Image width in pixels.
+ *  @param      height     Image height in pixels.
+*/
+RC_EXPORT void
+rc_thresh_gtlt_pixel_u8(uint8_t *restrict dst, int dst_dim,
+                        const uint8_t *restrict src, int src_dim,
+                        const uint8_t *restrict low, int low_dim,
+                        const uint8_t *restrict high, int high_dim,
+                        int width, int height);
+
+/**
+ *  Pixelwise double thresholding less-than OR greater-than.
+ *
+ *  @param[out] dst        Destination pixel buffer.
+ *  @param      dst_dim    Row dimension in bytes of the destination buffer.
+ *  @param[in]  src        Source pixel buffer.
+ *  @param      src_dim    Row dimension in bytes of the source buffer.
+ *  @param[in]  low        Lower threshold pixel buffer.
+ *  @param      low_dim    Row dimension in bytes of the lower threshold buffer.
+ *  @param[in]  high       Higher threshold pixel buffer.
+ *  @param      high_dim   Row dimension in bytes of the higher threshold buffer.
+ *  @param      width      Image width in pixels.
+ *  @param      height     Image height in pixels.
+ */
+RC_EXPORT void
+rc_thresh_ltgt_pixel_u8(uint8_t *restrict dst, int dst_dim,
+                        const uint8_t *restrict src, int src_dim,
+                        const uint8_t *restrict low, int low_dim,
+                        const uint8_t *restrict high, int high_dim,
+                        int width, int height);
 #ifdef __cplusplus
 };
 #endif
