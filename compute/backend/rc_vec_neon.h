@@ -1,4 +1,4 @@
-/*  Copyright (C) 2011-2012, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2011-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -317,6 +317,16 @@ do {                                        \
     rc_vec_t maskv_;                        \
     RC_VEC_GETMASKV_(maskv_, vec);          \
     (maskw) = RC_TVEC_(rc_vec_t, maskv_);   \
+} while (0)
+
+#define RC_VEC_SETMASKV(vec, maskv)                      \
+do {                                                     \
+    rc_vec_t v_;                                         \
+    rc_vec_t mask_ = (rc_vec_t){1<<0, 1<<1, 1<<2, 1<<3,  \
+                                1<<4, 1<<5, 1<<6, 1<<7}; \
+    uint8_t indx0_ = vget_lane_u8(maskv, 0);             \
+    RC_VEC_SPLAT(v_, indx0_);                            \
+    (vec) = vtst_u8(v_, mask_);                          \
 } while (0)
 
 #define RC_VEC_SUMN 128 /* floor(UINT16_MAX/510) = 128 */
