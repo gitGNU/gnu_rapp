@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -53,7 +53,7 @@
  *  dst.
  */
 #if defined RC_VEC_SETMASKV && defined RC_VEC_SHLC
-#define RC_TYPE_BIN_TO_U8_ITER_MAX(max, dst, src, j, i, arg1, arg2)     \
+#define RC_TYPE_BIN_TO_U8_ITER_MAX(max, dst, src, j, i)                 \
 do {                                                                    \
     rc_vec_t sv_;                                                       \
     int k;                                                              \
@@ -67,8 +67,8 @@ do {                                                                    \
     }                                                                   \
     (i) += RC_VEC_SIZE;                                                 \
 } while (0)
-#define RC_TYPE_BIN_TO_U8_ITER(dst, src, j, i, arg1, arg2) \
-    RC_TYPE_BIN_TO_U8_ITER_MAX(8, dst, src, j, i, arg1, arg2)
+#define RC_TYPE_BIN_TO_U8_ITER(dst, src, j, i) \
+    RC_TYPE_BIN_TO_U8_ITER_MAX(8, dst, src, j, i)
 #endif
 
 /*
@@ -123,14 +123,14 @@ rc_type_bin_to_u8(uint8_t *restrict dst, int dst_dim,
 
         /* Perform unrolled operation. */
         for (x = 0; x < len; x++) {
-            RC_TYPE_BIN_TO_U8_ITER(dst, src, j, i, arg1, arg2);
+            RC_TYPE_BIN_TO_U8_ITER(dst, src, j, i);
 
             if (RC_UNROLL(rc_type_bin_to_u8) >= 2)
-                RC_TYPE_BIN_TO_U8_ITER(dst, src, j, i, arg1, arg2);
+                RC_TYPE_BIN_TO_U8_ITER(dst, src, j, i);
 
             if (RC_UNROLL(rc_type_bin_to_u8) == 4) {
-                RC_TYPE_BIN_TO_U8_ITER(dst, src, j, i, arg1, arg2);
-                RC_TYPE_BIN_TO_U8_ITER(dst, src, j, i, arg1, arg2);
+                RC_TYPE_BIN_TO_U8_ITER(dst, src, j, i);
+                RC_TYPE_BIN_TO_U8_ITER(dst, src, j, i);
             }
         }
 
@@ -143,7 +143,7 @@ rc_type_bin_to_u8(uint8_t *restrict dst, int dst_dim,
              *  whole one source-vector -> 8 dest-vectors expansions.
              */
             for (r = rem; RC_UNROLL(rc_type_bin_to_u8) > 1 && r > 8; r -= 8)
-                RC_TYPE_BIN_TO_U8_ITER(dst, src, j, i, arg1, arg2);
+                RC_TYPE_BIN_TO_U8_ITER(dst, src, j, i);
 
             /**
              *  The source image width is padded to the size of a whole
@@ -152,7 +152,7 @@ rc_type_bin_to_u8(uint8_t *restrict dst, int dst_dim,
              *  to allow for a partial final source-to-destination
              *  iteration.
              */
-            RC_TYPE_BIN_TO_U8_ITER_MAX(r, dst, src, j, i, arg1, arg2);
+            RC_TYPE_BIN_TO_U8_ITER_MAX(r, dst, src, j, i);
         }
     }
 
