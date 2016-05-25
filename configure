@@ -12887,12 +12887,14 @@ as_val=`eval 'as_val=${'$as_ac_var'}
 #define `$as_echo "HAVE_$ac_func" | $as_tr_cpp` 1
 _ACEOF
  have_standard_memalign=yes
-else
-  # Fallbacks provided for historic reasons and lack of testing.
-  # FIXME: We shouldn't emit an error when malloc is sufficient,
-  # but we can't check RC_ALIGNMENT here.
-  if test ${have_standard_memalign} != yes; then
-       cat >conftest.$ac_ext <<_ACEOF
+fi
+done
+
+# Fallbacks provided for historic reasons and lack of testing.
+# FIXME: We shouldn't emit an error when malloc is sufficient,
+# but we can't check RC_ALIGNMENT here.
+if test ${have_standard_memalign} != yes; then
+    cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
 cat confdefs.h >>conftest.$ac_ext
@@ -12943,10 +12945,7 @@ See \`config.log' for more details." >&2;}
 fi
 
 rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-   fi
 fi
-done
-
 
 # Check C compiler vendor
 
