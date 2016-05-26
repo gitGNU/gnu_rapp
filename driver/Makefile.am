@@ -1,6 +1,6 @@
 #  Automake file for the RAPP driver directory.
 
-#  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
+#  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
 #
 #  This file is part of RAPP.
 #
