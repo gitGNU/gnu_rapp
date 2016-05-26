@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -31,8 +31,8 @@
  */
 
 /**
- *  @defgroup grp_cond Conditional Set and Copy
- *  @brief Perform conditional pixelwise set and copy operations.
+ *  @defgroup grp_cond Conditional Operations
+ *  @brief Perform conditional pixelwise set, copy and add operations.
  *
  *  These functions process individual pixels conditionally
  *  based on the value of the corresponding pixels in a binary
@@ -43,7 +43,7 @@
  *  checkerboard may be between one or two magnitudes slower than
  *  the all-zeros case.
  *
- *  Only @e copy and @e set operations are available as conditional
+ *  Only @e copy, @e set and @e add operations are available as conditional
  *  operations. For more complex conditional processing, use the
  *  @ref cond_gs "gather/scatter" mechanism.
  *
