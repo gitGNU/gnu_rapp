@@ -605,8 +605,12 @@ fi
 rapp_gflag=
 case ${ax_cv_c_compiler_vendor} in
 gnu)
-    # -Wextra is an alias for -W but it's not in old releases
+    # -Wextra is an alias for -W but it's not in old releases.
     AM_CFLAGS="${AM_CFLAGS} -W -Wall"
+    # The type of errors caught by -Wshadow can happen easily with
+    # the layers of macros we use.  It's also popular among
+    # downstream users.
+    AM_CFLAGS="${AM_CFLAGS} -Wshadow"
     AX_CFLAGS_GCC_OPTION([-fvisibility=hidden], [AM_CFLAGS])
     AX_CFLAGS_GCC_OPTION([-g3], [rapp_gflag])
     ;;
