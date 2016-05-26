@@ -82,6 +82,7 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 librappcompute_simd_la_LIBADD =
 am__objects_1 = librappcompute_simd_la-rc_bitblt_va.lo \
 	librappcompute_simd_la-rc_bitblt_vm.lo \
+	librappcompute_simd_la-rc_cond.lo \
 	librappcompute_simd_la-rc_pixop.lo \
 	librappcompute_simd_la-rc_type.lo \
 	librappcompute_simd_la-rc_thresh.lo \
@@ -100,8 +101,8 @@ librappcompute_simd_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(LDFLAGS) -o $@
 librappcompute_swar_la_LIBADD =
 am_librappcompute_swar_la_OBJECTS = rc_bitblt_va.lo rc_bitblt_vm.lo \
-	rc_pixop.lo rc_type.lo rc_thresh.lo rc_reduce.lo rc_stat.lo \
-	rc_filter.lo rc_margin.lo
+	rc_cond.lo rc_pixop.lo rc_type.lo rc_thresh.lo rc_reduce.lo \
+	rc_stat.lo rc_filter.lo rc_margin.lo
 librappcompute_swar_la_OBJECTS = $(am_librappcompute_swar_la_OBJECTS)
 librappcompute_swar_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
@@ -299,6 +300,7 @@ librappcompute_swar_la_SOURCES = \
  rc_bitblt_rop.h \
  rc_bitblt_va.c \
  rc_bitblt_vm.c \
+ rc_cond.c \
  rc_pixop.c \
  rc_type.c \
  rc_thresh.c \
@@ -369,6 +371,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librappcompute_simd_la-rc_bitblt_va.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librappcompute_simd_la-rc_bitblt_vm.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librappcompute_simd_la-rc_cond.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librappcompute_simd_la-rc_filter.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librappcompute_simd_la-rc_margin.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librappcompute_simd_la-rc_pixop.Plo@am__quote@
@@ -378,6 +381,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librappcompute_simd_la-rc_type.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rc_bitblt_va.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rc_bitblt_vm.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rc_cond.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rc_filter.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rc_margin.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rc_pixop.Plo@am__quote@
@@ -425,6 +429,14 @@ librappcompute_simd_la-rc_bitblt_vm.lo: rc_bitblt_vm.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rc_bitblt_vm.c' object='librappcompute_simd_la-rc_bitblt_vm.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(librappcompute_simd_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o librappcompute_simd_la-rc_bitblt_vm.lo `test -f 'rc_bitblt_vm.c' || echo '$(srcdir)/'`rc_bitblt_vm.c
+
+librappcompute_simd_la-rc_cond.lo: rc_cond.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(librappcompute_simd_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT librappcompute_simd_la-rc_cond.lo -MD -MP -MF $(DEPDIR)/librappcompute_simd_la-rc_cond.Tpo -c -o librappcompute_simd_la-rc_cond.lo `test -f 'rc_cond.c' || echo '$(srcdir)/'`rc_cond.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/librappcompute_simd_la-rc_cond.Tpo $(DEPDIR)/librappcompute_simd_la-rc_cond.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='rc_cond.c' object='librappcompute_simd_la-rc_cond.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(librappcompute_simd_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o librappcompute_simd_la-rc_cond.lo `test -f 'rc_cond.c' || echo '$(srcdir)/'`rc_cond.c
 
 librappcompute_simd_la-rc_pixop.lo: rc_pixop.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(librappcompute_simd_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT librappcompute_simd_la-rc_pixop.lo -MD -MP -MF $(DEPDIR)/librappcompute_simd_la-rc_pixop.Tpo -c -o librappcompute_simd_la-rc_pixop.lo `test -f 'rc_pixop.c' || echo '$(srcdir)/'`rc_pixop.c

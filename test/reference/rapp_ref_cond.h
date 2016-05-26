@@ -51,10 +51,21 @@ rapp_ref_cond_set_u8(uint8_t *dst, int dst_dim,
                      int width, int height, unsigned value);
 
 void
+rapp_ref_cond_addc_u8(uint8_t *dst, int dst_dim,
+                      const uint8_t *map, int map_dim,
+                      int width, int height, int value);
+
+void
 rapp_ref_cond_copy_u8(uint8_t *dst, int dst_dim,
                       const uint8_t *src, int src_dim,
                       const uint8_t *map, int map_dim,
                       int width, int height);
+
+void
+rapp_ref_cond_add_u8(uint8_t *dst, int dst_dim,
+                     const uint8_t *src, int src_dim,
+                     const uint8_t *map, int map_dim,
+                     int width, int height);
 
 #ifdef __cplusplus
 };

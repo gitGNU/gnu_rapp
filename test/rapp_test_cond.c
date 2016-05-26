@@ -65,7 +65,7 @@
  */
 
 static bool
-rapp_test_cond_driver(int (*test)(), void (*ref)());
+rapp_test_cond_driver(int (*test)(), void (*ref)(), int min, int max);
 
 static bool
 rapp_test_cond_driver2(int (*test)(), void (*ref)());
@@ -81,7 +81,16 @@ bool
 rapp_test_cond_set_u8(void)
 {
     return rapp_test_cond_driver(&rapp_cond_set_u8,
-                                 &rapp_ref_cond_set_u8);
+                                 &rapp_ref_cond_set_u8,
+                                 0, 0xff);
+}
+
+bool
+rapp_test_cond_addc_u8(void)
+{
+    return rapp_test_cond_driver(&rapp_cond_addc_u8,
+                                 &rapp_ref_cond_addc_u8,
+                                 -0xff, 0xff);
 }
 
 bool
@@ -91,6 +100,12 @@ rapp_test_cond_copy_u8(void)
                                   &rapp_ref_cond_copy_u8);
 }
 
+bool
+rapp_test_cond_add_u8(void)
+{
+    return rapp_test_cond_driver2(&rapp_cond_add_u8,
+                                  &rapp_ref_cond_add_u8);
+}
 
 /*
  * -------------------------------------------------------------
@@ -99,7 +114,7 @@ rapp_test_cond_copy_u8(void)
  */
 
 static bool
-rapp_test_cond_driver(int (*test)(), void (*ref)())
+rapp_test_cond_driver(int (*test)(), void (*ref)(), int min, int max)
 {
     int      dst_dim  = rapp_align(RAPP_TEST_WIDTH);
     int      map_dim  = rapp_align((RAPP_TEST_WIDTH + 7)/8);
@@ -115,7 +130,7 @@ rapp_test_cond_driver(int (*test)(), void (*ref)())
     for (k = 0; k < RAPP_TEST_ITER; k++) {
         int width  = rapp_test_rand(1, RAPP_TEST_WIDTH);
         int height = rapp_test_rand(1, RAPP_TEST_HEIGHT);
-        int value  = rapp_test_rand(0, 0xff);
+        int value  = rapp_test_rand(min, max);
 
         /* Test the full image at least once */
         if (k == 0) {

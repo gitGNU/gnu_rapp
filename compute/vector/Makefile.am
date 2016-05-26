@@ -45,6 +45,7 @@ librappcompute_swar_la_SOURCES = \
  rc_bitblt_rop.h \
  rc_bitblt_va.c \
  rc_bitblt_vm.c \
+ rc_cond.c \
  rc_pixop.c \
  rc_type.c \
  rc_thresh.c \

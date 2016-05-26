@@ -158,7 +158,9 @@ RAPP_TEST(rasterize_8conn)
 
 /* Test cases for rapp_cond functions */
 RAPP_TESTH(cond_set_u8, "rapp_cond - conditional operations")
+RAPP_TEST(cond_addc_u8)
 RAPP_TEST(cond_copy_u8)
+RAPP_TEST(cond_add_u8)
 
 /* Test cases for rapp_gather functions */
 RAPP_TESTH(gather_u8, "rapp_gather - 8-bit image gather")

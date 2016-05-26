@@ -30,6 +30,7 @@
  *  @brief  RAPP conditional operations.
  */
 
+#include <stdlib.h> /* Using abs(). */
 #include "rappcompute.h"    /* RAPP Compute API  */
 #include "rapp_api.h"       /* API symbol macro  */
 #include "rapp_util.h"      /* Validation        */
@@ -82,6 +83,50 @@ RAPP_API(int, rapp_cond_set_u8,
     return RAPP_OK;
 }
 
+/**
+ *  Add a constant conditionally.
+ */
+RAPP_API(int, rapp_cond_addc_u8,
+         (uint8_t *restrict dst, int dst_dim,
+         const uint8_t *restrict map, int map_dim,
+         int width, int height, int value))
+{
+    if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
+        return RAPP_ERR_UNINITIALIZED;
+    }
+
+    /* Validate arguments. */
+    if (!RAPP_VALIDATE_RESTRICT_PLUS(dst, dst_dim, map, map_dim, height,
+                                     rc_align(width),
+                                     rc_align((width + 7) / 8)))
+    {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
+        return RAPP_ERR_OVERLAP;
+    }
+
+    if (!RAPP_VALIDATE_U8 (dst, dst_dim, width, height) ||
+        !RAPP_VALIDATE_BIN(map, map_dim, width, height))
+    {
+        /* Return the error code. */
+        return rapp_error_u8_bin(dst, dst_dim, map, map_dim, width, height);
+    }
+
+    if (abs(value) > 0xff) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
+        return RAPP_ERR_PARM_RANGE;
+    }
+
+    /* Perform operation. */
+    if (value < 0) {
+        rc_cond_subc_u8(dst, dst_dim, map, map_dim, width, height, -value);
+    }
+    else {
+        rc_cond_addc_u8(dst, dst_dim, map, map_dim, width, height, value);
+    }
+
+    return RAPP_OK;
+}
 
 /**
  *  Copy pixels conditionally.
@@ -118,6 +163,7 @@ RAPP_API(int, rapp_cond_copy_u8,
         return rapp_error_u8_u8(dst, dst_dim, width, height,
                                 src, src_dim, width, height);
     }
+
     if (!RAPP_VALIDATE_BIN(map, map_dim, width, height)) {
         /* Return the error code */
         return rapp_error_bin(map, map_dim, width, height);
@@ -125,6 +171,53 @@ RAPP_API(int, rapp_cond_copy_u8,
 
     /* Perform operation */
     rc_cond_copy_u8(dst, dst_dim, src, src_dim, map, map_dim, width, height);
+
+    return RAPP_OK;
+}
+
+/**
+ *  Add pixels conditionally.
+ */
+RAPP_API(int, rapp_cond_add_u8,
+         (uint8_t *restrict dst, int dst_dim,
+         const uint8_t *restrict src, int src_dim,
+         const uint8_t *restrict map, int map_dim,
+         int width, int height))
+{
+    if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
+        return RAPP_ERR_UNINITIALIZED;
+    }
+
+    /* Validate arguments. */
+    if (!RAPP_VALIDATE_RESTRICT_PLUS(dst, dst_dim, map, map_dim, height,
+                                     rc_align(width),
+                                     rc_align((width + 7) / 8)))
+    {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
+        return RAPP_ERR_OVERLAP;
+    }
+
+    if (!RAPP_VALIDATE_RESTRICT(dst, dst_dim, src, src_dim, height, width)) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
+        return RAPP_ERR_OVERLAP;
+    }
+
+    if (!RAPP_VALIDATE_U8(dst, dst_dim, width, height) ||
+        !RAPP_VALIDATE_U8(src, src_dim, width, height))
+    {
+        /* Return the error code. */
+        return rapp_error_u8_u8(dst, dst_dim, width, height,
+                                src, src_dim, width, height);
+    }
+
+    if (!RAPP_VALIDATE_BIN(map, map_dim, width, height)) {
+        /* Return the error code. */
+        return rapp_error_bin(map, map_dim, width, height);
+    }
+
+    /* Perform operation. */
+    rc_cond_add_u8(dst, dst_dim, src, src_dim, map, map_dim, width, height);
 
     return RAPP_OK;
 }

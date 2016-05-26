@@ -743,11 +743,23 @@
 #define RAPP_LOG_ARGSFORMAT_rapp_cond_set_u8 "%p, %d, %p, %d, %d, %d, %u"
 #define RAPP_LOG_RETFORMAT_rapp_cond_set_u8 "%d"
 
+#define RAPP_LOG_IDENTITY_IF_RETURN_rapp_cond_addc_u8(x) x
+#define RAPP_LOG_IDENTITY_IF_ARGS_rapp_cond_addc_u8(x) x
+#define RAPP_LOG_ARGLIST_rapp_cond_addc_u8 dst, dst_dim, map, map_dim, width, height, value
+#define RAPP_LOG_ARGSFORMAT_rapp_cond_addc_u8 "%p, %d, %p, %d, %d, %d, %d"
+#define RAPP_LOG_RETFORMAT_rapp_cond_addc_u8 "%d"
+
 #define RAPP_LOG_IDENTITY_IF_RETURN_rapp_cond_copy_u8(x) x
 #define RAPP_LOG_IDENTITY_IF_ARGS_rapp_cond_copy_u8(x) x
 #define RAPP_LOG_ARGLIST_rapp_cond_copy_u8 dst, dst_dim, src, src_dim, map, map_dim, width, height
 #define RAPP_LOG_ARGSFORMAT_rapp_cond_copy_u8 "%p, %d, %p, %d, %p, %d, %d, %d"
 #define RAPP_LOG_RETFORMAT_rapp_cond_copy_u8 "%d"
+
+#define RAPP_LOG_IDENTITY_IF_RETURN_rapp_cond_add_u8(x) x
+#define RAPP_LOG_IDENTITY_IF_ARGS_rapp_cond_add_u8(x) x
+#define RAPP_LOG_ARGLIST_rapp_cond_add_u8 dst, dst_dim, src, src_dim, map, map_dim, width, height
+#define RAPP_LOG_ARGSFORMAT_rapp_cond_add_u8 "%p, %d, %p, %d, %p, %d, %d, %d"
+#define RAPP_LOG_RETFORMAT_rapp_cond_add_u8 "%d"
 
 #define RAPP_LOG_IDENTITY_IF_RETURN_rapp_gather_u8(x) x
 #define RAPP_LOG_IDENTITY_IF_ARGS_rapp_gather_u8(x) x

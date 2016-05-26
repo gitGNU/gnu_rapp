@@ -33,6 +33,12 @@
 #include "rapp.h"          /* RAPP API            */
 #include "rapp_ref_cond.h" /* Conditional ops API */
 
+#undef  MIN
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
+
+#undef  CLAMP
+#define CLAMP(x, a, b) ((x) < (a) ? (a) : (x) > (b) ? (b) : (x))
+
 
 /*
  * -------------------------------------------------------------
@@ -57,6 +63,22 @@ rapp_ref_cond_set_u8(uint8_t *dst, int dst_dim,
 }
 
 void
+rapp_ref_cond_addc_u8(uint8_t *dst, int dst_dim,
+                      const uint8_t *map, int map_dim,
+                      int width, int height, int value)
+{
+    int x, y;
+
+    for (y = 0; y < height; y++) {
+        for (x = 0; x < width; x++) {
+            if (rapp_pixel_get_bin(map, map_dim, 0, x, y)) {
+                dst[y*dst_dim + x] = CLAMP(dst[y*dst_dim + x] + value, 0, 0xff);
+            }
+        }
+    }
+}
+
+void
 rapp_ref_cond_copy_u8(uint8_t *dst, int dst_dim,
                       const uint8_t *src, int src_dim,
                       const uint8_t *map, int map_dim,
@@ -68,6 +90,24 @@ rapp_ref_cond_copy_u8(uint8_t *dst, int dst_dim,
         for (x = 0; x < width; x++) {
             if (rapp_pixel_get_bin(map, map_dim, 0, x, y)) {
                 dst[y*dst_dim + x] = src[y*src_dim + x];
+            }
+        }
+    }
+}
+
+void
+rapp_ref_cond_add_u8(uint8_t *dst, int dst_dim,
+                     const uint8_t *src, int src_dim,
+                     const uint8_t *map, int map_dim,
+                     int width, int height)
+{
+    int x, y;
+
+    for (y = 0; y < height; y++) {
+        for (x = 0; x < width; x++) {
+            if (rapp_pixel_get_bin(map, map_dim, 0, x, y)) {
+                dst[y*dst_dim + x] = CLAMP(dst[y*dst_dim + x] +
+                                           src[y*src_dim + x], 0, 0xff);
             }
         }
     }

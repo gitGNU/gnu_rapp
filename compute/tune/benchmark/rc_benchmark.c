@@ -116,6 +116,7 @@ typedef struct rc_bmark_data_st {
     uint8_t *src;     /* Source buffer large enough for all images      */
     uint8_t *aux;     /* Auxiliary buffer large enough for all images  */
     uint8_t *aux2;    /* Second similar auxiliary buffer */
+    uint8_t *map;     /* Buffer for binary mapping.                     */
     int      dim_bin; /* Binary row dimension, with padding             */
     int      dim_u8;  /* 8-bit row dimension, with padding              */
     int      rot_u8;  /* 8-bit rotatated row dimension, no padding      */
@@ -171,6 +172,12 @@ rc_bmark_exec_bin_u8(int (*func)(), const int *args);
 
 static void
 rc_bmark_exec_u8_bin(int (*func)(), const int *args);
+
+static void
+rc_bmark_exec_u8_bin_c(int (*func)(), const int *args);
+
+static void
+rc_bmark_exec_u8_bin_u8_c(int (*func)(), const int *args);
 
 static void
 rc_bmark_exec_u8(int (*func)(), const int *args);
@@ -473,7 +480,13 @@ static const rc_bmark_table_t rc_bmark_suite[] = {
     RC_BMARK_ENTRY(rc_morph_hmt_golay_e_3x3_c8_r315_bin,  bin_bin,   0, 0),
     /* Binary logical margins */
     RC_BMARK_ENTRY(rc_margin_horz_bin,                    p_bin,     0, 0),
-    RC_BMARK_ENTRY(rc_margin_vert_bin,                    p_bin,     0, 0)
+    RC_BMARK_ENTRY(rc_margin_vert_bin,                    p_bin,        0, 0),
+    /* Conditional operations */
+    RC_BMARK_ENTRY(rc_cond_set_u8,                        u8_bin_c,     1, 0),
+    RC_BMARK_ENTRY(rc_cond_addc_u8,                       u8_bin_c,     1, 0),
+    RC_BMARK_ENTRY(rc_cond_subc_u8,                       u8_bin_c,     1, 0),
+    RC_BMARK_ENTRY(rc_cond_copy_u8,                       u8_bin_u8_c,  0, 0),
+    RC_BMARK_ENTRY(rc_cond_add_u8,                        u8_bin_u8_c,  0, 0)
 };
 
 
@@ -688,6 +701,7 @@ rc_bmark_setup(void *lib, int width, int height)
     rc_bmark_data.src     = (*alloc)(size);
     rc_bmark_data.aux     = (*alloc)(size);
     rc_bmark_data.aux2    = (*alloc)(size);
+    rc_bmark_data.map     = (*alloc)(size);
     rc_bmark_data.dim_bin = dim_bin;
     rc_bmark_data.dim_u8  = dim_u8;
     rc_bmark_data.rot_u8  = rot_u8;
@@ -702,10 +716,15 @@ rc_bmark_setup(void *lib, int width, int height)
     memset(rc_bmark_data.aux, 0, size);
     memset(rc_bmark_data.aux2, 0, size);
 
+    memset(&rc_bmark_data.map[0], 0, size/3);
+    memset(&rc_bmark_data.map[dim_bin * (height / 3)], 0xff, size/3);
+    memset(&rc_bmark_data.map[dim_bin * (2 * height / 3)], 0x55, size/3);
+
     rc_bmark_data.dst += offset;
     rc_bmark_data.src += offset;
     rc_bmark_data.aux += offset;
     rc_bmark_data.aux2 += offset;
+    rc_bmark_data.map += offset;
 }
 
 static void
@@ -715,6 +734,7 @@ rc_bmark_cleanup(void)
     (*rc_bmark_data.release)(&rc_bmark_data.dst[-rc_bmark_data.offset]);
     (*rc_bmark_data.release)(&rc_bmark_data.aux[-rc_bmark_data.offset]);
     (*rc_bmark_data.release)(&rc_bmark_data.aux2[-rc_bmark_data.offset]);
+    (*rc_bmark_data.release)(&rc_bmark_data.map[-rc_bmark_data.offset]);
 }
 
 static void
@@ -798,6 +818,16 @@ rc_bmark_exec_bin_u8(int (*func)(), const int *args)
 }
 
 static void
+rc_bmark_exec_u8_bin_c(int (*func)(), const int *args)
+{
+    (void)args;
+    (*func)(rc_bmark_data.dst,   rc_bmark_data.dim_u8,
+            rc_bmark_data.map,   rc_bmark_data.dim_bin,
+            rc_bmark_data.width, rc_bmark_data.height,
+            (int)args[0]);
+}
+
+static void
 rc_bmark_exec_u8_bin(int (*func)(), const int *args)
 {
     (void)args;
@@ -812,6 +842,16 @@ rc_bmark_exec_u8(int (*func)(), const int *args)
     (*func)(rc_bmark_data.dst,   rc_bmark_data.dim_u8,
             rc_bmark_data.width, rc_bmark_data.height,
             (int)args[0], (int)args[1]);
+}
+
+static void
+rc_bmark_exec_u8_bin_u8_c(int (*func)(), const int *args)
+{
+    (void)args;
+    (*func)(rc_bmark_data.dst,   rc_bmark_data.dim_u8,
+            rc_bmark_data.src,   rc_bmark_data.dim_u8,
+            rc_bmark_data.map,   rc_bmark_data.dim_bin,
+            rc_bmark_data.width, rc_bmark_data.height);
 }
 
 static void

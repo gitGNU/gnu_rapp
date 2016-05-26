@@ -211,6 +211,9 @@ static void
 rapp_bmark_exec_cond_set_u8(int (*func)(), const int *args);
 
 static void
+rapp_bmark_exec_cond_u8_u8(int (*func)(), const int *args);
+
+static void
 rapp_bmark_exec_cond_copy_u8(int (*func)(), const int *args);
 
 static void
@@ -369,9 +372,15 @@ static const rapp_bmark_table_t rapp_bmark_suite[] = {
     RAPP_BMARK_ENTRY(cond_set_u8,  "empty",   cond_set_u8,  2,  0),
     RAPP_BMARK_ENTRY(cond_set_u8,  "full",    cond_set_u8,  0,  0),
     RAPP_BMARK_ENTRY(cond_set_u8,  "checker", cond_set_u8,  3,  0),
+    RAPP_BMARK_ENTRY(cond_addc_u8, "empty",   cond_set_u8,  2,  1),
+    RAPP_BMARK_ENTRY(cond_addc_u8, "full",    cond_set_u8,  0,  1),
+    RAPP_BMARK_ENTRY(cond_addc_u8, "checker", cond_set_u8,  3,  1),
     RAPP_BMARK_ENTRY(cond_copy_u8, "empty",   cond_copy_u8, 2,  0),
     RAPP_BMARK_ENTRY(cond_copy_u8, "full",    cond_copy_u8, 0,  0),
     RAPP_BMARK_ENTRY(cond_copy_u8, "checker", cond_copy_u8, 3,  0),
+    RAPP_BMARK_ENTRY(cond_add_u8,  "empty",   cond_u8_u8,   2,  0),
+    RAPP_BMARK_ENTRY(cond_add_u8,  "full",    cond_u8_u8,   0,  0),
+    RAPP_BMARK_ENTRY(cond_add_u8,  "checker", cond_u8_u8,   3,  0),
     /* rapp_gather functions */
     RAPP_BMARK_ENTRY(gather_u8, "empty, 1 row",    gather_u8, 2,  1),
     RAPP_BMARK_ENTRY(gather_u8, "full, 1 row",     gather_u8, 0,  1),
@@ -830,7 +839,18 @@ rapp_bmark_exec_cond_set_u8(int (*func)(), const int *args)
     int                      idx  = args[0];
     (*func)(data->dst, data->dim_u8,
             data->src[idx], data->dim_bin,
-            data->width, data->height, 0);
+            data->width, data->height, args[1]);
+}
+
+static void
+rapp_bmark_exec_cond_u8_u8(int (*func)(), const int *args)
+{
+    const rapp_bmark_data_t *data = &rapp_bmark_data;
+    int                      idx  = args[0];
+    (*func)(data->dst, data->dim_u8,
+            data->set, data->dim_u8,
+            data->src[idx], data->dim_bin,
+            data->width, data->height, args[1]);
 }
 
 static void

@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -35,20 +35,281 @@
 #include "rc_word.h"     /* Word operations */
 #include "rc_table.h"    /* Lookup tables   */
 #include "rc_cond.h"     /* Exported API    */
+#include "rc_util.h"     /* MIN(), MAX(). */
+#include "rc_impl_cfg.h" /* Tuning. */
+
+
+/**
+ *  Conditional pixel operation template.
+ *  Single-operand: op1 is the working buffer and arg1 and arg2 are
+ *  additional arguments.
+ *  double-operand: op1 is the dst buffer and arg1 is the src buffer
+ *  and arg2 is an additional argument.
+ *  pixop is the pixelwise operation macro, same as in standard pixop.
+ *  mask should be the values 0x0 or 0xff.
+ *
+ *  The result depends on the mask value:
+ *  If the mask is set the result of pixop is stored.
+ *  If the mask is not set, the previous value is retained
+ *  (actually, written back).
+ */
+#define RC_COND_PIXOP_TEMPLATE(op1, pixop, arg1, mask)  \
+do {                                                    \
+    int cdst_ = (op1);                                  \
+    pixop(cdst_, (arg1));                               \
+    (op1) = ((op1) & ~(mask)) | (cdst_ & (mask));       \
+} while (0)
+
+/**
+ *  Saturated addition.
+ */
+#define RC_PIXOP_ADDS(op1, op2)      \
+do {                                 \
+    int sum_ = (op1) + (op2);        \
+    (op1) = MIN(sum_, 0xff);         \
+} while (0)
+
+/**
+ *  Saturated subtraction.
+ */
+#define RC_PIXOP_SUBS(op1, op2)      \
+do {                                 \
+    int diff_ = (op1) - (op2);       \
+    (op1) = MAX(diff_, 0);           \
+} while (0)
 
 /*
  * -------------------------------------------------------------
- *  Local functions fwd declare
+ *  Single-operand word template macro.
  * -------------------------------------------------------------
  */
+#define RC_COND_WORD_TEMPLATE(dst, pixop, arg1, word)                    \
+do {                                                                     \
+    /* Handle individual bytes. */                                       \
+    uint32_t *d32_ = (uint32_t*)(dst);                                   \
+    rc_word_t mask_word_ = word;                                         \
+    int b_;                                                              \
+    for (b_ = 0;                                                         \
+         b_ < 8*RC_WORD_SIZE && mask_word_;                              \
+         b_ += 8, mask_word_ = RC_WORD_SHL(mask_word_, 8))               \
+    {                                                                    \
+        /* Read 8 bits from the conditional mask. */                     \
+        rc_word_t byte_ = mask_word_ & RC_WORD_INSERT(0xff, 0, 8);       \
+        if (!byte_) {                                                    \
+            /* All conditions false. Skip two 32-bit words. */           \
+            d32_ += 2;                                                   \
+        }                                                                \
+        else if (byte_ == 0xff) {                                        \
+            /* Apply pixop on two 32-bit words without condition. */     \
+            int words_;                                                  \
+            for (words_ = 0; words_ < 2; words_++, d32_++) {             \
+                uint32_t src32_ = *d32_;                                 \
+                uint32_t res32_ = 0;                                     \
+                unsigned bn_;                                            \
+                                                                         \
+                for (bn_ = 0; bn_ < sizeof(src32_); bn_++) {             \
+                    unsigned d_;                                         \
+                    d_ = RC_WORD_EXTRACT(src32_, 8*bn_, 8);              \
+                    pixop(d_, arg1);                                     \
+                    res32_ |= RC_WORD_INSERT(d_, 8*bn_, 8);              \
+                }                                                        \
+                                                                         \
+                *d32_ = res32_;                                          \
+            }                                                            \
+        }                                                                \
+        else {                                                           \
+            /* Handle nibbles. */                                        \
+            unsigned  nibble_;                                           \
+            int words_;                                                  \
+            for (words_ = 0; words_ < 2; words_++, d32_++) {             \
+                nibble_ = RC_WORD_EXTRACT(byte_, words_ * 4, 4);         \
+                if (nibble_) {                                           \
+                    uint32_t m32_ = rc_table_expand[nibble_];            \
+                    uint32_t src32_ = *d32_;                             \
+                    uint32_t res32_ = 0;                                 \
+                    unsigned bn_;                                        \
+                                                                         \
+                    for (bn_ = 0; bn_ < sizeof(src32_); bn_++) {         \
+                        unsigned d_;                                     \
+                        unsigned m_;                                     \
+                        m_ = RC_WORD_EXTRACT(m32_,  8*bn_, 8);           \
+                        d_ = RC_WORD_EXTRACT(src32_, 8*bn_, 8);          \
+                        RC_COND_PIXOP_TEMPLATE(d_, pixop, arg1, m_);     \
+                        res32_ |= RC_WORD_INSERT(d_, 8*bn_, 8);          \
+                    }                                                    \
+                    *d32_ = res32_;                                      \
+                }                                                        \
+            }                                                            \
+        }                                                                \
+    }                                                                    \
+} while (0)
 
+#define RC_COND_TEMPLATE(dst, dst_dim, map, map_dim, width, height,     \
+                         pixop, arg1)                                   \
+do {                                                                    \
+    /* Full words. */                                                   \
+    int len_ = (width) / (8*RC_WORD_SIZE);                              \
+    /* Remaining pixels. */                                             \
+    int rem_ = (width) % (8*RC_WORD_SIZE);                              \
+    /* Partial word bit mask. */                                        \
+    rc_word_t mask_ = RC_WORD_SHL(RC_WORD_ONE, 8*RC_WORD_SIZE - rem_);  \
+                                                                        \
+    /* Process all rows. */                                             \
+    int y_;                                                             \
+    for (y_ = 0; y_ < (height); y_++) {                                 \
+        int i_ = y_*(map_dim);                                          \
+        int j_ = y_*(dst_dim);                                          \
+        int x_;                                                         \
+                                                                        \
+        /* Handle all full words. */                                    \
+        for (x_ = 0;                                                    \
+             x_ < len_;                                                 \
+             x_++, i_ += RC_WORD_SIZE, j_ += 8*RC_WORD_SIZE) {          \
+            rc_word_t word_ = RC_WORD_LOAD(&(map)[i_]);                 \
+            if (RC_UNLIKELY(word_)) {                                   \
+                RC_COND_WORD_TEMPLATE(&(dst)[j_], pixop, arg1, word_);  \
+            }                                                           \
+        }                                                               \
+                                                                        \
+        /* Handle the partial word. */                                  \
+        if (rem_) {                                                     \
+            rc_word_t word_ = RC_WORD_LOAD(&(map)[i_]) & mask_;         \
+            if (RC_UNLIKELY(word_)) {                                   \
+                RC_COND_WORD_TEMPLATE(&(dst)[j_], pixop, arg1, word_);  \
+            }                                                           \
+        }                                                               \
+    }                                                                   \
+} while (0)
+
+/*
+ * -------------------------------------------------------------
+ *  Double-operand word template macro.
+ * -------------------------------------------------------------
+ */
+#define RC_COND_WORD_TEMPLATE2(dst, src, pixop, word)                  \
+do {                                                                   \
+    /* Handle individual bytes. */                                     \
+    uint32_t *d32_ = (uint32_t*)(dst);                                 \
+    const uint32_t *s32_ = (const uint32_t*)(src);                     \
+    rc_word_t mask_word_ = word;                                       \
+    int b_;                                                            \
+    for (b_ = 0;                                                       \
+         b_ < 8*RC_WORD_SIZE && mask_word_;                            \
+         b_ += 8, mask_word_ = RC_WORD_SHL(mask_word_, 8))             \
+    {                                                                  \
+        /* Read 8 bits from the conditional mask. */                   \
+        rc_word_t byte_ = mask_word_ & RC_WORD_INSERT(0xff, 0, 8);     \
+        if (!byte_) {                                                  \
+            /* All conditions false. Skip two 32-bit words. */         \
+            d32_ += 2;                                                 \
+            s32_ += 2;                                                 \
+        }                                                              \
+        else if (byte_ == 0xff) {                                      \
+            /* Apply pixop on two 32-bit words without condition. */   \
+            int words_;                                                \
+            for (words_ = 0; words_ < 2; words_++, d32_++, s32_++) {   \
+                const uint32_t src32_ = *s32_;                         \
+                uint32_t dst32_ = *d32_;                               \
+                uint32_t res32_ = 0;                                   \
+                unsigned bn_;                                          \
+                                                                       \
+                for (bn_ = 0; bn_ < sizeof(res32_); bn_++) {           \
+                    unsigned d_, s_;                                   \
+                    s_ = RC_WORD_EXTRACT(src32_, 8*bn_, 8);            \
+                    d_ = RC_WORD_EXTRACT(dst32_, 8*bn_, 8);            \
+                    pixop(d_, s_);                                     \
+                    res32_ |= RC_WORD_INSERT(d_, 8*bn_, 8);            \
+                }                                                      \
+                *d32_ = res32_;                                        \
+            }                                                          \
+        }                                                              \
+        else {                                                         \
+            /* Handle nibbles. */                                      \
+            unsigned  nibble_;                                         \
+            int words_;                                                \
+            for (words_ = 0; words_ < 2; words_++, d32_++, s32_++) {   \
+                nibble_ = RC_WORD_EXTRACT(byte_, words_ * 4, 4);       \
+                if (nibble_) {                                         \
+                    uint32_t m32_ = rc_table_expand[nibble_];          \
+                    const uint32_t src32_ = *s32_;                     \
+                    uint32_t dst32_ = *d32_;                           \
+                    uint32_t res32_ = 0;                               \
+                    unsigned bn_;                                      \
+                                                                       \
+                    for (bn_ = 0; bn_ < sizeof(res32_); bn_++) {       \
+                        unsigned d_, s_, m_;                           \
+                        s_ = RC_WORD_EXTRACT(src32_, 8*bn_, 8);        \
+                        d_ = RC_WORD_EXTRACT(dst32_, 8*bn_, 8);        \
+                        m_ = RC_WORD_EXTRACT(m32_, 8*bn_, 8);          \
+                        RC_COND_PIXOP_TEMPLATE(d_, pixop, s_, m_);     \
+                        res32_ |= RC_WORD_INSERT(d_, 8*bn_, 8);        \
+                    }                                                  \
+                    *d32_ = res32_;                                    \
+                }                                                      \
+            }                                                          \
+        }                                                              \
+    }                                                                  \
+} while (0)
+
+#define RC_COND_TEMPLATE2(dst, dst_dim, map, map_dim, width, height,    \
+                          pixop)                                        \
+do {                                                                    \
+    /* Full words. */                                                   \
+    int len_ = (width) / (8*RC_WORD_SIZE);                              \
+    /* Remaining pixels. */                                             \
+    int rem_ = (width) % (8*RC_WORD_SIZE);                              \
+    /* Partial word bit mask. */                                        \
+    rc_word_t mask_ = RC_WORD_SHL(RC_WORD_ONE, 8*RC_WORD_SIZE - rem_);  \
+    int y_;                                                             \
+    /* Process all rows. */                                             \
+    for (y_ = 0; y_ < (height); y_++) {                                 \
+        int i_ = y_*(map_dim);                                          \
+        int j_ = y_*(dst_dim);                                          \
+        int k_ = y_*(src_dim);                                          \
+        int x_;                                                         \
+                                                                        \
+        /* Handle all full words. */                                    \
+        for (x_ = 0;                                                    \
+             x_ < len_;                                                 \
+             x_++,                                                      \
+               i_ += RC_WORD_SIZE,                                      \
+               j_ += 8*RC_WORD_SIZE,                                    \
+               k_ += 8*RC_WORD_SIZE)                                    \
+        {                                                               \
+            rc_word_t word_ = RC_WORD_LOAD(&(map)[i_]);                 \
+            if (RC_UNLIKELY(word_)) {                                   \
+                RC_COND_WORD_TEMPLATE2(&(dst)[j_], &(src)[k_],          \
+                                       pixop, word_);                   \
+            }                                                           \
+        }                                                               \
+                                                                        \
+        /* Handle the partial word. */                                  \
+        if (rem_) {                                                     \
+            rc_word_t word_ = RC_WORD_LOAD(&(map)[i_]) & mask_;         \
+            if (RC_UNLIKELY(word_)) {                                   \
+                RC_COND_WORD_TEMPLATE2(&(dst)[j_], &(src)[k_],          \
+                                       pixop, word_);                   \
+            }                                                           \
+        }                                                               \
+    }                                                                   \
+} while (0)
+
+/*
+ * -------------------------------------------------------------
+ *  Local functions fwd declare.
+ * -------------------------------------------------------------
+ */
+#if RC_IMPL(rc_cond_set_u8, 1)
 static void
 rc_cond_set_word(uint8_t *buf, rc_word_t word, uint32_t v32);
+#endif
 
+#if RC_IMPL(rc_cond_copy_u8, 1)
 static void
 rc_cond_copy_word(uint8_t *restrict dst,
                   const uint8_t *restrict src,
                   rc_word_t word);
+#endif
 
 /*
  * -------------------------------------------------------------
@@ -56,6 +317,7 @@ rc_cond_copy_word(uint8_t *restrict dst,
  * -------------------------------------------------------------
  */
 
+#if RC_IMPL(rc_cond_set_u8, 1)
 void
 rc_cond_set_u8(uint8_t *restrict dst, int dst_dim,
                const uint8_t *restrict map, int map_dim,
@@ -95,7 +357,9 @@ rc_cond_set_u8(uint8_t *restrict dst, int dst_dim,
         }
     }
 }
+#endif
 
+#if RC_IMPL(rc_cond_copy_u8, 1)
 void
 rc_cond_copy_u8(uint8_t *restrict dst, int dst_dim,
                 const uint8_t *restrict src, int src_dim,
@@ -135,6 +399,7 @@ rc_cond_copy_u8(uint8_t *restrict dst, int dst_dim,
         }
     }
 }
+#endif
 
 
 /*
@@ -143,6 +408,7 @@ rc_cond_copy_u8(uint8_t *restrict dst, int dst_dim,
  * -------------------------------------------------------------
  */
 
+#if RC_IMPL(rc_cond_set_u8, 1)
 static void
 rc_cond_set_word(uint8_t *buf, rc_word_t word, uint32_t v32)
 {
@@ -189,7 +455,31 @@ rc_cond_set_word(uint8_t *buf, rc_word_t word, uint32_t v32)
         }
     }
 }
+#endif
 
+#if RC_IMPL(rc_cond_addc_u8, 1)
+void
+rc_cond_addc_u8(uint8_t *restrict dst, int dst_dim,
+                const uint8_t *restrict map, int map_dim,
+                int width, int height, unsigned value)
+{
+    RC_COND_TEMPLATE(dst, dst_dim, map, map_dim, width, height,
+                     RC_PIXOP_ADDS, value);
+}
+#endif
+
+#if RC_IMPL(rc_cond_subc_u8, 1)
+void
+rc_cond_subc_u8(uint8_t *restrict dst, int dst_dim,
+                const uint8_t *restrict map, int map_dim,
+                int width, int height, unsigned value)
+{
+    RC_COND_TEMPLATE(dst, dst_dim, map, map_dim, width, height,
+                     RC_PIXOP_SUBS, value);
+}
+#endif
+
+#if RC_IMPL(rc_cond_copy_u8, 1)
 static void
 rc_cond_copy_word(uint8_t *restrict dst,
                   const uint8_t *restrict src,
@@ -240,3 +530,16 @@ rc_cond_copy_word(uint8_t *restrict dst,
         }
     }
 }
+#endif
+
+#if RC_IMPL(rc_cond_add_u8, 1)
+void
+rc_cond_add_u8(uint8_t *restrict dst, int dst_dim,
+               const uint8_t *restrict src, int src_dim,
+               const uint8_t *restrict map, int map_dim,
+               int width, int height)
+{
+    RC_COND_TEMPLATE2(dst, dst_dim, map, map_dim,
+                      width, height, RC_PIXOP_ADDS);
+}
+#endif

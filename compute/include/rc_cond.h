@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -63,6 +63,38 @@ rc_cond_set_u8(uint8_t *restrict dst, int dst_dim,
                int width, int height, unsigned value);
 
 /**
+ *  Conditional addition with unsigned constant.
+ *
+ *  @param[out]  dst      Destination pixel buffer.
+ *  @param       dst_dim  Row dimension of the destination buffer.
+ *  @param[in]   map      Binary map pixel buffer.
+ *  @param       map_dim  Row dimension of the map buffer.
+ *  @param       width    Image width in pixels.
+ *  @param       height   Image height in pixels.
+ *  @param       value    Unsigned constant term.
+ */
+RC_EXPORT void
+rc_cond_addc_u8(uint8_t *restrict dst, int dst_dim,
+                const uint8_t *restrict map, int map_dim,
+                int width, int height, unsigned value);
+
+/**
+ *  Conditional subtraction of unsigned constant.
+ *
+ *  @param[out]  dst      Destination pixel buffer.
+ *  @param       dst_dim  Row dimension of the destination buffer.
+ *  @param[in]   map      Binary map pixel buffer.
+ *  @param       map_dim  Row dimension of the map buffer.
+ *  @param       width    Image width in pixels.
+ *  @param       height   Image height in pixels.
+ *  @param       value    Unsigned constant term.
+ */
+RC_EXPORT void
+rc_cond_subc_u8(uint8_t *restrict dst, int dst_dim,
+                const uint8_t *restrict map, int map_dim,
+                int width, int height, unsigned value);
+
+/**
  *  Conditional copy.
  *
  *  @param[out]  dst      Destination pixel buffer.
@@ -80,6 +112,23 @@ rc_cond_copy_u8(uint8_t *restrict dst, int dst_dim,
                 const uint8_t *restrict map, int map_dim,
                 int width, int height);
 
+/**
+ *  Conditional addition.
+ *
+ *  @param[out]  dst      Destination pixel buffer.
+ *  @param       dst_dim  Row dimension of the destination buffer.
+ *  @param[in]   src      Source pixel buffer.
+ *  @param       src_dim  Row dimension of the destination buffer.
+ *  @param[in]   map      Binary map pixel buffer.
+ *  @param       map_dim  Row dimension of the map buffer.
+ *  @param       width    Image width in pixels.
+ *  @param       height   Image height in pixels.
+ */
+RC_EXPORT void
+rc_cond_add_u8(uint8_t *restrict dst, int dst_dim,
+               const uint8_t *restrict src, int src_dim,
+               const uint8_t *restrict map, int map_dim,
+               int width, int height);
 
 #ifdef __cplusplus
 };

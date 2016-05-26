@@ -89,6 +89,25 @@ rapp_cond_set_u8(uint8_t *restrict dst, int dst_dim,
                  int width, int height, unsigned value);
 
 /**
+ *  Add signed constant conditionally.
+ *  Computes buf[i] = buf[i] + value, where map[i] is set.
+ *  The result is saturated.
+ *
+ *  @param[out] dst      Destination pixel buffer.
+ *  @param      dst_dim  Row dimension of the destination buffer.
+ *  @param[in]  map      Binary map pixel buffer.
+ *  @param      map_dim  Row dimension of the binary map buffer.
+ *  @param      width    Image width in pixels.
+ *  @param      height   Image height in pixels.
+ *  @param      value    Constant term, in the range -255 - 255.
+ *  @return              A negative error code on error, zero otherwise.
+ */
+RAPP_EXPORT int
+rapp_cond_addc_u8(uint8_t *restrict dst, int dst_dim,
+                  const uint8_t *restrict map, int map_dim,
+                  int width, int height, int value);
+
+/**
  *  Copy pixels conditionally.
  *  Copies pixels if the corresponding map pixel is set.
  *
@@ -107,6 +126,27 @@ rapp_cond_copy_u8(uint8_t *restrict dst, int dst_dim,
                   const uint8_t *restrict src, int src_dim,
                   const uint8_t *restrict map, int map_dim,
                   int width, int height);
+
+/**
+ *  Add pixels conditionally.
+ *  Computes dst[i] = dst[i] + src[i], where map[i] is set.
+ *  The result is saturated.
+ *
+ *  @param[out] dst      Destination pixel buffer.
+ *  @param      dst_dim  Row dimension of the destination buffer.
+ *  @param[in]  src      Source pixel buffer.
+ *  @param      src_dim  Row dimension of the source buffer.
+ *  @param[in]  map      Binary map pixel buffer.
+ *  @param      map_dim  Row dimension of the binary map buffer.
+ *  @param      width    Image width in pixels.
+ *  @param      height   Image height in pixels.
+ *  @return              A negative error code on error, zero otherwise.
+ */
+RAPP_EXPORT int
+rapp_cond_add_u8(uint8_t *restrict dst, int dst_dim,
+                 const uint8_t *restrict src, int src_dim,
+                 const uint8_t *restrict map, int map_dim,
+                 int width, int height);
 
 #ifdef __cplusplus
 };
