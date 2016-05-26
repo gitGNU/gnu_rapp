@@ -59,9 +59,11 @@ typedef int32_t rc_vec32_type __attribute__((__vector_size__(16)));
  *  Code generated for the version below usually comes together with a
  *  vector move for a separate register, but no memory traffic.
  */
-#define RC_VEC_vec_to_32(x)                                             \
-   (__extension__                                                       \
-    ({ uint32_t x_; __asm__ (";# %1 -> %0" : "=C" (x_) : "0" (x)); x_;}))
+#define RC_VEC_vec_to_32(x) (__extension__ ({           \
+    uint32_t xx_;                                       \
+    __asm__ (";# %1 -> %0" : "=C" (xx_) : "0" (x));     \
+    xx_;                                                \
+}))
 
 /**
  *  When the source is in a general register, this'll get us two mtc2,
