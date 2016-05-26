@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -52,7 +52,7 @@ rapp_ref_cond_set_u8(uint8_t *dst, int dst_dim,
 
 void
 rapp_ref_cond_copy_u8(uint8_t *dst, int dst_dim,
-                      uint8_t *src, int src_dim,
+                      const uint8_t *src, int src_dim,
                       const uint8_t *map, int map_dim,
                       int width, int height);
 
