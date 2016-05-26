@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#  Copyright (C) 2005-2010, Axis Communications AB, LUND, SWEDEN
+#  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
 #
 #  This file is part of RAPP.
 #
@@ -93,7 +93,8 @@ test -n "${RAPP_STOP_AFTER_SELFEXTRACT}" &&
   exit 0
 
 # Run the bootstrap script
-cd ${TMPDIR}/payload && ../bootstrap.sh ${CURDIR} && cd ${CURDIR}
+cd ${TMPDIR}/payload && ../bootstrap.sh ${CURDIR}
+cd ${CURDIR}
 
 # Clean up
 test -n "${RAPP_KEEP_TMPDIR}" || rm -rf ${TMPDIR}
