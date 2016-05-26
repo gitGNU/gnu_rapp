@@ -35,7 +35,8 @@
  *  @brief Thresholding 8-bit to binary.
  *
  *  The thresholding functions convert 8-bit images to binary images,
- *  using one or two thresholds. All images must be aligned.
+ *  using one or two thresholds, which can be constants or per-pixel
+ *  8-bit "images". All images must be aligned.
  *
  *  <p>@ref grp_type "Next section: Type Conversions"</p>
  *
