@@ -58,34 +58,34 @@ extern "C" {
  *  Rasterize a 4-connectivity chain code.
  *
  *  @param[out] line  Chain code string buffer with at least
- *                    abs(x1 - x0) + abs(y1 - y0) + 1 bytes.
- *  @param      x0    Start position x coordinate.
- *  @param      y0    Start position y coordinate.
- *  @param      x1    End position x coordinate.
- *  @param      y1    End position y coordinate.
+ *                    abs(xe - xs) + abs(ye - ys) + 1 bytes.
+ *  @param      xs    Start position x coordinate.
+ *  @param      ys    Start position y coordinate.
+ *  @param      xe    End position x coordinate.
+ *  @param      ye    End position y coordinate.
  *  @return           The number of codes written to the buffer,
  *                    not including the trailing '\\0' character,
  *                    or a negative error code on error.
  */
 RAPP_EXPORT int
-rapp_rasterize_4conn(char *line, int x0, int y0, int x1, int y1);
+rapp_rasterize_4conn(char *line, int xs, int ys, int xe, int ye);
 
 
 /**
  *  Rasterize an 8-connectivity chain code.
  *
  *  @param[out] line  Chain code string buffer with at least
- *                    max(abs(x1 - x0), abs(y1 - y0)) + 1 bytes.
- *  @param      x0    Start position x coordinate.
- *  @param      y0    Start position y coordinate.
- *  @param      x1    End position x coordinate.
- *  @param      y1    End position y coordinate.
+ *                    max(abs(xe - xs), abs(ye - ys)) + 1 bytes.
+ *  @param      xs    Start position x coordinate.
+ *  @param      ys    Start position y coordinate.
+ *  @param      xe    End position x coordinate.
+ *  @param      ye    End position y coordinate.
  *  @return           The number of codes written to the buffer,
  *                    not including the trailing '\\0' character,
  *                    or a negative error code on error.
  */
 RAPP_EXPORT int
-rapp_rasterize_8conn(char *line, int x0, int y0, int x1, int y1);
+rapp_rasterize_8conn(char *line, int xs, int ys, int xe, int ye);
 
 #ifdef __cplusplus
 };
