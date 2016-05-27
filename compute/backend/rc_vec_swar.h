@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2012, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -368,9 +368,9 @@ do {                                                                       \
 #if RC_VEC_SIZE == 8
 #define RC_VEC_SETMASKV(vec, maskv)                     \
 do {                                                    \
-    rc_vec_t m_, v_, av_, nz_, b_;                      \
-    m_ = RC_WORD_EXTRACT(maskv, 0, 8);                  \
-    RC_VEC_SPLAT(v_, m_);                               \
+    rc_vec_t mw_, v_, av_, nz_, b_;                     \
+    mw_ = RC_WORD_EXTRACT(maskv, 0, 8);                 \
+    RC_VEC_SPLAT(v_, mw_);                              \
     RC_VEC_AND(av_, v_, RC_WORD_C64(8040201008040201)); \
     RC_VEC_CMPGT(nz_, av_, 0);                          \
     nz_ &= RC_WORD_C8(80);                              \
