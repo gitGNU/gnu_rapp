@@ -114,6 +114,7 @@ typedef struct rapp_bmark_data_st {
     uint8_t *clear;   /**< Source buffer with all bits cleared       */
     uint8_t *checker; /**< Source buffer with checker bit pattern    */
     uint8_t *aux;     /**< Auxiliary buffer, for LUTs etc            */
+    uint8_t *aux2;    /**< Second similar auxiliary buffer */
     uint8_t *src[5];  /**< A table of pointers to the 5 src buffers  */
     int      dim_u8;  /**< 8-bit image buffer dimension              */
     int      dim_bin; /**< Binary image buffer dimension             */
@@ -570,6 +571,7 @@ rapp_bmark_setup(int width, int height)
     rapp_bmark_data.clear   = rapp_malloc(size, 0);
     rapp_bmark_data.checker = rapp_malloc(size, 0);
     rapp_bmark_data.aux     = rapp_malloc(size, 0);
+    rapp_bmark_data.aux2    = rapp_malloc(size, 0);
 
     rapp_bmark_data.dim_u8  = dim_u8;
     rapp_bmark_data.dim_bin = dim_bin;
@@ -587,6 +589,7 @@ rapp_bmark_setup(int width, int height)
     memset(rapp_bmark_data.clear,   0,    size);
     memset(rapp_bmark_data.checker, 0x55, size);
     memset(rapp_bmark_data.aux,     0xff, size);
+    memset(rapp_bmark_data.aux2,    0xff, size);
 
     rapp_bmark_data.dst     += offset;
     rapp_bmark_data.set     += offset;
@@ -594,6 +597,7 @@ rapp_bmark_setup(int width, int height)
     rapp_bmark_data.clear   += offset;
     rapp_bmark_data.checker += offset;
     rapp_bmark_data.aux     += offset;
+    rapp_bmark_data.aux2    += offset;
 
     rapp_bmark_data.src[0] = rapp_bmark_data.set;
     rapp_bmark_data.src[1] = rapp_bmark_data.pad;
@@ -615,6 +619,7 @@ rapp_bmark_cleanup(void)
     rapp_free(&rapp_bmark_data.clear  [-rapp_bmark_data.offset]);
     rapp_free(&rapp_bmark_data.checker[-rapp_bmark_data.offset]);
     rapp_free(&rapp_bmark_data.aux    [-rapp_bmark_data.offset]);
+    rapp_free(&rapp_bmark_data.aux2   [-rapp_bmark_data.offset]);
 }
 
 static void
@@ -775,14 +780,10 @@ rapp_bmark_exec_thresh_pixel(int (*func)(), const int *args)
 
     const int num_thresholds = args[0];
     if (num_thresholds == 2) {
-        /* The speed is not dependent of the content or calculation results
-         * so the aux buffer is reused for both high and low thresholds.
-         * This minimize changes of the entire benchmark test,
-           i.e. only require a single aux buffer. */
         (*func)(data->dst, data->dim_bin,
                 data->set, data->dim_u8,
                 data->aux, data->dim_u8,
-                data->aux, data->dim_u8,
+                data->aux2, data->dim_u8,
                 data->width, data->height);
     }
     else {
