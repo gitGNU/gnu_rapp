@@ -27,11 +27,11 @@
 
 /**
  *  @file   rapp_cond.h
- *  @brief  RAPP conditional set and copy operations.
+ *  @brief  RAPP conditional set, copy, and add operations.
  */
 
 /**
- *  @defgroup grp_cond Conditional Operations
+ *  @defgroup grp_cond Single Conditional Operations
  *  @brief Perform conditional pixelwise set, copy and add operations.
  *
  *  These functions process individual pixels conditionally

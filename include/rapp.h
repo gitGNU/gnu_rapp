@@ -787,7 +787,7 @@
  *  - @ref grp_gather
  *  - @ref grp_scatter
  *
- *  <p>@ref grp_cond "Next section: Conditional Set and Copy"</p>
+ *  <p>@ref grp_cond "Next section: Single Conditional Operations"</p>
  */
 
 /**
