@@ -755,8 +755,16 @@ $(RB_DATAFILE): $(RB_BENCHMARK).stamp
 	    exit 1;                                                         \
 	fi
 
+# The verbose curse with "strip", instead of just "$(MAKE)
+# $(AM_MAKEFLAGS) $(RB_BENCHMARK)", is so we strip the library
+# and program we use for benchmarking, as some targets used for
+# tuning don't have megabytes to spare.
 $(RB_BENCHMARK).stamp:
-	$(MAKE) $(RB_BENCHMARK)
+	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
+	  install_sh_PROGRAM="$(INSTALL_STRIP_PROGRAM)" INSTALL_STRIP_FLAG=-s \
+	  `test -z '$(STRIP)' || \
+	    echo "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'"` "STRIPPROG=$(STRIP)" \
+	  $(RB_BENCHMARK)
 	touch $@
 
 # Create the self-extracting benchmark script
