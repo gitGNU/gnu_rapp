@@ -91,67 +91,38 @@ do {                                                            \
 
 #if defined RC_VEC_SETMASKV && defined RC_VEC_SHLC && defined RC_VEC_ANDNOT \
     && defined RC_VEC_AND && defined RC_VEC_OR && defined RC_VEC_SHLC
-/**
- *  Single-operand iteration for a destination operand vector.
- */
-#define RC_CONDOP_ITER(buf, mapv, di, pixop, arg1)              \
-do {                                                            \
-            rc_vec_t dv_, sv_, tv_;                             \
-            rc_vec_t exp_mv_, cdv_, cv1_, cv2_;                 \
-                                                                \
-            /* Run standard pixop. */                           \
-            RC_PIXOP_ITER(buf, di, sv_, cdv_, pixop, arg1);     \
-                                                                \
-            /* Conditional part. */                             \
-            RC_VEC_SETMASKV(exp_mv_, mapv);                     \
-            RC_VEC_ANDNOT(cv1_, cdv_, exp_mv_);                 \
-            RC_VEC_AND(cv2_, sv_, exp_mv_);                     \
-            RC_VEC_OR(dv_, cv1_, cv2_);                         \
-            RC_VEC_SHLC(tv_, mapv, RC_VEC_SIZE / 8);            \
-            mapv = tv_;                                         \
-            RC_VEC_STORE(&(buf)[(di)], dv_);                    \
-           (di) += RC_VEC_SIZE;                                 \
+#define RC_COND_SINGLE_ITER_MAX(max, buf, map, j, i, pixop, arg1)       \
+do {                                                                    \
+    rc_vec_t mv_;                                                       \
+    int k_, cnt_;                                                       \
+    RC_VEC_LOAD(mv_, &(map)[(i)]);                                      \
+    RC_COND_COUNT(cnt_, mv_);                                           \
+    if (cnt_ > 0) {                                                     \
+        for (k_ = 0; k_ < max; k_++, (j) += RC_VEC_SIZE) {              \
+            rc_vec_t dv_, sv_, tv_;                                     \
+            rc_vec_t exp_mv_, cdv_, cv1_, cv2_;                         \
+                                                                        \
+            /* Run standard pixop. */                                   \
+            RC_PIXOP_ITER(buf, j, sv_, cdv_, pixop, arg1);              \
+                                                                        \
+            /* Conditional part. */                                     \
+            RC_VEC_SETMASKV(exp_mv_, mv_);                              \
+            RC_VEC_ANDNOT(cv1_, cdv_, exp_mv_);                         \
+            RC_VEC_AND(cv2_, sv_, exp_mv_);                             \
+            RC_VEC_OR(dv_, cv1_, cv2_);                                 \
+            RC_VEC_SHLC(tv_, mv_, RC_VEC_SIZE / 8);                     \
+            mv_ = tv_;                                                  \
+            RC_VEC_STORE(&(buf)[(j)], dv_);                             \
+        }                                                               \
+    }                                                                   \
+    else {                                                              \
+        (j) += (max) * RC_VEC_SIZE;                                     \
+    }                                                                   \
+    (i) += RC_VEC_SIZE;                                                 \
 } while (0)
 
-/**
- *  Single-operand iteration for a map vector.
- *  This is the innermost loop, so this is where we do manual
- *  unrolling.  Max is the constant 8 in the common case, and variable
- *  for the remainder.
- */
-#define RC_COND_SINGLE_MAPV_ITER_MAX(max, unroll, buf, map,     \
-                                     di, mi, pixop, arg1)       \
-do {                                                            \
-    rc_vec_t mv_;                                               \
-    int k_, cnt_;                                               \
-    RC_VEC_LOAD(mv_, &(map)[(mi)]);                             \
-    RC_COND_COUNT(cnt_, mv_);                                   \
-    if (cnt_ > 0) {                                             \
-        int mm_ = (max) / (unroll);                             \
-        int mr_ = (max) % (unroll);                             \
-        for (k_ = 0; k_ < mm_; k_++) {                          \
-            RC_CONDOP_ITER(buf, mv_, di, pixop, arg1);          \
-            if ((unroll) >= 2) {                                \
-                RC_CONDOP_ITER(buf, mv_, di, pixop, arg1);      \
-            }                                                   \
-            if ((unroll) == 4) {                                \
-                RC_CONDOP_ITER(buf, mv_, di, pixop, arg1);      \
-                RC_CONDOP_ITER(buf, mv_, di, pixop, arg1);      \
-            }                                                   \
-        }                                                       \
-                                                                \
-        for (k_ = 0; k_ < mr_; k_++) {                          \
-            RC_CONDOP_ITER(buf, mv_, di, pixop, arg1);          \
-        }                                                       \
-    }                                                           \
-    else {                                                      \
-        (di) += (max) * RC_VEC_SIZE;                            \
-    }                                                           \
-    (mi) += RC_VEC_SIZE;                                        \
-} while (0)
-
-#define RC_COND_SINGLE_MAPV_ITER(unroll, dst, map, di, mi, pixop, arg1) \
-    RC_COND_SINGLE_MAPV_ITER_MAX(8, unroll, dst, map, di, mi, pixop, arg1)
+#define RC_COND_SINGLE_ITER(dst, map, j, i, pixop, arg1) \
+    RC_COND_SINGLE_ITER_MAX(8, dst, map, j, i, pixop, arg1)
 
 /**
  *  Single-operand template.
@@ -166,8 +137,8 @@ do {                                                                    \
     int tot_ = RC_DIV_CEIL((width), RC_VEC_SIZE * 8 / 8);               \
                                                                         \
     /* Split in full and partial map vectors. */                        \
-    int len_ = tot_ / 8;                                                \
-    int rem_ = tot_ % 8;                                                \
+    int len_ = tot_ / (8 * unroll);                                     \
+    int rem_ = tot_ % (8 * unroll);                                     \
     int y_;                                                             \
                                                                         \
     /* Process all rows. */                                             \
@@ -176,16 +147,40 @@ do {                                                                    \
         int j_ = y_ * (dst_dim);                                        \
         int x_;                                                         \
                                                                         \
-        /* Process full map vectors. */                                 \
+        /* Perform unrolled operation. */                               \
         for (x_ = 0; x_ < len_; x_++) {                                 \
-            RC_COND_SINGLE_MAPV_ITER(unroll, dst, map, j_, i_,          \
-                                     pixop, arg1);                      \
+            RC_COND_SINGLE_ITER(dst, map, j_, i_, pixop, arg1);         \
+                                                                        \
+            if (unroll >= 2) {                                          \
+                RC_COND_SINGLE_ITER(dst, map, j_, i_, pixop, arg1);     \
+            }                                                           \
+                                                                        \
+            if (unroll == 4) {                                          \
+                RC_COND_SINGLE_ITER(dst, map, j_, i_, pixop, arg1);     \
+                RC_COND_SINGLE_ITER(dst, map, j_, i_, pixop, arg1);     \
+            }                                                           \
         }                                                               \
                                                                         \
-        /* Handle the remainder. */                                     \
+        /* Handle the remaining vectors. */                             \
         if (rem_) {                                                     \
-            RC_COND_SINGLE_MAPV_ITER_MAX(rem_, unroll, dst, map,        \
-                                         j_, i_, pixop, arg1);          \
+            int r_;                                                     \
+                                                                        \
+             /**                                                        \
+              *  For unroll factors > 1, we may still have some         \
+              *  whole one source-vector -> 8 dest-vectors expansions.  \
+              */                                                        \
+            for (r_ = rem_; unroll > 1 && r_ > 8; r_ -= 8) {            \
+                RC_COND_SINGLE_ITER(dst, map, j_, i_, pixop, arg1);     \
+            }                                                           \
+                                                                        \
+             /**                                                        \
+              *  The source image width is padded to the size of a      \
+              *  whole vector, but the destination image padding        \
+              *  is not required to scale to *eight* vector-sizes,      \
+              *  thus we need to allow for a partial final source-to-   \
+              *  destination iteration.                                 \
+              */                                                        \
+            RC_COND_SINGLE_ITER_MAX(r_, dst, map, j_, i_, pixop,arg1);  \
         }                                                               \
     }                                                                   \
 } while(0)
@@ -202,60 +197,43 @@ do {                                            \
     pixop(cdv_, sv_);                           \
 } while (0)
 
-#define RC_CONDOP_ITER2(dst, src, mapv, di, si, pixop, arg1)    \
-do {                                                            \
-    rc_vec_t dv_, sv_, tv_;                                     \
-    rc_vec_t exp_mv_, cdv_, cv1_, cv2_;                         \
-                                                                \
-    /* Run standard pixop. */                                   \
-    RC_PIXOP_ITER2(dst, src, di, si, dv_, cdv_, sv_, pixop);    \
-                                                                \
-    /* Conditional part. */                                     \
-    RC_VEC_SETMASKV(exp_mv_, mapv);                             \
-    RC_VEC_ANDNOT(cv1_, dv_, exp_mv_);                          \
-    RC_VEC_AND(cv2_, cdv_, exp_mv_);                            \
-    RC_VEC_OR(dv_, cv1_, cv2_);                                 \
-    RC_VEC_SHLC(tv_, mapv, RC_VEC_SIZE / 8);                    \
-    mapv = tv_;                                                 \
-    RC_VEC_STORE(&(dst)[(di)], dv_);                            \
-    (si) += RC_VEC_SIZE;                                        \
-    (di) += RC_VEC_SIZE;                                        \
+#define RC_COND_DOUBLE_ITER_MAX(max, dst, src, map,     \
+                               j, i, m, pixop)          \
+do {                                                    \
+    rc_vec_t mv_;                                       \
+    int k_, cnt_;                                       \
+    RC_VEC_LOAD(mv_, &(map)[(m)]);                      \
+    RC_COND_COUNT(cnt_, mv_);                           \
+    if (cnt_ > 0) {                                     \
+        for (k_ = 0; k_ < max; k_++) {                  \
+            rc_vec_t dv_, sv_, tv_;                     \
+            rc_vec_t exp_mv_, cdv_, cv1_, cv2_;         \
+                                                        \
+            /* Run standard pixop. */                   \
+            RC_PIXOP_ITER2(dst, src, j, i, dv_,         \
+                           cdv_, sv_, pixop);           \
+                                                        \
+            /* Conditional part. */                     \
+            RC_VEC_SETMASKV(exp_mv_, mv_);              \
+            RC_VEC_ANDNOT(cv1_, dv_, exp_mv_);          \
+            RC_VEC_AND(cv2_, cdv_, exp_mv_);            \
+            RC_VEC_OR(dv_, cv1_, cv2_);                 \
+            RC_VEC_SHLC(tv_, mv_, RC_VEC_SIZE / 8);     \
+            mv_ = tv_;                                  \
+            RC_VEC_STORE(&(dst)[(j)], dv_);             \
+            (i) += RC_VEC_SIZE;                         \
+            (j) += RC_VEC_SIZE;                         \
+        }                                               \
+    }                                                   \
+    else {                                              \
+        (i) += (max) * RC_VEC_SIZE;                     \
+        (j) += (max) * RC_VEC_SIZE;                     \
+    }                                                   \
+    (m) += RC_VEC_SIZE;                                 \
 } while (0)
 
-#define RC_COND_DOUBLE_MAPV_ITER_MAX(max, unroll, dst, src, map,             \
-                               j, i, m, pixop)                          \
-do {                                                                    \
-    rc_vec_t mv_;                                                       \
-    int k_, cnt_;                                                       \
-    RC_VEC_LOAD(mv_, &(map)[(m)]);                                      \
-    RC_COND_COUNT(cnt_, mv_);                                           \
-    if (cnt_ > 0) {                                                     \
-        int mm_ = (max) / (unroll);                                     \
-        int mr_ = (max) % (unroll);                                     \
-        for (k_ = 0; k_ < mm_; k_++) {                                  \
-            RC_CONDOP_ITER2(dst, src, mv_, j, i, pixop, arg1);          \
-            if ((unroll) >= 2) {                                        \
-                RC_CONDOP_ITER2(dst, src, mv_, j, i, pixop, arg1);      \
-            }                                                           \
-            if ((unroll) == 4) {                                        \
-                RC_CONDOP_ITER2(dst, src, mv_, j, i, pixop, arg1);      \
-                RC_CONDOP_ITER2(dst, src, mv_, j, i, pixop, arg1);      \
-            }                                                           \
-        }                                                               \
-                                                                        \
-        for (k_ = 0; k_ < mr_; k_++) {                                  \
-            RC_CONDOP_ITER2(dst, src, mv_, j, i, pixop, arg1);          \
-        }                                                               \
-    }                                                                   \
-    else {                                                              \
-        (i) += (max) * RC_VEC_SIZE;                                     \
-        (j) += (max) * RC_VEC_SIZE;                                     \
-    }                                                                   \
-    (m) += RC_VEC_SIZE;                                                 \
-} while (0)
-
-#define RC_COND_DOUBLE_MAPV_ITER(unroll, dst, src, map, j, i, m, pixop) \
-    RC_COND_DOUBLE_MAPV_ITER_MAX(8, unroll, dst, src, map, j, i, m, pixop)
+#define RC_COND_DOUBLE_ITER(dst, src, map, j, i, m, pixop) \
+    RC_COND_DOUBLE_ITER_MAX(8, dst, src, map, j, i, m, pixop)
 
 /**
  *  Double-operand template.
@@ -267,8 +245,8 @@ do {                                                                    \
     int tot_ = RC_DIV_CEIL((width), RC_VEC_SIZE * 8 / 8);               \
                                                                         \
     /* Split in full and partial map vectors. */                        \
-    int len_ = tot_ / 8;                                                \
-    int rem_ = tot_ % 8;                                                \
+    int len_ = tot_ / (8 * unroll);                                     \
+    int rem_ = tot_ % (8 * unroll);                                     \
     int y_;                                                             \
                                                                         \
     RC_VEC_DECLARE();                                                   \
@@ -280,16 +258,40 @@ do {                                                                    \
         int m_ = y_ * (map_dim);                                        \
         int x_;                                                         \
                                                                         \
-        /* Process full map vectors. */                                 \
+        /* Perform unrolled operation. */                               \
         for (x_ = 0; x_ < len_; x_++) {                                 \
-            RC_COND_DOUBLE_MAPV_ITER(unroll, dst, src, map, j_, i_, m_,      \
-                                pixop);                                 \
+            RC_COND_DOUBLE_ITER(dst, src, map, j_, i_, m_, pixop);      \
+                                                                        \
+            if (unroll >= 2) {                                          \
+                RC_COND_DOUBLE_ITER(dst, src, map, j_, i_, m_, pixop);  \
+            }                                                           \
+                                                                        \
+            if (unroll == 4) {                                          \
+                RC_COND_DOUBLE_ITER(dst, src, map, j_, i_, m_, pixop);  \
+                RC_COND_DOUBLE_ITER(dst, src, map, j_, i_, m_, pixop);  \
+            }                                                           \
         }                                                               \
                                                                         \
-        /* Handle the remainder. */                                     \
+        /* Handle the remaining vectors. */                             \
         if (rem_) {                                                     \
-            RC_COND_DOUBLE_MAPV_ITER_MAX(rem_, unroll, dst, src, map,        \
-                                    j_, i_, m_, pixop);                 \
+            int r_;                                                     \
+             /**                                                        \
+              *  For unroll factors > 1, we may still have some         \
+              *  whole one source-vector -> 8 dest-vectors expansions.  \
+              */                                                        \
+            for (r_ = rem_; unroll > 1 && r_ > 8; r_ -= 8) {            \
+              RC_COND_DOUBLE_ITER(dst, src, map, j_, i_, m_, pixop);    \
+            }                                                           \
+                                                                        \
+             /**                                                        \
+              *  The source image width is padded to the size of a      \
+              *  whole vector, but the destination image padding        \
+              *  is not required to scale to *eight* vector-sizes,      \
+              *  thus we need to allow for a partial final source-to-   \
+              *  destination iteration.                                 \
+              */                                                        \
+            RC_COND_DOUBLE_ITER_MAX(r_, dst, src, map, j_, i_, m_,      \
+                                    pixop);                             \
         }                                                               \
     }                                                                   \
                                                                         \
@@ -299,7 +301,7 @@ do {                                                                    \
 
 /*
  * -------------------------------------------------------------
- *  Single-operand functions
+ *  Single-operand functions.
  * -------------------------------------------------------------
  */
 
