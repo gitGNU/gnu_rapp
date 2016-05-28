@@ -9,6 +9,10 @@ RAPP_TEST(pixel_set_bin)
 #warning Pruning test-suite because of logging to avoid excessive log file size
 #else
 
+/* Test cases for rapp memory functions. */
+RAPP_TESTH(validate_alignment, "rapp_malloc - allocation and alignment functions")
+RAPP_TEST(validate_buffer)
+
 /* Test cases for rapp_bitblt functions */
 RAPP_TESTH(bitblt_copy_bin, "rapp_bitblt - bitblit operations")
 RAPP_TEST(bitblt_not_bin)

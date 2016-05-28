@@ -91,6 +91,35 @@ RAPP_EXPORT size_t
 rapp_align(size_t size);
 
 /**
+ *  Validate that a pixel buffer is properly allocated for use with RAPP
+ *  functions.
+ *
+ *  The purpose is to test that a chunk of memory that has been
+ *  allocated using an unknown allocation method, is valid for use with
+ *  RAPP functions. A failed test means that it must instead be copied
+ *  to a valid buffer (typically allocated using rapp_malloc) with a row
+ *  dimension that is a multiple of #rapp_alignment. This function does
+ *  not exclude use with RAPP functions explicitly allowing misaligned
+ *  image buffers, but note that those functions have their own validity
+ *  requirements. Note also that this function does not check the buffer
+ *  allocation length, i.e. that buffer has been allocated to the stated
+ *  size. It is not necessary to test a buffer allocated with
+ *  rapp_malloc and used with a #rapp_alignment row dimension.
+ *
+ *  @param ptr     The u8 image buffer to validate.
+ *  @param dim     Buffer row dimension in bytes.
+ *  @param width   Image width in pixels.
+ *  @param height  Image height in pixels.
+ *  @return        1 if buffer has a valid alignment.
+ *                 0 if buffer's memory alignment or dimensions does not
+ *                 meet RAPP's requirements.
+ *                 -1 if the RAPP library is not initialized.
+ */
+RAPP_EXPORT int
+rapp_validate_buffer(uint8_t *ptr, const int dim,
+                     const int width, const int height);
+
+/**
  *  Allocate an aligned chunk of memory.
  *
  *  @param size  The number of bytes to allocate.

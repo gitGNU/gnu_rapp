@@ -86,6 +86,7 @@ rapptest_SOURCES = \
  rapp_tests.def \
  rapp_test_util.h \
  rapp_test_util.c \
+ rapp_test_malloc.c \
  rapp_test_pixel.c \
  rapp_test_bitblt.c \
  rapp_test_pixop.c \

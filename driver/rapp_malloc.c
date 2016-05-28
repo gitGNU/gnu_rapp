@@ -61,6 +61,18 @@ RAPP_API(size_t, rapp_align, (size_t size))
     return rc_align(size);
 }
 
+RAPP_API(int, rapp_validate_buffer,
+         (uint8_t *ptr, const int dim,
+          const int width, const int height))
+{
+    if (!RAPP_INITIALIZED()) {
+        RAPP_ABORT_FOR_ASSERTED_RETURNS();
+        return -1;
+    }
+
+    return RAPP_VALIDATE_U(ptr, dim, width, height);
+}
+
 RAPP_API(void*, rapp_malloc, (size_t size, unsigned hint))
 {
     if (!RAPP_INITIALIZED()) {

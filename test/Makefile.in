@@ -101,34 +101,36 @@ CONFIG_CLEAN_VPATH_FILES =
 @RAPP_LOGGING_TRUE@am__EXEEXT_1 = verify_logfile$(EXEEXT)
 am__EXEEXT_2 = rapptest$(EXEEXT) $(am__EXEEXT_1)
 am__rapptest_SOURCES_DIST = rapp_test.c rapp_check.c rapp_tests.def \
-	rapp_test_util.h rapp_test_util.c rapp_test_pixel.c \
-	rapp_test_bitblt.c rapp_test_pixop.c rapp_test_type.c \
-	rapp_test_thresh.c rapp_test_reduce.c rapp_test_reduce_bin.c \
-	rapp_test_expand_bin.c rapp_test_rotate.c \
-	rapp_test_rotate_bin.c rapp_test_stat.c rapp_test_moment_bin.c \
-	rapp_test_filter.c rapp_test_morph_bin.c rapp_test_fill.c \
-	rapp_test_pad.c rapp_test_pad_bin.c rapp_test_margin.c \
-	rapp_test_crop.c rapp_test_contour.c rapp_test_rasterize.c \
-	rapp_test_cond.c rapp_test_gather.c rapp_test_gather_bin.c \
-	rapp_test_scatter.c rapp_test_scatter_bin.c \
-	rapp_test_framework.c rapp_test_integral.c
+	rapp_test_util.h rapp_test_util.c rapp_test_malloc.c \
+	rapp_test_pixel.c rapp_test_bitblt.c rapp_test_pixop.c \
+	rapp_test_type.c rapp_test_thresh.c rapp_test_reduce.c \
+	rapp_test_reduce_bin.c rapp_test_expand_bin.c \
+	rapp_test_rotate.c rapp_test_rotate_bin.c rapp_test_stat.c \
+	rapp_test_moment_bin.c rapp_test_filter.c \
+	rapp_test_morph_bin.c rapp_test_fill.c rapp_test_pad.c \
+	rapp_test_pad_bin.c rapp_test_margin.c rapp_test_crop.c \
+	rapp_test_contour.c rapp_test_rasterize.c rapp_test_cond.c \
+	rapp_test_gather.c rapp_test_gather_bin.c rapp_test_scatter.c \
+	rapp_test_scatter_bin.c rapp_test_framework.c \
+	rapp_test_integral.c
 @HAVE_CHECK_FALSE@am__objects_1 = rapp_test.$(OBJEXT)
 @HAVE_CHECK_TRUE@am__objects_1 = rapp_check.$(OBJEXT)
 am_rapptest_OBJECTS = $(am__objects_1) rapp_test_util.$(OBJEXT) \
-	rapp_test_pixel.$(OBJEXT) rapp_test_bitblt.$(OBJEXT) \
-	rapp_test_pixop.$(OBJEXT) rapp_test_type.$(OBJEXT) \
-	rapp_test_thresh.$(OBJEXT) rapp_test_reduce.$(OBJEXT) \
-	rapp_test_reduce_bin.$(OBJEXT) rapp_test_expand_bin.$(OBJEXT) \
-	rapp_test_rotate.$(OBJEXT) rapp_test_rotate_bin.$(OBJEXT) \
-	rapp_test_stat.$(OBJEXT) rapp_test_moment_bin.$(OBJEXT) \
-	rapp_test_filter.$(OBJEXT) rapp_test_morph_bin.$(OBJEXT) \
-	rapp_test_fill.$(OBJEXT) rapp_test_pad.$(OBJEXT) \
-	rapp_test_pad_bin.$(OBJEXT) rapp_test_margin.$(OBJEXT) \
-	rapp_test_crop.$(OBJEXT) rapp_test_contour.$(OBJEXT) \
-	rapp_test_rasterize.$(OBJEXT) rapp_test_cond.$(OBJEXT) \
-	rapp_test_gather.$(OBJEXT) rapp_test_gather_bin.$(OBJEXT) \
-	rapp_test_scatter.$(OBJEXT) rapp_test_scatter_bin.$(OBJEXT) \
-	rapp_test_framework.$(OBJEXT) rapp_test_integral.$(OBJEXT)
+	rapp_test_malloc.$(OBJEXT) rapp_test_pixel.$(OBJEXT) \
+	rapp_test_bitblt.$(OBJEXT) rapp_test_pixop.$(OBJEXT) \
+	rapp_test_type.$(OBJEXT) rapp_test_thresh.$(OBJEXT) \
+	rapp_test_reduce.$(OBJEXT) rapp_test_reduce_bin.$(OBJEXT) \
+	rapp_test_expand_bin.$(OBJEXT) rapp_test_rotate.$(OBJEXT) \
+	rapp_test_rotate_bin.$(OBJEXT) rapp_test_stat.$(OBJEXT) \
+	rapp_test_moment_bin.$(OBJEXT) rapp_test_filter.$(OBJEXT) \
+	rapp_test_morph_bin.$(OBJEXT) rapp_test_fill.$(OBJEXT) \
+	rapp_test_pad.$(OBJEXT) rapp_test_pad_bin.$(OBJEXT) \
+	rapp_test_margin.$(OBJEXT) rapp_test_crop.$(OBJEXT) \
+	rapp_test_contour.$(OBJEXT) rapp_test_rasterize.$(OBJEXT) \
+	rapp_test_cond.$(OBJEXT) rapp_test_gather.$(OBJEXT) \
+	rapp_test_gather_bin.$(OBJEXT) rapp_test_scatter.$(OBJEXT) \
+	rapp_test_scatter_bin.$(OBJEXT) rapp_test_framework.$(OBJEXT) \
+	rapp_test_integral.$(OBJEXT)
 rapptest_OBJECTS = $(am_rapptest_OBJECTS)
 rapptest_DEPENDENCIES = reference/librappref.la
 AM_V_lt = $(am__v_lt_$(V))
@@ -378,6 +380,7 @@ rapptest_SOURCES = \
  rapp_tests.def \
  rapp_test_util.h \
  rapp_test_util.c \
+ rapp_test_malloc.c \
  rapp_test_pixel.c \
  rapp_test_bitblt.c \
  rapp_test_pixop.c \
@@ -484,6 +487,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rapp_test_gather.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rapp_test_gather_bin.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rapp_test_integral.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rapp_test_malloc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rapp_test_margin.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rapp_test_moment_bin.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rapp_test_morph_bin.Po@am__quote@

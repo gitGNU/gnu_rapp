@@ -53,6 +53,12 @@
 #define RAPP_LOG_ARGSFORMAT_rapp_align "%zu"
 #define RAPP_LOG_RETFORMAT_rapp_align "%zu"
 
+#define RAPP_LOG_IDENTITY_IF_RETURN_rapp_validate_buffer(x) x
+#define RAPP_LOG_IDENTITY_IF_ARGS_rapp_validate_buffer(x) x
+#define RAPP_LOG_ARGLIST_rapp_validate_buffer ptr, dim, width, height
+#define RAPP_LOG_ARGSFORMAT_rapp_validate_buffer "%p, %d, %d, %d"
+#define RAPP_LOG_RETFORMAT_rapp_validate_buffer "%d"
+
 #define RAPP_LOG_IDENTITY_IF_RETURN_rapp_malloc(x) x
 #define RAPP_LOG_IDENTITY_IF_ARGS_rapp_malloc(x) x
 #define RAPP_LOG_ARGLIST_rapp_malloc size, hint
