@@ -9,6 +9,8 @@ values for individual pixels.
 separate image can now be added to an image, conditional on a
 binary map image.
 
+- New convenience function: rapp_validate_buffer.
+
 Fixed bugs:
 Bug #40264, rapp_main.h misses the closing } for extern "C".
 
