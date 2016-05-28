@@ -1,4 +1,4 @@
-/*  Copyright (C) 2005-2011, Axis Communications AB, LUND, SWEDEN
+/*  Copyright (C) 2005-2016, Axis Communications AB, LUND, SWEDEN
  *
  *  This file is part of RAPP.
  *
@@ -102,7 +102,7 @@
     RAPP_VALIDATE_U(ptr, dim, width, height)
 
 /**
- *  Validate parameters for an aligned unsigned images.
+ *  Validate parameters for an aligned unsigned image.
  */
 #define RAPP_VALIDATE_U(ptr, dim, width, height)       \
     ((ptr) != NULL                         &&          \
