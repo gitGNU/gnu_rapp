@@ -800,6 +800,7 @@ RAPP_LIB_REV
 RAPP_LIB_CUR
 RAPP_MINOR_VERSION
 RAPP_MAJOR_VERSION
+PLATFORM_BASE
 PLATFORM
 HASHWARN_CFLAGS
 AM_CFLAGS
@@ -4617,13 +4618,13 @@ if test "${lt_cv_nm_interface+set}" = set; then
 else
   lt_cv_nm_interface="BSD nm"
   echo "int some_variable = 0;" > conftest.$ac_ext
-  (eval echo "\"\$as_me:4620: $ac_compile\"" >&5)
+  (eval echo "\"\$as_me:4621: $ac_compile\"" >&5)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:4623: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+  (eval echo "\"\$as_me:4624: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:4626: output\"" >&5)
+  (eval echo "\"\$as_me:4627: output\"" >&5)
   cat conftest.out >&5
   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
     lt_cv_nm_interface="MS dumpbin"
@@ -5829,7 +5830,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 5832 "configure"' > conftest.$ac_ext
+  echo '#line 5833 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -7684,11 +7685,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7687: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7688: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7691: \$? = $ac_status" >&5
+   echo "$as_me:7692: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8023,11 +8024,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8026: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8027: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8030: \$? = $ac_status" >&5
+   echo "$as_me:8031: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8128,11 +8129,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8131: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8132: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8135: \$? = $ac_status" >&5
+   echo "$as_me:8136: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -8183,11 +8184,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8186: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8187: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8190: \$? = $ac_status" >&5
+   echo "$as_me:8191: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -10986,7 +10987,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 10989 "configure"
+#line 10990 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11082,7 +11083,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11085 "configure"
+#line 11086 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -14719,11 +14720,12 @@ if test $ac_cv_defined___VADMX2__ != "no"; then
 fi
 
 
-# Set the PLATFORM string to be the AC 'host_cpu' plus the compiler vendor,
-# plus a suffix built from native bit-size as defined by uintptr_t, if
-# different than the first encountered (hopefully the most common)
-# configuration, if there's more than one known.
-PLATFORM=${host_cpu}-${ax_cv_c_compiler_vendor}
+# Set the PLATFORM_BASE string to be the AC 'host_cpu' plus
+# the compiler vendor and PLATFORM appending a suffix built from
+# native bit-size as defined by uintptr_t, if different than the
+# first encountered (hopefully the most common) configuration,
+# if there's more than one known.
+PLATFORM_BASE=${host_cpu}-${ax_cv_c_compiler_vendor}
 
 OPT_DOXYGEN=yes
 OPT_INSTALLALL_INCLUDES_HTML=no
@@ -14829,7 +14831,7 @@ if test "${enable_backend+set}" = set; then
        ;;
    none)
        OPT_BACKEND=
-       PLATFORM=generic
+       PLATFORM_BASE=generic
        ;;
    mmx | sse | sse2 | ssse3 | altivec | vadmx | vadmx2 | vis)
        OPT_BACKEND=${enableval}
@@ -15155,7 +15157,7 @@ if test "${enable_tune_cache+set}" = set; then
        OPT_TUNECACHE=yes
        ;;
    no)
-       if test ${PLATFORM} != generic; then
+       if test ${PLATFORM_BASE} != generic; then
            OPT_TUNECACHE=no
        else # Avoid special-casing below as much as possible.
            OPT_TUNECACHE=yes
@@ -15170,11 +15172,11 @@ $as_echo "$as_me: error: Bad value \"${enableval}\" for --enable-tune-cache opti
 fi
 
 
-# Update the PLATFORM identifier
+# Update the PLATFORM_BASE identifier.
 if test -n "${OPT_BACKEND}"; then
     { $as_echo "$as_me:$LINENO: Using vector backend: ${OPT_BACKEND}" >&5
 $as_echo "$as_me: Using vector backend: ${OPT_BACKEND}" >&6;}
-    PLATFORM=${PLATFORM}-${OPT_BACKEND}
+    PLATFORM_BASE=${PLATFORM_BASE}-${OPT_BACKEND}
     enable_simd=1
     rapp_vector_backend_header='"rc_vec_'${OPT_BACKEND}'.h"'
 else
@@ -15183,12 +15185,17 @@ $as_echo "$as_me: No vector backend will be used" >&6;}
     rapp_vector_backend_header='"no-such-backend-header-exists.h"'
     enable_simd=0
 fi
+# Form PLATFORM from PLATFORM_BASE, different for platforms
+# where multiple natural-word-length ABIs exist.
 case ${host_cpu} in
 x86_64)
-    test ${rc_bits} != 64 && PLATFORM="${PLATFORM}-${rc_bits}"
+    test ${rc_bits} != 64 && PLATFORM="${PLATFORM_BASE}-${rc_bits}"
     ;;
 sparc*|mips*|powerpc*)
-    test ${rc_bits} != 32 && PLATFORM="${PLATFORM}-${rc_bits}"
+    test ${rc_bits} != 32 && PLATFORM="${PLATFORM_BASE}-${rc_bits}"
+    ;;
+*)
+    PLATFORM=${PLATFORM_BASE}
     ;;
 esac
 
@@ -15922,8 +15929,12 @@ else
 fi
 
 
-# Check if we will use a tune-cache
-TUNEFILE=${srcdir}/compute/tune/arch/rapptune-${PLATFORM}.h
+# Check if we will use a tune-cache.
+if test ${PLATFORM_BASE} = generic; then
+    TUNEFILE=${srcdir}/compute/tune/arch/rapptune-generic.h
+else
+    TUNEFILE=${srcdir}/compute/tune/arch/rapptune-${PLATFORM}.h
+fi
 if test ${OPT_TUNECACHE} = yes && test ! -f "${TUNEFILE}"; then
     { $as_echo "$as_me:$LINENO: WARNING: Option --enable-tune-cache=yes ignored (no \"${TUNEFILE}\")" >&5
 $as_echo "$as_me: WARNING: Option --enable-tune-cache=yes ignored (no \"${TUNEFILE}\")" >&2;}
@@ -15947,7 +15958,7 @@ if test ${OPT_TUNECACHE} != no && test -f "${TUNEFILE}" \
     if (cmp srcfuncs cachefuncs) > /dev/null 2>&1; then
         rapp_use_tunecache=yes
     else
-        if test ${PLATFORM} = generic; then
+        if test ${PLATFORM_BASE} = generic; then
             rapp_do_fallbacks=yes
             rapp_use_tunecache=yes
         elif test ${OPT_TUNECACHE} = default; then
@@ -16141,6 +16152,7 @@ RB_NCANDIDATES=${rb_ncandidates}
 
 
 
+
 # Output
 ac_config_headers="$ac_config_headers config.h"
 
@@ -16206,7 +16218,11 @@ fi
 fi
 
 # Link the benchmark plot file
-PLOTFILE=${srcdir}/benchmark/arch/benchmarkplot-${PLATFORM}.html
+if test ${PLATFORM_BASE} = generic; then
+    PLOTFILE=${srcdir}/benchmark/arch/benchmarkplot-generic.html
+else
+    PLOTFILE=${srcdir}/benchmark/arch/benchmarkplot-${PLATFORM}.html
+fi
 if test ${rapp_use_tunecache} = yes && test -f "${PLOTFILE}"; then
     ac_config_links="$ac_config_links benchmark/benchmarkplot.html:${PLOTFILE}"
 
@@ -18707,7 +18723,7 @@ else
                    ff=${srcdir}/compute/tune/benchmark/rc_benchmark.c
                    for fn in `sed -ne ${RC_BMARK_SED} < $ff`; do
                        echo "#ifndef ${fn}_IMPL" >> $f
-                       test ${PLATFORM} != generic \
+                       test ${PLATFORM_BASE} != generic \
                         && echo "#warning \"${fn}\" is not tuned" >> $f
                        case ${fn} in
                        rc_bitblt_v*)

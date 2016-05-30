@@ -329,11 +329,12 @@ AC_CHECK_DEFINED([__ALTIVEC__], [OPT_BACKEND=altivec])
 AC_CHECK_DEFINED([__VADMX__], [OPT_BACKEND=vadmx])
 AC_CHECK_DEFINED([__VADMX2__], [OPT_BACKEND=vadmx2])
 
-# Set the PLATFORM string to be the AC 'host_cpu' plus the compiler vendor,
-# plus a suffix built from native bit-size as defined by uintptr_t, if
-# different than the first encountered (hopefully the most common)
-# configuration, if there's more than one known.
-PLATFORM=${host_cpu}-${ax_cv_c_compiler_vendor}
+# Set the PLATFORM_BASE string to be the AC 'host_cpu' plus
+# the compiler vendor and PLATFORM appending a suffix built from
+# native bit-size as defined by uintptr_t, if different than the
+# first encountered (hopefully the most common) configuration,
+# if there's more than one known.
+PLATFORM_BASE=${host_cpu}-${ax_cv_c_compiler_vendor}
 
 OPT_DOXYGEN=yes
 OPT_INSTALLALL_INCLUDES_HTML=no
@@ -424,7 +425,7 @@ AC_ARG_ENABLE([backend],
        ;;
    none)
        OPT_BACKEND=
-       PLATFORM=generic
+       PLATFORM_BASE=generic
        ;;
    mmx | sse | sse2 | ssse3 | altivec | vadmx | vadmx2 | vis)
        OPT_BACKEND=${enableval}
@@ -537,7 +538,7 @@ AC_ARG_ENABLE([tune-cache],
        OPT_TUNECACHE=yes
        ;;
    no)
-       if test ${PLATFORM} != generic; then
+       if test ${PLATFORM_BASE} != generic; then
            OPT_TUNECACHE=no
        else # Avoid special-casing below as much as possible.
            OPT_TUNECACHE=yes
@@ -548,10 +549,10 @@ AC_ARG_ENABLE([tune-cache],
        ;;
    esac])
 
-# Update the PLATFORM identifier
+# Update the PLATFORM_BASE identifier.
 if test -n "${OPT_BACKEND}"; then
     AC_MSG_NOTICE([[Using vector backend: ${OPT_BACKEND}]])
-    PLATFORM=${PLATFORM}-${OPT_BACKEND}
+    PLATFORM_BASE=${PLATFORM_BASE}-${OPT_BACKEND}
     enable_simd=1
     rapp_vector_backend_header='"rc_vec_'${OPT_BACKEND}'.h"'
 else
@@ -559,12 +560,17 @@ else
     rapp_vector_backend_header='"no-such-backend-header-exists.h"'
     enable_simd=0
 fi
+# Form PLATFORM from PLATFORM_BASE, different for platforms
+# where multiple natural-word-length ABIs exist.
 case ${host_cpu} in
 x86_64)
-    test ${rc_bits} != 64 && PLATFORM="${PLATFORM}-${rc_bits}"
+    test ${rc_bits} != 64 && PLATFORM="${PLATFORM_BASE}-${rc_bits}"
     ;;
 sparc*|mips*|powerpc*)
-    test ${rc_bits} != 32 && PLATFORM="${PLATFORM}-${rc_bits}"
+    test ${rc_bits} != 32 && PLATFORM="${PLATFORM_BASE}-${rc_bits}"
+    ;;
+*)
+    PLATFORM=${PLATFORM_BASE}
     ;;
 esac
 
@@ -647,8 +653,12 @@ if test ${rapp_enable_logging} = yes; then
 fi
 AM_CONDITIONAL([RAPP_LOGGING], [test ${rapp_enable_logging} = yes])
 
-# Check if we will use a tune-cache
-TUNEFILE=${srcdir}/compute/tune/arch/rapptune-${PLATFORM}.h
+# Check if we will use a tune-cache.
+if test ${PLATFORM_BASE} = generic; then
+    TUNEFILE=${srcdir}/compute/tune/arch/rapptune-generic.h
+else
+    TUNEFILE=${srcdir}/compute/tune/arch/rapptune-${PLATFORM}.h
+fi
 if test ${OPT_TUNECACHE} = yes && test ! -f "${TUNEFILE}"; then
     AC_MSG_WARN([[Option --enable-tune-cache=yes ignored (no "${TUNEFILE}")]])
 fi
@@ -671,7 +681,7 @@ if test ${OPT_TUNECACHE} != no && test -f "${TUNEFILE}" \
     if (cmp srcfuncs cachefuncs) > /dev/null 2>&1; then
         rapp_use_tunecache=yes
     else
-        if test ${PLATFORM} = generic; then
+        if test ${PLATFORM_BASE} = generic; then
             rapp_do_fallbacks=yes
             rapp_use_tunecache=yes
         elif test ${OPT_TUNECACHE} = default; then
@@ -818,6 +828,7 @@ AC_SUBST([AM_CPPFLAGS])
 AC_SUBST([AM_CFLAGS])
 AC_SUBST([HASHWARN_CFLAGS])
 AC_SUBST([PLATFORM])
+AC_SUBST([PLATFORM_BASE])
 AC_SUBST([RAPP_MAJOR_VERSION])
 AC_SUBST([RAPP_MINOR_VERSION])
 AC_SUBST([RAPP_LIB_CUR])
@@ -906,7 +917,11 @@ AM_COND_IF([RAPP_USE_TUNECACHE],
       fi])])
 
 # Link the benchmark plot file
-PLOTFILE=${srcdir}/benchmark/arch/benchmarkplot-${PLATFORM}.html
+if test ${PLATFORM_BASE} = generic; then
+    PLOTFILE=${srcdir}/benchmark/arch/benchmarkplot-generic.html
+else
+    PLOTFILE=${srcdir}/benchmark/arch/benchmarkplot-${PLATFORM}.html
+fi
 if test ${rapp_use_tunecache} = yes && test -f "${PLOTFILE}"; then
     AC_CONFIG_LINKS([benchmark/benchmarkplot.html:${PLOTFILE}])
 elif test ${rapp_tune_generation} = no; then
@@ -938,7 +953,7 @@ AM_COND_IF([RAPP_USE_TUNECACHE],
                    ff=${srcdir}/compute/tune/benchmark/rc_benchmark.c
                    for fn in `sed -ne ${RC_BMARK_SED} < $ff`; do
                        echo "#ifndef ${fn}_IMPL" >> $f
-                       test ${PLATFORM} != generic \
+                       test ${PLATFORM_BASE} != generic \
                         && echo "#warning \"${fn}\" is not tuned" >> $f
                        case ${fn} in
                        rc_bitblt_v*)
