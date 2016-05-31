@@ -2845,13 +2845,13 @@ RAPP_RELEASE_PHASE=dev
 # http://www.gnu.org/software/libtool/manual.
 
 # Current interface version
-RAPP_LIB_CUR=1
+RAPP_LIB_CUR=2
 
 # Interface revision
-RAPP_LIB_REV=1
+RAPP_LIB_REV=0
 
 # Interface age
-RAPP_LIB_AGE=1
+RAPP_LIB_AGE=2
 
 # -----------------------------------------------------------
 
