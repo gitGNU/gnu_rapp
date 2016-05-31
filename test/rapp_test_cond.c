@@ -158,8 +158,8 @@ rapp_test_cond_driver(int (*test)(), void (*ref)(), int min, int max)
             goto Done;
         }
 
-        /* Initialize the destination pixel buffers with 0x55 markers */
-        memset(dst_buf, 0x55, RAPP_TEST_HEIGHT*dst_dim);
+        /* Initialize the destination pixel buffers. */
+        rapp_test_init(dst_buf, 0, dst_dim*RAPP_TEST_HEIGHT, 1, false);
         memcpy(ref_buf, dst_buf, RAPP_TEST_HEIGHT*dst_dim);
 
         /* Call the RAPP function */
@@ -179,7 +179,7 @@ rapp_test_cond_driver(int (*test)(), void (*ref)(), int min, int max)
                                   width, height))
         {
             DBG("Invalid result\n");
-            DBG("width=%d height=%d\n", width, height);
+            DBG("width=%d height=%d value=%d\n", width, height, value);
             DBG("map=\n");
             rapp_test_dump_bin(map_buf, map_dim, 0, width, height);
             DBG("dst=\n");
@@ -263,8 +263,8 @@ rapp_test_cond_driver2(int (*test)(), void (*ref)())
             goto Done;
         }
 
-        /* Initialize the destination pixel buffers with 0x55 markers */
-        memset(dst_buf, 0x55, RAPP_TEST_HEIGHT*dst_dim);
+        /* Initialize the destination pixel buffers. */
+        rapp_test_init(dst_buf, 0, dst_dim*RAPP_TEST_HEIGHT, 1, false);
         memcpy(ref_buf, dst_buf, RAPP_TEST_HEIGHT*dst_dim);
 
         /* Call the RAPP function */
@@ -288,6 +288,8 @@ rapp_test_cond_driver2(int (*test)(), void (*ref)())
             DBG("width=%d height=%d\n", width, height);
             DBG("map=\n");
             rapp_test_dump_bin(map_buf, map_dim, 0, width, height);
+            DBG("src=\n");
+            rapp_test_dump_u8(src_buf, src_dim, width, height);
             DBG("dst=\n");
             rapp_test_dump_u8(dst_buf, dst_dim, width, height);
             DBG("ref=\n");

@@ -190,9 +190,13 @@ typedef uint16_t rc_word_t;
 #ifdef  RC_BIG_ENDIAN
 #define RC_WORD_INSERT(value, pos, bits) \
     ((rc_word_t)(value) << (8*RC_WORD_SIZE - (pos) - (bits)))
+#define RC_32_INSERT(value, pos, bits) \
+    ((uint32_t)(value) << (32 - (pos) - (bits)))
 #else
 #define RC_WORD_INSERT(value, pos, bits) \
     ((rc_word_t)(value) << (pos))
+#define RC_32_INSERT(value, pos, bits) \
+    ((uint32_t)(value) << (pos))
 #endif
 
 /**
@@ -203,9 +207,13 @@ typedef uint16_t rc_word_t;
 #define RC_WORD_EXTRACT(word, pos, bits)                        \
     (((rc_word_t)(word) >> (8*RC_WORD_SIZE - (pos) - (bits))) & \
       RC_WORD_MASK__(bits))
+#define RC_32_EXTRACT(word, pos, bits) \
+    (((uint32_t)(word) >> (32 - (pos) - (bits))) & RC_32_MASK__(bits))
 #else
 #define RC_WORD_EXTRACT(word, pos, bits) \
     (((rc_word_t)(word) >> (pos)) & RC_WORD_MASK__(bits))
+#define RC_32_EXTRACT(word, pos, bits) \
+    (((uint32_t)(word) >> (pos)) & RC_32_MASK__(bits))
 #endif
 
 /**
@@ -253,6 +261,9 @@ do {                                                       \
  */
 #define RC_WORD_MASK__(bits) \
     (RC_WORD_ONE >> (8*RC_WORD_SIZE - (bits)))
+
+#define RC_32_MASK__(bits) \
+    (UINT32_MAX >> (32 - (bits)))
 
 /**
  *  An hexadecimal word constant with eight fields.

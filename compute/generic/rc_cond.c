@@ -99,7 +99,7 @@ do {                                                                     \
             /* All conditions false. Skip two 32-bit words. */           \
             d32_ += 2;                                                   \
         }                                                                \
-        else if (byte_ == 0xff) {                                        \
+        else if (byte_ == RC_WORD_INSERT(0xff, 0, 8)) {                  \
             /* Apply pixop on two 32-bit words without condition. */     \
             int words_;                                                  \
             for (words_ = 0; words_ < 2; words_++, d32_++) {             \
@@ -109,9 +109,9 @@ do {                                                                     \
                                                                          \
                 for (bn_ = 0; bn_ < sizeof(src32_); bn_++) {             \
                     unsigned d_;                                         \
-                    d_ = RC_WORD_EXTRACT(src32_, 8*bn_, 8);              \
+                    d_ = RC_32_EXTRACT(src32_, 8*bn_, 8);                \
                     pixop(d_, arg1);                                     \
-                    res32_ |= RC_WORD_INSERT(d_, 8*bn_, 8);              \
+                    res32_ |= RC_32_INSERT(d_, 8*bn_, 8);                \
                 }                                                        \
                                                                          \
                 *d32_ = res32_;                                          \
@@ -132,10 +132,10 @@ do {                                                                     \
                     for (bn_ = 0; bn_ < sizeof(src32_); bn_++) {         \
                         unsigned d_;                                     \
                         unsigned m_;                                     \
-                        m_ = RC_WORD_EXTRACT(m32_,  8*bn_, 8);           \
-                        d_ = RC_WORD_EXTRACT(src32_, 8*bn_, 8);          \
+                        m_ = RC_32_EXTRACT(m32_,  8*bn_, 8);             \
+                        d_ = RC_32_EXTRACT(src32_, 8*bn_, 8);            \
                         RC_COND_PIXOP_TEMPLATE(d_, pixop, arg1, m_);     \
-                        res32_ |= RC_WORD_INSERT(d_, 8*bn_, 8);          \
+                        res32_ |= RC_32_INSERT(d_, 8*bn_, 8);            \
                     }                                                    \
                     *d32_ = res32_;                                      \
                 }                                                        \
@@ -204,7 +204,7 @@ do {                                                                   \
             d32_ += 2;                                                 \
             s32_ += 2;                                                 \
         }                                                              \
-        else if (byte_ == 0xff) {                                      \
+        else if (byte_ == RC_WORD_INSERT(0xff, 0, 8)) {                \
             /* Apply pixop on two 32-bit words without condition. */   \
             int words_;                                                \
             for (words_ = 0; words_ < 2; words_++, d32_++, s32_++) {   \
@@ -215,10 +215,10 @@ do {                                                                   \
                                                                        \
                 for (bn_ = 0; bn_ < sizeof(res32_); bn_++) {           \
                     unsigned d_, s_;                                   \
-                    s_ = RC_WORD_EXTRACT(src32_, 8*bn_, 8);            \
-                    d_ = RC_WORD_EXTRACT(dst32_, 8*bn_, 8);            \
+                    s_ = RC_32_EXTRACT(src32_, 8*bn_, 8);              \
+                    d_ = RC_32_EXTRACT(dst32_, 8*bn_, 8);              \
                     pixop(d_, s_);                                     \
-                    res32_ |= RC_WORD_INSERT(d_, 8*bn_, 8);            \
+                    res32_ |= RC_32_INSERT(d_, 8*bn_, 8);              \
                 }                                                      \
                 *d32_ = res32_;                                        \
             }                                                          \
@@ -238,11 +238,11 @@ do {                                                                   \
                                                                        \
                     for (bn_ = 0; bn_ < sizeof(res32_); bn_++) {       \
                         unsigned d_, s_, m_;                           \
-                        s_ = RC_WORD_EXTRACT(src32_, 8*bn_, 8);        \
-                        d_ = RC_WORD_EXTRACT(dst32_, 8*bn_, 8);        \
-                        m_ = RC_WORD_EXTRACT(m32_, 8*bn_, 8);          \
+                        s_ = RC_32_EXTRACT(src32_, 8*bn_, 8);          \
+                        d_ = RC_32_EXTRACT(dst32_, 8*bn_, 8);          \
+                        m_ = RC_32_EXTRACT(m32_, 8*bn_, 8);            \
                         RC_COND_PIXOP_TEMPLATE(d_, pixop, s_, m_);     \
-                        res32_ |= RC_WORD_INSERT(d_, 8*bn_, 8);        \
+                        res32_ |= RC_32_INSERT(d_, 8*bn_, 8);          \
                     }                                                  \
                     *d32_ = res32_;                                    \
                 }                                                      \
@@ -429,7 +429,7 @@ rc_cond_set_word(uint8_t *buf, rc_word_t word, uint32_t v32)
                 /* Skip two 32-bit words */
                 p32 += 2;
             }
-            else if (byte == 0xff) {
+            else if (byte == RC_WORD_INSERT(0xff, 0, 8)) {
                 /* Set two 32-bit words */
                 *p32++ = v32;
                 *p32++ = v32;
@@ -504,7 +504,7 @@ rc_cond_copy_word(uint8_t *restrict dst,
                 d32 += 2;
                 s32 += 2;
             }
-            else if (byte == 0xff) {
+            else if (byte == RC_WORD_INSERT(0xff, 0, 8)) {
                 /* Copy two 32-bit words */
                 *d32++ = *s32++;
                 *d32++ = *s32++;
