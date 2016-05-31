@@ -44,7 +44,7 @@
 m4_define([rapp_major_version], [0])
 m4_define([rapp_minor_version], [8])
 # Empty for a release
-m4_define([rapp_release_phase], [dev])
+m4_define([rapp_release_phase], [])
 
 # Initialize
 AC_PREREQ([2.63]) # May work with 2.62, but developers haven't tried it.
