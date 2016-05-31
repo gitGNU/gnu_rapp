@@ -562,15 +562,13 @@ else
 fi
 # Form PLATFORM from PLATFORM_BASE, different for platforms
 # where multiple natural-word-length ABIs exist.
+PLATFORM=${PLATFORM_BASE}
 case ${host_cpu} in
 x86_64)
     test ${rc_bits} != 64 && PLATFORM="${PLATFORM_BASE}-${rc_bits}"
     ;;
 sparc*|mips*|powerpc*)
     test ${rc_bits} != 32 && PLATFORM="${PLATFORM_BASE}-${rc_bits}"
-    ;;
-*)
-    PLATFORM=${PLATFORM_BASE}
     ;;
 esac
 
